@@ -1,10 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { BaseMantineProvider, ReactRouterProvider, TanstackQueryProvider } from '@/provider'
+
+import '@/styles/index.css'
+import '@/styles/fonts.css'
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <App />
+        <TanstackQueryProvider>
+            <BaseMantineProvider>
+                <ReactRouterProvider />
+            </BaseMantineProvider>
+        </TanstackQueryProvider>
     </StrictMode>
 )
