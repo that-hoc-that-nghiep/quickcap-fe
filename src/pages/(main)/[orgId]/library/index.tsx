@@ -5,13 +5,12 @@ import { Link } from 'react-router'
 
 export const LibraryPage = () => {
     const theme = useMantineTheme()
-
     return (
         <Stack gap='lg'>
             <Stack>
                 <Group justify='space-between' align='center'>
                     <Group>
-                        <IconFolderFilled size={24} color={theme.primaryColor} />
+                        <IconFolderFilled size={24} color={theme.colors[theme.primaryColor][5]} />
                         <Text size='lg' fw={500}>
                             Categories
                         </Text>
@@ -39,7 +38,7 @@ export const LibraryPage = () => {
                                         {category.count} videos
                                     </Text>
                                 </Stack>
-                                <IconFolderFilled size={24} color={theme.primaryColor} />
+                                <IconFolderFilled size={24} color={theme.colors[theme.primaryColor][5]} />
                             </Group>
                         </Paper>
                     ))}
@@ -48,7 +47,7 @@ export const LibraryPage = () => {
             <Stack>
                 <Group justify='space-between' align='center'>
                     <Group>
-                        <IconVideoFilled size={24} color={theme.primaryColor} />
+                        <IconVideoFilled size={24} color={theme.colors[theme.primaryColor][5]} />
                         <Text size='lg' fw={500}>
                             Videos
                         </Text>
