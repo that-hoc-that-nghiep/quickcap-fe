@@ -1,7 +1,8 @@
 import { AppShell, Avatar, Button, Group, NavLink, Select, Title, useMantineTheme } from '@mantine/core'
 import { Link, Outlet, useLocation } from 'react-router'
-import { IconUpload, IconVideoFilled } from '@tabler/icons-react'
-import { menuItems } from '@/utils/constant'
+import { IconSearch, IconUpload, IconVideoFilled } from '@tabler/icons-react'
+import { actions, menuItems } from '@/utils/constant'
+import { Spotlight, spotlight } from '@mantine/spotlight'
 
 const DUMB_ORG_ID = 'org1'
 
@@ -12,7 +13,19 @@ export const MainLayout = () => {
     return (
         <AppShell header={{ height: 60 }} navbar={{ width: 280, breakpoint: ' sm' }} layout='alt' padding='md'>
             <AppShell.Header withBorder={false} p='md'>
-                <Group justify='right'>
+                <Group justify='space-between'>
+                    <Button
+                        leftSection={<IconSearch size={18} color={theme.colors[theme.primaryColor][4]} />}
+                        justify='start'
+                        variant='default'
+                        w={300}
+                        c={theme.colors[theme.primaryColor][5]}
+                        fw={400}
+                        onClick={spotlight.open}
+                    >
+                        Search
+                    </Button>
+
                     <Group>
                         <Button leftSection={<IconUpload size={18} />}>Upload</Button>
                         <Button leftSection={<IconVideoFilled size={18} />}>Record</Button>
@@ -58,6 +71,15 @@ export const MainLayout = () => {
             <AppShell.Main>
                 <Outlet />
             </AppShell.Main>
+            <Spotlight
+                actions={actions}
+                nothingFound='Nothing found...'
+                highlightQuery
+                searchProps={{
+                    leftSection: <IconSearch size={20} stroke={1.5} />,
+                    placeholder: 'Search...'
+                }}
+            />
         </AppShell>
     )
 }
