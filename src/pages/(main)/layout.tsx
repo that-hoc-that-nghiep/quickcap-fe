@@ -10,7 +10,7 @@ export const MainLayout = () => {
     const { pathname } = useLocation()
 
     return (
-        <AppShell header={{ height: 60 }} navbar={{ width: 300, breakpoint: ' sm' }} layout='alt' padding='md'>
+        <AppShell header={{ height: 60 }} navbar={{ width: 280, breakpoint: ' sm' }} layout='alt' padding='md'>
             <AppShell.Header withBorder={false} p='md'>
                 <Group justify='right'>
                     <Group>
