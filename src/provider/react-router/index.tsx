@@ -8,6 +8,8 @@ import { ErrorPage } from '@/pages/404'
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router'
 import { VideoPage } from '@/pages/(main)/video/[videoId]'
 import { OrgLayout } from '@/pages/(main)/[orgId]/layout'
+import { authLoader } from '@/utils/loader'
+import AuthCallbackPage from '@/pages/auth/callback'
 
 const routers = createBrowserRouter([
     {
@@ -18,6 +20,7 @@ const routers = createBrowserRouter([
             {
                 path: '/',
                 element: <MainLayout />,
+                loader: authLoader,
                 children: [
                     {
                         path: '/:orgId',
@@ -54,6 +57,16 @@ const routers = createBrowserRouter([
                                 element: <VideoPage />
                             }
                         ]
+                    }
+                ]
+            },
+            {
+                path: '/auth',
+                element: <Outlet />,
+                children: [
+                    {
+                        path: 'callback',
+                        element: <AuthCallbackPage />
                     }
                 ]
             }

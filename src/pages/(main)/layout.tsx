@@ -1,14 +1,39 @@
-import { AppShell, Avatar, Button, Group, NavLink, Select, Title, useMantineTheme } from '@mantine/core'
-import { Link, Outlet, useLocation } from 'react-router'
-import { IconSearch, IconUpload, IconVideoFilled } from '@tabler/icons-react'
+import { AppShell, Avatar, Button, Group, Menu, NavLink, Select, Title, useMantineTheme } from '@mantine/core'
+import { Link, Outlet, useLocation, useNavigate, useParams } from 'react-router'
+import { IconLogout2, IconSearch, IconUpload, IconVideoFilled } from '@tabler/icons-react'
 import { actions, menuItems } from '@/utils/constant'
 import { Spotlight, spotlight } from '@mantine/spotlight'
-
-const DUMB_ORG_ID = 'org1'
+import { useUser } from '@/hooks/useUser'
+import { useAuth } from '@/hooks/useAuth'
+import { useEffect } from 'react'
 
 export const MainLayout = () => {
     const theme = useMantineTheme()
     const { pathname } = useLocation()
+    const { user, orgs, isLoading } = useUser()
+    const { removeAccessToken } = useAuth()
+    const navigate = useNavigate()
+    const { orgId } = useParams<{ orgId: string }>()
+
+    useEffect(() => {
+        if (!orgId && !isLoading) {
+            const firstOrg = orgs?.[0]
+            navigate(`/${firstOrg?.id}/home`)
+        }
+    }, [orgId, isLoading, orgs, navigate])
+
+    const handleLogout = () => {
+        removeAccessToken()
+        window.location.reload()
+    }
+
+    const handleOrgChange = (newOrgId: string | null) => {
+        if (newOrgId) {
+            // Navigate to the same page but with new org ID
+            const currentPath = pathname.split('/').slice(2).join('/')
+            navigate(`/${newOrgId}/${currentPath || 'home'}`)
+        }
+    }
 
     return (
         <AppShell header={{ height: 60 }} navbar={{ width: 280, breakpoint: ' sm' }} layout='alt' padding='md'>
@@ -29,7 +54,17 @@ export const MainLayout = () => {
                     <Group>
                         <Button leftSection={<IconUpload size={18} />}>Upload</Button>
                         <Button leftSection={<IconVideoFilled size={18} />}>Record</Button>
-                        <Avatar></Avatar>
+                        <Menu shadow='md' width={200}>
+                            <Menu.Target>
+                                <Avatar src={user?.picture} className='cursor-pointer'></Avatar>
+                            </Menu.Target>
+                            <Menu.Dropdown>
+                                <Menu.Label>{user?.email}</Menu.Label>
+                                <Menu.Item leftSection={<IconLogout2 size={14} />} onClick={handleLogout}>
+                                    Logout
+                                </Menu.Item>
+                            </Menu.Dropdown>
+                        </Menu>
                     </Group>
                 </Group>
             </AppShell.Header>
@@ -46,9 +81,11 @@ export const MainLayout = () => {
                 </AppShell.Section>
                 <AppShell.Section>
                     <Select
-                        data={['Org1', 'Org2', 'Org3']}
-                        defaultValue={'Org1'}
+                        data={orgs?.map((org) => ({ label: org.name, value: org.id })) || []}
+                        value={orgId}
+                        onChange={handleOrgChange}
                         comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
+                        allowDeselect={false}
                     />
                 </AppShell.Section>
                 <AppShell.Section my={16}>
@@ -59,7 +96,7 @@ export const MainLayout = () => {
                         <NavLink
                             key={item.path}
                             component={Link}
-                            to={`/${DUMB_ORG_ID}${item.path}`}
+                            to={`/${orgId}${item.path}`}
                             leftSection={<item.icon size={20} />}
                             label={item.label}
                             active={pathname.includes(item.path)}

@@ -1,6 +1,12 @@
 import { IconBell, IconCreditCard, IconHome, IconLibrary, IconSettings } from '@tabler/icons-react'
 import { SpotlightActionData } from '@mantine/spotlight'
 
+export const service = {
+    auth: 'https://auth.quickcap.live',
+    backend: 'https://backend.quickcap.live',
+    sso: 'https://sso.quickcap.live'
+}
+
 export const menuItems = [
     {
         label: 'Home',
