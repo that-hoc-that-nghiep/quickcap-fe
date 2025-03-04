@@ -1,13 +1,16 @@
-import { useAuthStore } from '@/stores/authStore'
 import { redirect } from 'react-router'
+import { useAuthStore } from '@/stores/authStore'
 
 export const authLoader = () => {
+    // Access store directly since we can't use hooks in loaders
     const { accessToken } = useAuthStore.getState()
-    // If user is not authenticated, redirect to SSO
+
+    // Check if user is not authenticated
     if (!accessToken) {
+        // Redirect to login page
         return redirect('/auth/login')
     }
 
-    // User is authenticated, continue with route loading
-    return { authenticated: true }
+    // User is authenticated, allow navigation to continue
+    return null
 }

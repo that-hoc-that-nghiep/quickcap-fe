@@ -16,11 +16,11 @@ export const MainLayout = () => {
     const { orgId } = useParams<{ orgId: string }>()
 
     useEffect(() => {
-        if (!orgId && !isLoading) {
+        if (!orgId && !isLoading && !pathname.includes('/video')) {
             const firstOrg = orgs?.[0]
             navigate(`/${firstOrg?.id}/home`)
         }
-    }, [orgId, isLoading, orgs, navigate])
+    }, [orgId, isLoading, orgs, navigate, pathname])
 
     const handleLogout = () => {
         removeAccessToken()
