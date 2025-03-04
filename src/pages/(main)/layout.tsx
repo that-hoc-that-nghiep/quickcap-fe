@@ -24,7 +24,7 @@ export const MainLayout = () => {
 
     const handleLogout = () => {
         removeAccessToken()
-        window.location.reload()
+        navigate('/auth/login')
     }
 
     const handleOrgChange = (newOrgId: string | null) => {

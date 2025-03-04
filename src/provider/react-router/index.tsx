@@ -10,6 +10,7 @@ import { VideoPage } from '@/pages/(main)/video/[videoId]'
 import { OrgLayout } from '@/pages/(main)/[orgId]/layout'
 import { authLoader } from '@/utils/loader'
 import AuthCallbackPage from '@/pages/auth/callback'
+import { LoginPage } from '@/pages/auth/login'
 
 const routers = createBrowserRouter([
     {
@@ -67,6 +68,10 @@ const routers = createBrowserRouter([
                     {
                         path: 'callback',
                         element: <AuthCallbackPage />
+                    },
+                    {
+                        path: 'login',
+                        element: <LoginPage />
                     }
                 ]
             }
