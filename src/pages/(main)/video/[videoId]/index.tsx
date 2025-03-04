@@ -2,6 +2,8 @@ import { mockVideos } from '@/utils/constant'
 import { Grid, Tabs, Text, Title } from '@mantine/core'
 import { useMemo } from 'react'
 import { useParams } from 'react-router'
+import { AIChatBox } from '@/components/AIChatBox'
+import { VideoComments } from '@/components/VideoComments'
 
 export const VideoPage = () => {
     const { videoId } = useParams<{ videoId: string }>()
@@ -34,11 +36,20 @@ export const VideoPage = () => {
                             <Tabs.Tab value='comments'>Comments</Tabs.Tab>
                         </Tabs.List>
 
-                        <Tabs.Panel value='gallery'>Gallery tab content</Tabs.Panel>
+                        <Tabs.Panel value='ai-tools' pt='md'>
+                            <AIChatBox
+                                videoId={videoId || ''}
+                                videoTitle={video?.title}
+                                videoDescription={video?.description}
+                                videoAuthor={video?.author}
+                            />
+                        </Tabs.Panel>
 
-                        <Tabs.Panel value='messages'>Messages tab content</Tabs.Panel>
+                        <Tabs.Panel value='transcript'>Transcript</Tabs.Panel>
 
-                        <Tabs.Panel value='settings'>Settings tab content</Tabs.Panel>
+                        <Tabs.Panel value='comments' pt='md'>
+                            <VideoComments videoId={videoId || ''} />
+                        </Tabs.Panel>
                     </Tabs>
                 </Grid.Col>
             </Grid>
