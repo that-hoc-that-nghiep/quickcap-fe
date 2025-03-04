@@ -48,7 +48,7 @@ export const VideoPage = () => {
                         <Tabs.Panel value='transcript'>Transcript</Tabs.Panel>
 
                         <Tabs.Panel value='comments' pt='md'>
-                            <VideoComments videoId={videoId || ''} />
+                            <VideoComments />
                         </Tabs.Panel>
                     </Tabs>
                 </Grid.Col>

@@ -62,11 +62,11 @@ interface Comment {
     replies?: Comment[]
 }
 
-interface VideoCommentsProps {
-    videoId: string
-}
+// interface VideoCommentsProps {
+//     videoId: string
+// }
 
-export const VideoComments = ({ videoId }: VideoCommentsProps) => {
+export const VideoComments = () => {
     const [comments, setComments] = useState<Comment[]>(mockComments)
     const [newComment, setNewComment] = useState('')
     const [sortOption, setSortOption] = useState('newest')
