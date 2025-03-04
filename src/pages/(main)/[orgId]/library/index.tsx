@@ -1,12 +1,13 @@
 import { mockCategories, mockVideos } from '@/utils/constant'
-import { Anchor, Avatar, Button, Card, Group, Image, Paper, Stack, Text, useMantineTheme } from '@mantine/core'
+import { Button, Group, Paper, Stack, Text, useMantineTheme } from '@mantine/core'
 import { IconArrowRight, IconFolderFilled, IconVideoFilled } from '@tabler/icons-react'
 import { Link } from 'react-router'
+import VideoCard from '../../_components/video-card'
 
 export const LibraryPage = () => {
     const theme = useMantineTheme()
     return (
-        <Stack gap='lg'>
+        <Stack gap='xl'>
             <Stack>
                 <Group justify='space-between' align='center'>
                     <Group>
@@ -58,37 +59,7 @@ export const LibraryPage = () => {
                 </Group>
                 <Group align='stretch'>
                     {mockVideos.map((video) => (
-                        <Card key={video.id} withBorder shadow='sm' w={300}>
-                            <Card.Section component={Link} to={`/video/${video.id}`}>
-                                <Image
-                                    src={video.thumbnailUrl}
-                                    alt={video.title}
-                                    height={160}
-                                    fit='cover'
-                                    className='aspect-video'
-                                />
-                            </Card.Section>
-                            <Group wrap='nowrap' align='start' mt={16}>
-                                <Avatar></Avatar>
-                                <Stack gap={2}>
-                                    <Anchor
-                                        component={Link}
-                                        to={`/video/${video.id}`}
-                                        lineClamp={2}
-                                        underline='never'
-                                        fw={600}
-                                    >
-                                        {video.title}
-                                    </Anchor>
-                                    <Text size='sm' c='dimmed'>
-                                        {video.author}
-                                    </Text>
-                                    <Text size='sm' c='dimmed'>
-                                        {video.views} views
-                                    </Text>
-                                </Stack>
-                            </Group>
-                        </Card>
+                        <VideoCard key={video.id} video={video} />
                     ))}
                 </Group>
             </Stack>
