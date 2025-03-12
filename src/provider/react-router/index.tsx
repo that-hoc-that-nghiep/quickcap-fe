@@ -21,7 +21,7 @@ const routers = createBrowserRouter([
             {
                 path: '/',
                 element: <MainLayout />,
-                //loader: authLoader,
+                loader: authLoader,
                 children: [
                     {
                         path: '/:orgId',
