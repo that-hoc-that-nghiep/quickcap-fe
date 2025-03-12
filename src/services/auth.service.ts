@@ -1,4 +1,4 @@
-import { OrgInfo, VerifyUser } from '@/types'
+import { Org, OrgInfo, VerifyUser } from '@/types'
 import { authInstance } from '@/utils/api'
 
 export const getUserInfo = async (accessToken: string | null) => {
@@ -11,5 +11,10 @@ export const getUserInfo = async (accessToken: string | null) => {
 
 export const createOrg = async (name: string) => {
     const { data } = await authInstance.post<OrgInfo>('/org/create', { name })
+    return data
+}
+
+export const updateOrg = async (orgId: string, name: string) => {
+    const { data } = await authInstance.put<Org>(`/org/${orgId}`, { name })
     return data
 }

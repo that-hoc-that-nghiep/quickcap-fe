@@ -1,50 +1,67 @@
-import { useState } from 'react'
-import { Tabs, Paper } from '@mantine/core'
-import { IconUser, IconPalette, IconBell, IconUsers } from '@tabler/icons-react'
-import { AccountSettings } from './AccountSettings'
-import { DisplaySettings } from './DisplaySettings'
-import { NotificationSettings } from './NotificationSettings'
-import { OrganizationSettings } from './OrganizationSettings'
+import { Grid } from '@mantine/core'
+import OrgCommonSettings from '../../_components/org-common-settings'
 
 export const SettingsPage = () => {
-    const [activeTab, setActiveTab] = useState<string | null>('account')
-    const [profileImage, setProfileImage] = useState<File | null>(null)
-    const [themeColor, setThemeColor] = useState('#1c7ed6')
-
     return (
-        <Paper shadow='xs' p='md' withBorder>
-            <Tabs value={activeTab} onChange={setActiveTab}>
-                <Tabs.List mb='md'>
-                    <Tabs.Tab value='account' leftSection={<IconUser size={16} />}>
-                        Account Settings
-                    </Tabs.Tab>
-                    <Tabs.Tab value='organization' leftSection={<IconUsers size={16} />}>
-                        Organization Settings
-                    </Tabs.Tab>
-                    <Tabs.Tab value='display' leftSection={<IconPalette size={16} />}>
-                        Display Settings
-                    </Tabs.Tab>
-                    <Tabs.Tab value='notifications' leftSection={<IconBell size={16} />}>
-                        Notification Settings
-                    </Tabs.Tab>
-                </Tabs.List>
+        <Grid gutter='xl'>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+                <OrgCommonSettings />
+            </Grid.Col>
 
-                <Tabs.Panel value='account'>
-                    <AccountSettings profileImage={profileImage} setProfileImage={setProfileImage} />
-                </Tabs.Panel>
+            {/* Right Section - Members */}
+            <Grid.Col span={{ base: 12, md: 6 }}>
+                {/* <Card withBorder p='xl' radius='md' style={cardStyle}>
+                    <Group justify='space-between' mb='lg'>
+                        <Text size='xl' fw={700}>
+                            Thành viên
+                        </Text>
+                        <Button
+                            color='green'
+                            leftSection={<IconPlus size={16} />}
+                            size='sm'
+                            style={{
+                                backgroundColor: '#3E8E41',
+                                color: 'white',
+                                transition: 'background-color 0.3s ease'
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#4CAF50')}
+                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#3E8E41')}
+                        >
+                            Thêm thành viên
+                        </Button>
+                    </Group>
 
-                <Tabs.Panel value='organization'>
-                    <OrganizationSettings />
-                </Tabs.Panel>
+                    <Card withBorder p='md' mb='lg'>
+                        <Group>
+                            <Avatar radius='xl' size='md' color='blue'>
+                                PH
+                            </Avatar>
+                            <Box style={{ flex: 1 }}>
+                                <Group justify='space-between'>
+                                    <Text size='sm' fw={500}>
+                                        Pham Hong Phong K17-HL
+                                    </Text>
+                                    <Badge color='red' style={{ color: '#F0F0F0' }}>
+                                        Chủ nhóm
+                                    </Badge>
+                                </Group>
+                                <Text size='xs' c='dimmed'>
+                                    phampong@example.com
+                                </Text>
+                            </Box>
+                            <ActionIcon variant='subtle'>
+                                <IconPencil size={16} />
+                            </ActionIcon>
+                        </Group>
+                    </Card>
 
-                <Tabs.Panel value='display'>
-                    <DisplaySettings themeColor={themeColor} setThemeColor={setThemeColor} />
-                </Tabs.Panel>
-
-                <Tabs.Panel value='notifications'>
-                    <NotificationSettings />
-                </Tabs.Panel>
-            </Tabs>
-        </Paper>
+                    <Center mt='lg' style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+                        <Text size='sm' c='dimmed'>
+                            Thêm thành viên để cộng tác làm việc
+                        </Text>
+                    </Center>
+                </Card> */}
+            </Grid.Col>
+        </Grid>
     )
 }

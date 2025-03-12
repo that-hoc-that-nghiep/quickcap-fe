@@ -3,7 +3,7 @@ import { AppShell, Button, Group, Select, TextInput } from '@mantine/core'
 import { closeAllModals, openModal } from '@mantine/modals'
 import { useForm } from '@mantine/form'
 import { IconPlus } from '@tabler/icons-react'
-import { useLocation, useNavigate, useParams } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { notifications } from '@mantine/notifications'
 import { useQueryClient } from '@tanstack/react-query'
 import { createOrg } from '@/services/auth.service'
@@ -73,8 +73,7 @@ const CreateNewOrgModal = () => {
 const OrgSwitcher = () => {
     const { pathname } = useLocation()
     const navigate = useNavigate()
-    const { orgId } = useParams<{ orgId: string }>()
-    const { orgs } = useUser()
+    const { orgs, currentOrg } = useUser()
 
     const handleOrgChange = (newOrgId: string | null) => {
         if (newOrgId) {
@@ -95,7 +94,7 @@ const OrgSwitcher = () => {
                 <Select
                     checkIconPosition='right'
                     data={orgs?.map((org) => ({ label: org.name, value: org.id })) || []}
-                    value={orgId}
+                    value={currentOrg?.id}
                     onChange={handleOrgChange}
                     comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
                     allowDeselect={false}
