@@ -1,5 +1,6 @@
 import { IconBell, IconCreditCard, IconHome, IconLibrary, IconSettings } from '@tabler/icons-react'
 import { SpotlightActionData } from '@mantine/spotlight'
+import { Category } from '@/types'
 
 export const service = {
     auth: 'https://auth.quickcap.live',
@@ -35,26 +36,26 @@ export const menuItems = [
     }
 ]
 
-export const mockCategories = [
+export const mockCategories: Category[] = [
     {
-        id: '1',
+        _id: '1',
         name: 'Design',
-        count: 12
+        orgId: '123'
     },
     {
-        id: '2',
+        _id: '2',
         name: 'Development',
-        count: 24
+        orgId: '123'
     },
     {
-        id: '3',
+        _id: '3',
         name: 'Business',
-        count: 8
+        orgId: '123'
     },
     {
-        id: '4',
+        _id: '4',
         name: 'Marketing',
-        count: 16
+        orgId: '123'
     }
 ]
 
