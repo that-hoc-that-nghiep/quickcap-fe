@@ -7,7 +7,7 @@ export const authInstance = axios.create({
 })
 
 export const backendInstance = axios.create({
-    baseURL: service.backend
+    baseURL: `${service.backend}/api/v1`
 })
 
 // Add request interceptors to include access token in headers

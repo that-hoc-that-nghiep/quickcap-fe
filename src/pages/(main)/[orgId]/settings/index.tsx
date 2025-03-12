@@ -1,6 +1,6 @@
 import { Grid } from '@mantine/core'
-import OrgCommonSettings from '../../_components/org-common-settings'
-import OrgMemberSettings from '../../_components/org-memeber-settings'
+import OrgCommonSettings from './_components/org-common-settings'
+import OrgMemberSettings from './_components/org-memeber-settings'
 
 export const SettingsPage = () => {
     return (
