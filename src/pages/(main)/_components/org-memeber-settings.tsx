@@ -18,7 +18,7 @@ const AddMemberModal = () => {
         },
 
         validate: {
-            email: (value) =>
+            email: (value: string) =>
                 /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(value) ? null : 'Invalid email address'
         }
     })

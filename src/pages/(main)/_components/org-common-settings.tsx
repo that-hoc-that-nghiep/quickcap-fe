@@ -71,7 +71,7 @@ const OrgCommonSettings = () => {
             name: currentOrg?.name || ''
         },
         validate: {
-            name: (value) => (value.trim().length > 2 ? null : 'Organization name is too short')
+            name: (value: string) => (value.trim().length > 2 ? null : 'Organization name is too short')
         }
     })
 
