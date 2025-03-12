@@ -20,3 +20,7 @@ export const createCategory = async (orgId: string | undefined, name: string) =>
     const { data } = await backendInstance.post<{ data: Category }>(`/category/${orgId}`, { name })
     return data
 }
+
+export const deleteCategoryById = async (categoryId: string) => {
+    await backendInstance.delete(`/category/${categoryId}`)
+}
