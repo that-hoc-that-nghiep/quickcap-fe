@@ -47,9 +47,20 @@ export const OrganizationSettings = () => {
                     </Text>
 
                     <Stack style={{ flex: 1 }}>
-                        <TextInput label='Tên nhóm' defaultValue='Pham Hong Phong' placeholder='Nhập tên nhóm' />
+                        <TextInput
+                            label='Tên nhóm'
+                            defaultValue='Pham Hong Phong'
+                            placeholder='Nhập tên nhóm'
+                            styles={{
+                                label: {
+                                    fontWeight: 600,
+                                    fontSize: '16px',
+                                    marginBottom: '8px' 
+                                }
+                            }}
+                        />
 
-                        <Text fw={600} size='sm' mb='xs'>
+                        <Text fw={700} size='md' mb='xs'>
                             Thông tin gói dịch vụ
                         </Text>
                         <Group>
@@ -58,7 +69,7 @@ export const OrganizationSettings = () => {
                                 Free
                             </Badge>
                         </Group>
-                        <Group mt='xs'>
+                        <Group>
                             <Text size='sm'>Ngày hết hạn:</Text>
                             <Text size='sm' c='dimmed'>
                                 Không có
@@ -66,7 +77,7 @@ export const OrganizationSettings = () => {
                         </Group>
 
                         <Group justify='space-between' mt='xl'>
-                            <Text fw={600} size='sm' c='red' mb='md'>
+                            <Text fw={600} size='sm' c='red' >
                                 Vùng nguy hiểm
                             </Text>
                         </Group>
@@ -98,22 +109,22 @@ export const OrganizationSettings = () => {
                     <Group justify='space-between' mb='lg'>
                         <Text size='xl' fw={700}>
                             Thành viên
-                            <Text span c='dimmed' fw={400} size='sm'>
+                            {/* <Text span c='dimmed' fw={400} size='sm'>
                                 {' '}
                                 (1/3)
-                            </Text>
+                            </Text> */}
                         </Text>
                         <Button
                             color='green'
                             leftSection={<IconPlus size={16} />}
                             size='sm'
                             style={{
-                                backgroundColor: '#3E8E41', 
+                                backgroundColor: '#3E8E41',
                                 color: 'white',
                                 transition: 'background-color 0.3s ease'
                             }}
-                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#4CAF50')} 
-                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#3E8E41')} 
+                            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#4CAF50')}
+                            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#3E8E41')}
                         >
                             Thêm thành viên
                         </Button>

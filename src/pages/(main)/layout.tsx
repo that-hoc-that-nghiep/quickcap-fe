@@ -1,11 +1,24 @@
-import { AppShell, Avatar, Button, Group, Menu, NavLink, Select, Title, useMantineTheme } from '@mantine/core'
+import {
+    AppShell,
+    Avatar,
+    Button,
+    Group,
+    Menu,
+    NavLink,
+    Select,
+    Title,
+    useMantineTheme,
+    Modal,
+    TextInput,
+    Stack
+} from '@mantine/core'
 import { Link, Outlet, useLocation, useNavigate, useParams } from 'react-router'
 import { IconLogout2, IconSearch, IconUpload, IconVideoFilled } from '@tabler/icons-react'
 import { actions, menuItems } from '@/utils/constant'
 import { Spotlight, spotlight } from '@mantine/spotlight'
 import { useUser } from '@/hooks/useUser'
 import { useAuth } from '@/hooks/useAuth'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 export const MainLayout = () => {
     const theme = useMantineTheme()
@@ -14,6 +27,9 @@ export const MainLayout = () => {
     const { removeAccessToken } = useAuth()
     const navigate = useNavigate()
     const { orgId } = useParams<{ orgId: string }>()
+
+    const [isModalOpen, setModalOpen] = useState(false) 
+    const [newOrgName, setNewOrgName] = useState('') 
 
     useEffect(() => {
         if (!orgId && !isLoading && !pathname.includes('/video')) {
@@ -35,8 +51,16 @@ export const MainLayout = () => {
         }
     }
 
+    const handleCreateNewOrg = () => {
+        setModalOpen(true)
+    }
+
+    const handleCreateOrganization = () => {
+        setModalOpen(false)
+    }
+
     return (
-        <AppShell header={{ height: 60 }} navbar={{ width: 280, breakpoint: ' sm' }} layout='alt' padding='md'>
+        <AppShell header={{ height: 60 }} navbar={{ width: 280, breakpoint: 'sm' }} layout='alt' padding='md'>
             <AppShell.Header withBorder={false} p='md'>
                 <Group justify='space-between'>
                     <Button
@@ -81,11 +105,15 @@ export const MainLayout = () => {
                 </AppShell.Section>
                 <AppShell.Section>
                     <Select
-                        data={orgs?.map((org) => ({ label: org.name, value: org.id })) || []}
+                        data={[
+                            ...(orgs?.map((org) => ({ label: org.name, value: org.id })) || []),
+                            { label: 'Tạo mới tổ chức', value: 'create_new', disabled: false },
+                        ]}
                         value={orgId}
-                        onChange={handleOrgChange}
+                        onChange={(value) => value === 'create_new' ? handleCreateNewOrg() : handleOrgChange(value)}
                         comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
                         allowDeselect={false}
+                        placeholder="Chọn tổ chức"
                     />
                 </AppShell.Section>
                 <AppShell.Section my={16}>
@@ -108,6 +136,30 @@ export const MainLayout = () => {
             <AppShell.Main>
                 <Outlet />
             </AppShell.Main>
+
+            {/* Modal for Creating New Organization */}
+            <Modal
+                opened={isModalOpen}
+                onClose={() => setModalOpen(false)}
+                title="Tạo tổ chức mới"
+                centered
+                size="lg"
+            >
+                <Stack>
+                    <TextInput
+                        label="Tên tổ chức"
+                        placeholder="Nhập tên tổ chức"
+                        value={newOrgName}
+                        onChange={(e) => setNewOrgName(e.target.value)}
+                    />
+                    <Group>
+                        <Button onClick={handleCreateOrganization} color="green">
+                            Tạo tổ chức
+                        </Button>
+                    </Group>
+                </Stack>
+            </Modal>
+
             <Spotlight
                 actions={actions}
                 nothingFound='Nothing found...'
