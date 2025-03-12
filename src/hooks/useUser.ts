@@ -1,4 +1,4 @@
-import { getUserInfo } from '@/services/auth'
+import { getUserInfo } from '@/services/auth.service'
 import { useAuthStore } from '@/stores/authStore'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
