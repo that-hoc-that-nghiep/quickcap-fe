@@ -30,6 +30,9 @@ const CreateNewOrgModal = () => {
             queryClient.invalidateQueries({
                 queryKey: ['user']
             })
+            queryClient.invalidateQueries({
+                queryKey: ['org']
+            })
             notifications.show({
                 color: 'green',
                 title: 'Success',

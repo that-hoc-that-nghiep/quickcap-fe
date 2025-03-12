@@ -34,3 +34,19 @@ export const updateOrg = async (orgId: string, name: string) => {
     const { data } = await authInstance.put<Org>(`/org/${orgId}`, { name })
     return data
 }
+
+export const addMemberToOrg = async (orgId: string | undefined, email: string) => {
+    if (!orgId) {
+        return null
+    }
+    const { data } = await authInstance.put<OrgInfo>(`/org/${orgId}/add`, { usersEmail: [email] })
+    return data
+}
+
+export const removeMemberFromOrg = async (orgId: string | undefined, email: string) => {
+    if (!orgId) {
+        return null
+    }
+    const { data } = await authInstance.put<OrgInfo>(`/org/${orgId}/remove`, { usersEmail: [email] })
+    return data
+}

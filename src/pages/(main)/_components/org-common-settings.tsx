@@ -27,6 +27,9 @@ const OrgCommonSettings = () => {
             queryClient.invalidateQueries({
                 queryKey: ['user']
             })
+            queryClient.invalidateQueries({
+                queryKey: ['org']
+            })
             notifications.show({
                 title: 'Success',
                 message: 'Organization settings saved',
