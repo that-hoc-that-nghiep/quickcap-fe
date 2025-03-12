@@ -1,9 +1,9 @@
 import { useUser } from '@/hooks/useUser'
 import { updateOrg } from '@/services/auth.service'
-import { Badge, Button, Card, Group, Stack, Text, TextInput } from '@mantine/core'
+import { Button, Card, Group, Stack, Text, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
-import { IconTrash } from '@tabler/icons-react'
+import { IconLogout2, IconTrash } from '@tabler/icons-react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 
@@ -44,7 +44,7 @@ const OrgCommonSettings = () => {
         }
     }
     return (
-        <Card withBorder p='xl' radius='md' className='flex flex-col' shadow='xs'>
+        <Card withBorder p='xl' radius='md' className='flex flex-col h-full' shadow='xs'>
             <Text size='xl' fw={700} mb='lg'>
                 Organization Settings
             </Text>
@@ -60,7 +60,7 @@ const OrgCommonSettings = () => {
                         disabled={isSaving || !currentOrg?.is_owner}
                     />
 
-                    <Text fw={700} size='md' mb='xs'>
+                    {/* <Text fw={700} size='md' mb='xs'>
                         Thông tin gói dịch vụ
                     </Text>
                     <Group>
@@ -72,23 +72,31 @@ const OrgCommonSettings = () => {
                     <Group>
                         <Text size='sm'>Ngày hết hạn:</Text>
                         <Text size='sm' c='dimmed'>
-                            Không có
+                            none
                         </Text>
-                    </Group>
+                    </Group> */}
 
                     <Group justify='space-between' mt='xl'>
-                        <Text fw={600} size='sm' c='red'>
-                            Vùng nguy hiểm
+                        <Text fw={600} size='sm' c={currentOrg?.is_owner ? 'red' : 'orange'}>
+                            Danger Zone
                         </Text>
                     </Group>
 
                     <Group justify='space-between'>
-                        <Button color='red' leftSection={<IconTrash size={16} />} variant='outline'>
-                            Xóa nhóm
-                        </Button>
-                        <Button type='submit' color='green' loading={isSaving}>
-                            Lưu
-                        </Button>
+                        {currentOrg?.is_owner ? (
+                            <Button color='red' leftSection={<IconTrash size={16} />} variant='outline'>
+                                Delete organization
+                            </Button>
+                        ) : (
+                            <Button color='orange' leftSection={<IconLogout2 size={16} />} variant='outline'>
+                                Leave organization
+                            </Button>
+                        )}
+                        {currentOrg?.is_owner ? (
+                            <Button type='submit' color='green' loading={isSaving}>
+                                Lưu
+                            </Button>
+                        ) : null}
                     </Group>
                 </Stack>
             </form>
