@@ -1,6 +1,7 @@
-import { getUserInfo } from '@/services/auth'
+import { getUserInfo } from '@/services/auth.service'
 import { useAuthStore } from '@/stores/authStore'
 import { useQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
 import { useParams } from 'react-router'
 
 export const useUser = () => {
@@ -11,10 +12,11 @@ export const useUser = () => {
         queryFn: () => getUserInfo(accessToken)
     })
 
-    let currentOrg = null
-    if (data) {
-        currentOrg = data.organizations.find((org) => org.id === orgId)
-    }
+    const currentOrg = useMemo(() => {
+        if (data) {
+            return data.organizations.find((org) => org.id === orgId)
+        }
+    }, [data, orgId])
 
     return {
         user: data,

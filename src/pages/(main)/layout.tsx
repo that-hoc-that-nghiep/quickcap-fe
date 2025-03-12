@@ -1,4 +1,4 @@
-import { AppShell, Avatar, Button, Group, Menu, NavLink, Select, Title, useMantineTheme } from '@mantine/core'
+import { AppShell, Avatar, Button, Group, Menu, NavLink, Title, useMantineTheme } from '@mantine/core'
 import { Link, Outlet, useLocation, useNavigate, useParams } from 'react-router'
 import { IconLogout2, IconSearch, IconUpload, IconVideoFilled } from '@tabler/icons-react'
 import { actions, menuItems } from '@/utils/constant'
@@ -6,6 +6,7 @@ import { Spotlight, spotlight } from '@mantine/spotlight'
 import { useUser } from '@/hooks/useUser'
 import { useAuth } from '@/hooks/useAuth'
 import { useEffect } from 'react'
+import OrgSwitcher from './_components/org-switcher'
 
 export const MainLayout = () => {
     const theme = useMantineTheme()
@@ -27,16 +28,8 @@ export const MainLayout = () => {
         navigate('/auth/login')
     }
 
-    const handleOrgChange = (newOrgId: string | null) => {
-        if (newOrgId) {
-            // Navigate to the same page but with new org ID
-            const currentPath = pathname.split('/').slice(2).join('/')
-            navigate(`/${newOrgId}/${currentPath || 'home'}`)
-        }
-    }
-
     return (
-        <AppShell header={{ height: 60 }} navbar={{ width: 280, breakpoint: ' sm' }} layout='alt' padding='md'>
+        <AppShell header={{ height: 60 }} navbar={{ width: 280, breakpoint: 'sm' }} layout='alt' padding='md'>
             <AppShell.Header withBorder={false} p='md'>
                 <Group justify='space-between'>
                     <Button
@@ -79,15 +72,7 @@ export const MainLayout = () => {
                         <Title order={2}>QuickCap</Title>
                     </Group>
                 </AppShell.Section>
-                <AppShell.Section>
-                    <Select
-                        data={orgs?.map((org) => ({ label: org.name, value: org.id })) || []}
-                        value={orgId}
-                        onChange={handleOrgChange}
-                        comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
-                        allowDeselect={false}
-                    />
-                </AppShell.Section>
+                <OrgSwitcher />
                 <AppShell.Section my={16}>
                     <Title order={4} mb={8}>
                         Menu
@@ -108,6 +93,7 @@ export const MainLayout = () => {
             <AppShell.Main>
                 <Outlet />
             </AppShell.Main>
+
             <Spotlight
                 actions={actions}
                 nothingFound='Nothing found...'

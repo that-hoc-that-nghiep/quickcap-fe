@@ -40,17 +40,17 @@ export function LoginPage() {
 
     return (
         <div className='min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-100 to-blue-200'>
-            <Card className='w-full max-w-md'>
-                <Stack gap={4}>
-                    <Title className='text-2xl font-bold text-center'>Welcome to Quickcap</Title>
-                    <Text className='text-center'>Login using your Google account</Text>
+            <Card className='w-full max-w-lg p-8'>
+                <Stack gap={6}>
+                    <Title className='text-2xl font-bold text-center mt-2'>Welcome to Quickcap</Title>
+                    <Text className='text-center text-lg mt-2'>Login using your Google account</Text>
                 </Stack>
-                <Stack className='flex justify-center mt-6'>
+                <Stack className='flex justify-center mt-8'> 
                     <Button
                         onClick={handleGoogleLogin}
                         size='lg'
                         leftSection={
-                            <svg className='w-5 h-5 mr-2' viewBox='0 0 24 24'>
+                            <svg className='w-5 h-5 mr-3' viewBox='0 0 24 24'> 
                                 <path
                                     fill='currentColor'
                                     d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'
@@ -73,19 +73,18 @@ export function LoginPage() {
                         Login with Google
                     </Button>
                 </Stack>
-                {/* <Stack>
-                    <p className='text-center text-sm text-gray-600 mt-2 w-full'>
-                        Bằng cách đăng nhập, bạn đồng ý với{' '}
+                <Stack className='mt-6'>
+                    <p className='text-center text-sm text-gray-600'>
+                        By logging in, you agree to our{' '}
                         <a href='#' className='font-medium text-primary hover:underline'>
-                            Điều khoản dịch vụ
+                            Terms of Service
                         </a>{' '}
-                        và{' '}
+                        and{' '}
                         <a href='#' className='font-medium text-primary hover:underline'>
-                            Chính sách riêng tư
-                        </a>{' '}
-                        của chúng tôi
+                            Privacy Policy
+                        </a>
                     </p>
-                </Stack> */}
+                </Stack>
             </Card>
         </div>
     )

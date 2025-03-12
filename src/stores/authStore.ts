@@ -1,6 +1,11 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { AuthState } from '../types/auth'
+
+export type AuthStatus = 'authenticated' | 'unauthenticated' | 'loading'
+export interface AuthState {
+    accessToken: string | null
+    status: AuthStatus
+}
 
 interface AuthStore extends AuthState {
     setAccessToken: (token: string) => void
