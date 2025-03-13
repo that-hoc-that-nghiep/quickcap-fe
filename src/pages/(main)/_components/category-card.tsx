@@ -55,14 +55,24 @@ const ConfirmDeleteCategoryModal = ({ category }: CategoryCardProps) => {
     )
 }
 
-const CategoryCard = ({ category }: CategoryCardProps) => {
-    const theme = useMantineTheme()
+const CategoryActions = ({ category }: CategoryCardProps) => {
     const handleOpenDeleteCategoryModal = () => {
         openModal({
             title: 'Delete category',
             children: <ConfirmDeleteCategoryModal category={category} />
         })
     }
+    return (
+        <Menu.Dropdown>
+            <Menu.Item leftSection={<IconTrash size={14} />} onClick={handleOpenDeleteCategoryModal}>
+                Delete
+            </Menu.Item>
+        </Menu.Dropdown>
+    )
+}
+
+const CategoryCard = ({ category }: CategoryCardProps) => {
+    const theme = useMantineTheme()
     return (
         <Paper key={category._id} shadow='sm' w={200} p={'md'} withBorder>
             <Group justify='space-between'>
@@ -80,11 +90,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
                             <IconDotsVertical size={20} />
                         </ActionIcon>
                     </Menu.Target>
-                    <Menu.Dropdown>
-                        <Menu.Item leftSection={<IconTrash size={14} />} onClick={handleOpenDeleteCategoryModal}>
-                            Delete
-                        </Menu.Item>
-                    </Menu.Dropdown>
+                    <CategoryActions category={category} />
                 </Menu>
             </Group>
         </Paper>
