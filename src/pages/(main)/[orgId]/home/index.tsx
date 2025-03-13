@@ -1,4 +1,3 @@
-import { mockVideos } from '@/utils/constant'
 import { Button, Group, Paper, Progress, Stack, Text, useMantineTheme } from '@mantine/core'
 import {
     IconArrowRight,
@@ -11,7 +10,6 @@ import {
     IconVideo,
     IconVideoFilled
 } from '@tabler/icons-react'
-import VideoCard from '../../_components/video-card'
 
 export function HomePage() {
     const theme = useMantineTheme()
@@ -60,9 +58,9 @@ export function HomePage() {
                     </Button>
                 </Group>
                 <Group align='stretch'>
-                    {mockVideos.slice(0, 4).map((video) => (
+                    {/* {mockVideos.slice(0, 4).map((video) => (
                         <VideoCard key={video.id} video={video} />
-                    ))}
+                    ))} */}
                 </Group>
             </Stack>
             <Stack>
