@@ -79,17 +79,16 @@ const Categories = () => {
         })
     }
     return (
-        <Group>
+        <>
             {data?.data.map((category) => <CategoryCard key={category._id} category={category} />)}
             <UnstyledButton
                 onClick={handleOpenCreateCategoryModal}
-                w={200}
                 p={'md'}
                 className='border-dashed border-2 border-gray-200 flex items-center justify-center rounded hover:shadow transition-all duration-300'
             >
                 <IconPlus size={24} className='text-gray-600/50' />
             </UnstyledButton>
-        </Group>
+        </>
     )
 }
 

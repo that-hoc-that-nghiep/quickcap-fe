@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Avatar, Button, Flex, Group, Paper, Text, Textarea, Select, ActionIcon, Stack } from '@mantine/core'
+import { Avatar, Button, Flex, Group, Paper, Text, Textarea, ActionIcon, Stack } from '@mantine/core'
 import { IconHeart, IconThumbDown, IconHeartFilled, IconThumbDownFilled, IconMessageDots } from '@tabler/icons-react'
 
 // Mock data for comments
@@ -62,14 +62,9 @@ interface Comment {
     replies?: Comment[]
 }
 
-// interface VideoCommentsProps {
-//     videoId: string
-// }
-
-export const VideoComments = () => {
+export const Comments = () => {
     const [comments, setComments] = useState<Comment[]>(mockComments)
     const [newComment, setNewComment] = useState('')
-    const [sortOption, setSortOption] = useState('newest')
     const [likedComments, setLikedComments] = useState<Record<string, boolean>>({})
     const [dislikedComments, setDislikedComments] = useState<Record<string, boolean>>({})
 
@@ -171,19 +166,6 @@ export const VideoComments = () => {
         console.log(`Reply to comment ${commentId}`)
     }
 
-    const sortedComments = [...comments].sort((a, b) => {
-        if (sortOption === 'newest') {
-            return b.timestamp.getTime() - a.timestamp.getTime()
-        }
-        if (sortOption === 'oldest') {
-            return a.timestamp.getTime() - b.timestamp.getTime()
-        }
-        if (sortOption === 'most_liked') {
-            return b.likes - a.likes
-        }
-        return 0
-    })
-
     const totalComments = comments.reduce((total, comment) => total + 1 + (comment.replies?.length || 0), 0)
 
     return (
@@ -192,17 +174,6 @@ export const VideoComments = () => {
                 <Text fw={500} size='lg'>
                     Comments ({totalComments})
                 </Text>
-                <Select
-                    size='sm'
-                    value={sortOption}
-                    onChange={(value) => setSortOption(value || 'newest')}
-                    data={[
-                        { value: 'newest', label: 'Newest First' },
-                        { value: 'oldest', label: 'Oldest First' },
-                        { value: 'most_liked', label: 'Most Liked' }
-                    ]}
-                    w={150}
-                />
             </Group>
 
             {/* Comment Input */}
@@ -221,7 +192,7 @@ export const VideoComments = () => {
 
             {/* Comments Display */}
             <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                {sortedComments.map((comment) => (
+                {comments.map((comment) => (
                     <Paper key={comment.id} p='md' withBorder mb={12} shadow='md'>
                         <Group align='flex-start'>
                             <Avatar src={comment.avatar} radius='xl' size='md' />

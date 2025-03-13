@@ -1,12 +1,12 @@
 import { deleteCategoryById } from '@/services/category.service'
 import { Category } from '@/types'
-import { ActionIcon, Button, Group, Menu, Paper, Stack, Text, useMantineTheme } from '@mantine/core'
+import { ActionIcon, Button, Group, Menu, Paper, Text, useMantineTheme } from '@mantine/core'
 import { closeAllModals, openModal } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
 import { IconDotsVertical, IconFolderFilled, IconTrash } from '@tabler/icons-react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { Link } from 'react-router'
+// import { Link } from 'react-router'
 
 interface CategoryCardProps {
     category: Category
@@ -74,19 +74,26 @@ const CategoryActions = ({ category }: CategoryCardProps) => {
 const CategoryCard = ({ category }: CategoryCardProps) => {
     const theme = useMantineTheme()
     return (
-        <Paper key={category._id} shadow='sm' w={200} p={'md'} withBorder>
-            <Group justify='space-between'>
-                <Link to={`/category/${category._id}`} className='no-underline flex gap-2 grow'>
-                    <IconFolderFilled size={24} color={theme.colors[theme.primaryColor][5]} />
-                    <Stack gap={4}>
-                        <Text truncate='end' lineClamp={1} size='md' fw={500} c={theme.primaryColor}>
-                            {category.name}
-                        </Text>
-                    </Stack>
-                </Link>
+        <Paper key={category._id} shadow='sm' p={'md'} withBorder className='col-span-1'>
+            <Group justify='space-between' wrap='nowrap'>
+                <Group wrap='nowrap' gap={8} className='grow' style={{ minWidth: 0 }}>
+                    <IconFolderFilled size={24} color={theme.colors[theme.primaryColor][5]} style={{ flexShrink: 0 }} />
+                    <Text
+                        size='md'
+                        fw={500}
+                        c={theme.primaryColor}
+                        className='min-w-0 max-w-full truncate overflow-hidden text-ellipsis whitespace-nowrap'
+                    >
+                        {category.name}
+                    </Text>
+                </Group>
                 <Menu shadow='md' position='bottom-start' offset={-3}>
                     <Menu.Target>
-                        <ActionIcon variant='transparent' onClick={(e) => e.stopPropagation()}>
+                        <ActionIcon
+                            variant='transparent'
+                            onClick={(e) => e.stopPropagation()}
+                            style={{ flexShrink: 0 }}
+                        >
                             <IconDotsVertical size={20} />
                         </ActionIcon>
                     </Menu.Target>

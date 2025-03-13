@@ -1,6 +1,6 @@
 import { Category } from '@/types'
 import { backendInstance } from '@/utils/api'
-import { useQuery } from '@tanstack/react-query'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
 const getOrgsCategories = async (orgId: string | undefined) => {
     if (!orgId) return null
@@ -9,7 +9,7 @@ const getOrgsCategories = async (orgId: string | undefined) => {
 }
 
 export const useOrgCategories = (orgId: string | undefined) => {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ['org-categories', orgId],
         queryFn: () => getOrgsCategories(orgId)
     })

@@ -1,13 +1,16 @@
 export interface Video {
-    id: string
+    _id: string
     title: string
-    thumbnailUrl: string
-    duration: string
-    uploadTime: string
-    views: string
-    author: string
-    videoUrl: string
-    description: string
-    subscriber: string
-    isLive: boolean
+    description?: string
+    source: string
+    userId: string
+    orgId: string[]
+    views: number
+    type: 'private' | 'public'
+    transcript: string
+    categoryId: string[]
+    createdAt: string
+    isNSFW: boolean
+    nsfwType: 'Drawing' | 'Hentai' | 'Neutral' | 'Porn' | 'Sexy'
+    isDeleted: boolean
 }

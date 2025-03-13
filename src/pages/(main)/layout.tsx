@@ -1,6 +1,6 @@
-import { AppShell, Avatar, Button, Group, Menu, NavLink, Title, useMantineTheme } from '@mantine/core'
+import { AppShell, Avatar, Button, Group, Menu, NavLink, Title, Tooltip, useMantineTheme } from '@mantine/core'
 import { Link, Outlet, useLocation, useNavigate, useParams } from 'react-router'
-import { IconLogout2, IconSearch, IconUpload, IconVideoFilled } from '@tabler/icons-react'
+import { IconLogout2, IconPlus, IconSearch, IconUpload, IconVideoFilled } from '@tabler/icons-react'
 import { actions, menuItems } from '@/utils/constant'
 import { Spotlight, spotlight } from '@mantine/spotlight'
 import { useUser } from '@/hooks/useUser'
@@ -11,7 +11,7 @@ import OrgSwitcher from './_components/org-switcher'
 export const MainLayout = () => {
     const theme = useMantineTheme()
     const { pathname } = useLocation()
-    const { user, orgs, isLoading } = useUser()
+    const { user, orgs, isLoading, currentOrg } = useUser()
     const { removeAccessToken } = useAuth()
     const navigate = useNavigate()
     const { orgId } = useParams<{ orgId: string }>()
@@ -45,8 +45,20 @@ export const MainLayout = () => {
                     </Button>
 
                     <Group>
-                        <Button leftSection={<IconUpload size={18} />}>Upload</Button>
-                        <Button leftSection={<IconVideoFilled size={18} />}>Record</Button>
+                        {currentOrg?.type === 'Personal' ? (
+                            <Button leftSection={<IconUpload size={18} />} component={Link} to={`/${orgId}/upload`}>
+                                Upload
+                            </Button>
+                        ) : (
+                            <Button leftSection={<IconPlus size={18} />} component={Link} to={`/${orgId}/add`}>
+                                Add video
+                            </Button>
+                        )}
+                        <Tooltip label='Record is disabled for now' withArrow>
+                            <Button leftSection={<IconVideoFilled size={18} />} disabled>
+                                Record
+                            </Button>
+                        </Tooltip>
                         <Menu shadow='md' width={200}>
                             <Menu.Target>
                                 <Avatar src={user?.picture} className='cursor-pointer'></Avatar>
@@ -77,20 +89,22 @@ export const MainLayout = () => {
                     <Title order={4} mb={8}>
                         Menu
                     </Title>
-                    {menuItems.map((item) => (
-                        <NavLink
-                            key={item.path}
-                            component={Link}
-                            to={`/${orgId}${item.path}`}
-                            leftSection={<item.icon size={20} />}
-                            label={item.label}
-                            active={pathname.includes(item.path)}
-                            className='rounded-lg capitalize'
-                        />
-                    ))}
+                    {menuItems
+                        .filter((item) => item.show)
+                        .map((item) => (
+                            <NavLink
+                                key={item.path}
+                                component={Link}
+                                to={`/${orgId}${item.path}`}
+                                leftSection={<item.icon size={20} />}
+                                label={item.label}
+                                active={pathname.includes(item.path)}
+                                className='rounded-lg capitalize'
+                            />
+                        ))}
                 </AppShell.Section>
             </AppShell.Navbar>
-            <AppShell.Main>
+            <AppShell.Main className='flex flex-col w-full'>
                 <Outlet />
             </AppShell.Main>
 

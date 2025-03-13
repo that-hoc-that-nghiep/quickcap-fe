@@ -12,27 +12,38 @@ export const menuItems = [
     {
         label: 'Home',
         icon: IconHome,
-        path: '/home'
+        path: '/home',
+        show: true
     },
     {
         label: 'My library',
         icon: IconLibrary,
-        path: '/library'
+        path: '/library',
+        show: true
     },
     {
         label: 'Notifications',
         icon: IconBell,
-        path: '/notifications'
+        path: '/notifications',
+        show: true
     },
     {
         label: 'Billing',
         icon: IconCreditCard,
-        path: '/billing'
+        path: '/billing',
+        show: true
     },
     {
         label: 'Settings',
         icon: IconSettings,
-        path: '/settings'
+        path: '/settings',
+        show: true
+    },
+    {
+        label: 'Upload video',
+        icon: IconSettings,
+        path: '/upload',
+        show: false
     }
 ]
 
@@ -186,3 +197,7 @@ export const mockNotifications = [
 ]
 
 export const actions: SpotlightActionData[] = []
+
+export const MAX_FILE_SIZE = 50 // MB
+
+export const CLOUD_FRONT_URL = 'https://d13e9bff825cyt.cloudfront.net'
