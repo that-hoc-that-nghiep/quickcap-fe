@@ -24,11 +24,11 @@ const VideoInfo = ({ video }: VideoInfoProps) => {
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
-            title: video?.title,
+            title: video?.title || '',
             description: video?.description
         },
         validate: {
-            title: (value) => {
+            title: (value: string) => {
                 if (!value) {
                     return 'Title is required'
                 }
