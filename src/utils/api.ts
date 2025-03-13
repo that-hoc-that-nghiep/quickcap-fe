@@ -26,3 +26,26 @@ backendInstance.interceptors.request.use((config) => {
     }
     return config
 })
+
+// Add response interceptors to handle 401 unauthorized responses
+authInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            useAuthStore.getState().removeAccessToken()
+            window.location.href = '/login'
+        }
+        return Promise.reject(error)
+    }
+)
+
+backendInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            useAuthStore.getState().removeAccessToken()
+            window.location.href = '/login'
+        }
+        return Promise.reject(error)
+    }
+)
