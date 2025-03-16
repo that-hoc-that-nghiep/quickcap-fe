@@ -5,7 +5,6 @@ import {
   useMutationState,
   useQueryClient,
 } from "@tanstack/react-query";
-import { toast } from "sonner";
 
 export const useMutationData = (
   mutationKey: MutationKey,
