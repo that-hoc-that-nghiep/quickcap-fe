@@ -3,10 +3,18 @@ export interface Video {
     title: string
     description?: string
     source: string
-    userId: string
+    user: {
+        id: string
+        email: string
+        name: string
+        given_name: string
+        family_name: string
+        picture: string
+        subscription: string
+    }
     orgId: string[]
     views: number
-    type: 'private' | 'public'
+    like: number
     transcript: string
     categoryId: string[]
     createdAt: string
