@@ -7,12 +7,9 @@ import { useUser } from '@/hooks/useUser'
 import { useAuth } from '@/hooks/useAuth'
 import { useEffect, useState } from 'react'
 import OrgSwitcher from './_components/org-switcher'
-import { getVideosByOrgId, useVideos } from '@/services/video.service'
+import { getVideosByOrgId } from '@/services/video.service'
 import dayjs from 'dayjs'
 import { useQuery } from '@tanstack/react-query'
-import { useQueryData } from '@/hooks/useQueryData'
-import { BackendResponse } from '@/types/common'
-import { Video } from '@/types'
 
 export const MainLayout = () => {
     const theme = useMantineTheme()
@@ -35,7 +32,7 @@ export const MainLayout = () => {
                 id: video._id,
                 label: video.title,
                 description: `${video.user.name} - ${dayjs(video.createdAt).format('DD/MM/YYYY - HH:mm')}`,
-                onClick: () => navigate(`/video/${video._id}`),
+                onClick: () => navigate(`${orgId}/video/${video._id}`),
                 leftSection: <IconVideo size={24} stroke={1.5} />
             }))
             setActions(videoActions)
