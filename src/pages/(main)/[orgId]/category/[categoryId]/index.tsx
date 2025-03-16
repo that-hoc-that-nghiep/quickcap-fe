@@ -1,5 +1,4 @@
 import { Group, Skeleton, Stack, Text, useMantineTheme } from '@mantine/core'
-import { IconVideoFilled } from '@tabler/icons-react'
 import { Suspense } from 'react'
 import { useParams } from 'react-router'
 import VideoCategoris from './_components/videoCategoris'

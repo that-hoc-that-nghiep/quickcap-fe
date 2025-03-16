@@ -1,5 +1,4 @@
 import { IconBell, IconCreditCard, IconHome, IconLibrary, IconSettings } from '@tabler/icons-react'
-import { SpotlightActionData } from '@mantine/spotlight'
 import { Category } from '@/types'
 
 export const service = {
