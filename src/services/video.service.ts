@@ -11,25 +11,28 @@ export const uploadVideo = async (file: FileWithPath) => {
     return data
 }
 
-const getVideosByOrgId = async ({
+export const getVideosByOrgId = async ({
     orgId,
     limit = 10,
     page = 1,
     keyword,
-    categoryId
+    categoryId,
+    order
 }: {
     orgId: string
     limit?: number
     page?: number
     keyword?: string | undefined
     categoryId?: string | undefined
+    order?: string
 }) => {
     const { data } = await backendInstance.get<BackendResponse<{ videos: Video[] }>>(`video/all/${orgId}`, {
         params: {
             limit,
             page,
             keyword,
-            categoryId
+            categoryId,
+            order
         }
     })
 
@@ -38,7 +41,13 @@ const getVideosByOrgId = async ({
 
 export const useVideos = (
     orgId: string,
-    options?: { limit?: number; page?: number; keyword?: string | undefined; categoryId?: string | undefined }
+    options?: {
+        limit?: number
+        page?: number
+        keyword?: string | undefined
+        categoryId?: string | undefined
+        order?: string
+    }
 ) => {
     return useSuspenseQuery({
         queryKey: ['videos', orgId, options],

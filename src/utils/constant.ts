@@ -196,8 +196,6 @@ export const mockNotifications = [
     'Video was shared by John Doe'
 ]
 
-export const actions: SpotlightActionData[] = []
-
 export const MAX_FILE_SIZE = 50 // MB
 
 export const CLOUD_FRONT_URL = 'https://d13e9bff825cyt.cloudfront.net'

@@ -1,12 +1,18 @@
 import { AppShell, Avatar, Button, Group, Menu, NavLink, Title, Tooltip, useMantineTheme } from '@mantine/core'
 import { Link, Outlet, useLocation, useNavigate, useParams } from 'react-router'
-import { IconLogout2, IconPlus, IconSearch, IconUpload, IconVideoFilled } from '@tabler/icons-react'
-import { actions, menuItems } from '@/utils/constant'
-import { Spotlight, spotlight } from '@mantine/spotlight'
+import { IconLogout2, IconPlus, IconSearch, IconUpload, IconVideo, IconVideoFilled } from '@tabler/icons-react'
+import { menuItems } from '@/utils/constant'
+import { Spotlight, spotlight, SpotlightActionData } from '@mantine/spotlight'
 import { useUser } from '@/hooks/useUser'
 import { useAuth } from '@/hooks/useAuth'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import OrgSwitcher from './_components/org-switcher'
+import { getVideosByOrgId, useVideos } from '@/services/video.service'
+import dayjs from 'dayjs'
+import { useQuery } from '@tanstack/react-query'
+import { useQueryData } from '@/hooks/useQueryData'
+import { BackendResponse } from '@/types/common'
+import { Video } from '@/types'
 
 export const MainLayout = () => {
     const theme = useMantineTheme()
@@ -15,7 +21,26 @@ export const MainLayout = () => {
     const { removeAccessToken } = useAuth()
     const navigate = useNavigate()
     const { orgId } = useParams<{ orgId: string }>()
+    const [actions, setActions] = useState<SpotlightActionData[]>([])
 
+    const { data } = useQuery({
+        queryKey: ['videos', orgId, { limit: 100, page: 1 }],
+        queryFn: () => (orgId ? getVideosByOrgId({ orgId, limit: 100, page: 1 }) : null),
+        enabled: !!orgId
+    })
+
+    useEffect(() => {
+        if (data?.data?.videos) {
+            const videoActions = data.data.videos.map((video) => ({
+                id: video._id,
+                label: video.title,
+                description: `${video.user.name} - ${dayjs(video.createdAt).format('DD/MM/YYYY - HH:mm')}`,
+                onClick: () => navigate(`/video/${video._id}`),
+                leftSection: <IconVideo size={24} stroke={1.5} />
+            }))
+            setActions(videoActions)
+        }
+    }, [data, navigate])
     useEffect(() => {
         if (!orgId && !isLoading && !pathname.includes('/video')) {
             const firstOrg = orgs?.[0]
