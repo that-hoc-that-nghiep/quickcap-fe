@@ -13,6 +13,8 @@ import AuthCallbackPage from '@/pages/auth/callback'
 import { LoginPage } from '@/pages/auth/login'
 import { BaseMantineProvider } from '@/provider/mantine'
 import VideoUploadPage from '@/pages/(main)/[orgId]/upload'
+import CategoryVideosPage from '@/pages/(main)/[orgId]/category/[categoryId]'
+
 
 // Root layout component that includes Mantine providers
 const RootLayout = () => {
@@ -69,6 +71,16 @@ const routers = createBrowserRouter([
                                     {
                                         path: ':videoId',
                                         element: <VideoPage />
+                                    }
+                                ]
+                            },
+                            {
+                                path: 'category',
+                                element: <Outlet />,
+                                children: [
+                                    {
+                                        path: ':categoryId',
+                                        element: <CategoryVideosPage />
                                     }
                                 ]
                             }

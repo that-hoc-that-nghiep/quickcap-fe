@@ -16,7 +16,7 @@ const AIChatbox = ({ videoId }: Props) => {
     const [conversation, handler] = useListState<VideoMessage>([])
     const [message, setMessage] = useState<string>('')
     const [isBotThinking, setIsBotThinking] = useState<boolean>(false)
-    const { data, refetch } = useQueryData<BackendResponse<VideoMessage[]> | null>(['conversations'], () =>
+    const { data, refetch } = useQueryData<BackendResponse<VideoMessage[]> | null>(['conversations', videoId], () =>
         getConversation(videoId)
     )
 
@@ -26,7 +26,7 @@ const AIChatbox = ({ videoId }: Props) => {
             handler.setState(conversationData)
             scrollBottom()
         }
-    }, [conversationData])
+    }, [conversationData, videoId])
     const chatSectionViewport = useRef<HTMLDivElement>(null)
     const scrollBottom = useCallback(() => {
         if (chatSectionViewport.current) {
