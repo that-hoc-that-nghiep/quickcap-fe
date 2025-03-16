@@ -1,7 +1,8 @@
 import { Video } from '@/types'
-import { Anchor, Avatar, Card, Group, Image, Stack, Text } from '@mantine/core'
+import { ActionIcon, Anchor, Avatar, Card, Group, Image, Stack, Text } from '@mantine/core'
 import { Link } from 'react-router'
 import dayjs from 'dayjs'
+import { IconEye, IconThumbUp } from '@tabler/icons-react'
 
 const VideoCard = ({ video }: { video: Video }) => {
     return (
@@ -16,17 +17,38 @@ const VideoCard = ({ video }: { video: Video }) => {
                 />
             </Card.Section>
             <Group wrap='nowrap' align='start' mt={16}>
-                <Avatar></Avatar>
-                <Stack gap={2}>
+                <Stack gap={7}>
+                    <Group gap={10}>
+                        <Avatar size='sm' src={video.user.picture} />
+                        <Text size='md' fw={500}>
+                            {video.user.name}
+                        </Text>
+                    </Group>
                     <Anchor component={Link} to={`/video/${video._id}`} lineClamp={2} underline='never' fw={600}>
                         {video.title}
                     </Anchor>
                     <Text size='sm' c='dimmed'>
                         {dayjs(video.createdAt).format('DD/MM/YYYY - HH:mm')}
                     </Text>
-                    <Text size='sm' c='dimmed'>
-                        {video.views} views
-                    </Text>
+                    <Group gap={10} align='center' justify='flex-start'>
+                        <Group gap={1}>
+                            <ActionIcon variant='transparent' color='red' size='md'>
+                                <IconEye size={20} />
+                            </ActionIcon>
+                            <Text size='sm' c='dimmed'>
+                                {video.views}
+                            </Text>
+                        </Group>
+
+                        <Group gap={1}>
+                            <ActionIcon variant='transparent' color='red' size='md'>
+                                <IconThumbUp size={20} />
+                            </ActionIcon>
+                            <Text size='sm' c='dimmed'>
+                                {video.like}
+                            </Text>
+                        </Group>
+                    </Group>
                 </Stack>
             </Group>
         </Card>
