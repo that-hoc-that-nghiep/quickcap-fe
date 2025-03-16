@@ -1,8 +1,4 @@
-export interface Conversation {
-    conversations: Message[]
-}
-
-export interface Message {
+export interface VideoMessage {
     role: 'user' | 'ai'
     content: string
 }

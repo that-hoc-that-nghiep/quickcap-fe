@@ -80,12 +80,6 @@ export const VideoPage = () => {
                         </Tabs.List>
 
                         <Tabs.Panel value='ai-tools' mt='md'>
-                            {/* <AIChatBox
-                                videoId={videoId || ''}
-                                videoTitle={video?.title}
-                                videoDescription={video?.description}
-                                videoAuthor={video?.author}
-                            /> */}
                             <AIChatbox videoId={videoId || ''} />
                         </Tabs.Panel>
 
