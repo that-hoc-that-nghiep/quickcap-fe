@@ -32,7 +32,7 @@ const VideoCard = ({ video }: { video: Video }) => {
                         underline='never'
                         fw={600}
                     >
-                        {video.title} 
+                        {video.title}
                     </Anchor>
                     <Text size='sm' c='dimmed'>
                         {dayjs(video.createdAt).format('DD/MM/YYYY - HH:mm')}
