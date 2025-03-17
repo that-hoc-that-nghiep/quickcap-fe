@@ -21,9 +21,11 @@ const EditVideoModal = ({
         },
 
         validate: {
-            title: (value) => (value.trim().length > 0 ? null : 'Title is required'),
-            description: (value) => (value.trim().length > 5 ? null : 'Description must be at least 5 characters'),
-            transcript: (value) => (value.trim().length > 10 ? null : 'Transcript must be at least 10 characters')
+            title: (value: string) => (value.trim().length > 0 ? null : 'Title is required'),
+            description: (value: string) =>
+                value.trim().length > 5 ? null : 'Description must be at least 5 characters',
+            transcript: (value: string) =>
+                value.trim().length > 10 ? null : 'Transcript must be at least 10 characters'
         }
     })
 
