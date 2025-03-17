@@ -1,8 +1,10 @@
 import { Video } from '@/types'
-import { ActionIcon, Anchor, Avatar, Card, Group, Image, Stack, Text } from '@mantine/core'
+import { ActionIcon, Anchor, Avatar, Card, Group, Image, Menu, Stack, Text } from '@mantine/core'
 import { Link, useParams } from 'react-router'
 import dayjs from 'dayjs'
-import { IconEye, IconThumbUp } from '@tabler/icons-react'
+import { IconEdit, IconEye, IconFlag, IconSettings, IconThumbUp } from '@tabler/icons-react'
+import { openEditVideoModal } from '../[orgId]/library/_components/modal-edit-video'
+import { openReportModal } from '../[orgId]/library/_components/modal-report'
 
 const VideoCard = ({ video }: { video: Video }) => {
     const { orgId } = useParams<{ orgId: string }>()
@@ -19,12 +21,44 @@ const VideoCard = ({ video }: { video: Video }) => {
             </Card.Section>
             <Group wrap='nowrap' align='start' mt={16}>
                 <Stack gap={7}>
-                    <Group gap={10}>
-                        <Avatar size='sm' src={video.user.picture} />
-                        <Text size='md' fw={500}>
-                            {video.user.name}
-                        </Text>
+                    <Group justify='space-between'>
+                        <Group>
+                            <Avatar size='sm' src={video.user.picture} />
+                            <Text size='md' fw={500}>
+                                {video.user.name}
+                            </Text>
+                        </Group>
+                        <Menu shadow='md' width={200} position='bottom-end'>
+                            <Menu.Target>
+                                <ActionIcon variant='subtle'>
+                                    <IconSettings size={20} />
+                                </ActionIcon>
+                            </Menu.Target>
+                            <Menu.Dropdown>
+                                <Menu.Item
+                                    leftSection={<IconEdit size={16} />}
+                                    onClick={() =>
+                                        openEditVideoModal({
+                                            id: video._id,
+                                            title: video.title,
+                                            description: video.description || '',
+                                            transcript: video.transcript
+                                        })
+                                    }
+                                >
+                                    Edit Video
+                                </Menu.Item>
+                                <Menu.Item
+                                    leftSection={<IconFlag size={16} />}
+                                    color='red'
+                                    onClick={() => openReportModal(video._id)}
+                                >
+                                    Report Video
+                                </Menu.Item>
+                            </Menu.Dropdown>
+                        </Menu>
                     </Group>
+
                     <Anchor
                         component={Link}
                         to={`/${orgId}/video/${video._id}`}
