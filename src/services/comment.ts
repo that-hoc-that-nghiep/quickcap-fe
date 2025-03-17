@@ -17,7 +17,7 @@ export const getComments = async (videoId: string) => {
     return data
 }
 
-export const useComments = async (videoId: string) => {
+export const useComments = (videoId: string) => {
     return useSuspenseQuery({
         queryKey: ['comments', videoId],
         queryFn: () => getComments(videoId)
