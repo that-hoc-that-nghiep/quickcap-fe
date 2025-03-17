@@ -18,8 +18,8 @@ const ReportVideoModal = ({ videoId }: { videoId: string }) => {
         },
 
         validate: {
-            type: (value) => (value ? null : 'Please select a report type'),
-            content: (value) => (value.trim().length >= 5 ? null : 'Content must be at least 5 characters')
+            type: (value: string) => (value ? null : 'Please select a report type'),
+            content: (value: string) => (value.trim().length >= 5 ? null : 'Content must be at least 5 characters')
         }
     })
     const handleSubmit = async (e: React.FormEvent) => {
