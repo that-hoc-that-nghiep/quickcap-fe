@@ -1,7 +1,7 @@
 import { createReport } from '@/services/report.service'
 import { ReportType } from '@/types/report'
 import { Button, Checkbox, Group, Select, Textarea, useMantineTheme } from '@mantine/core'
-import { closeAllModals, closeModal, openModal } from '@mantine/modals'
+import { closeAllModals, openModal } from '@mantine/modals'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -59,7 +59,7 @@ const ReportVideoModal = ({ videoId }: { videoId: string }) => {
             />
 
             <Group justify='flex-end' mt='md'>
-                <Button variant='outline' onClick={() => closeModal('report-video')} disabled={isLoading}>
+                <Button variant='outline' onClick={() => closeAllModals()} disabled={isLoading}>
                     Cancel
                 </Button>
                 <Button
