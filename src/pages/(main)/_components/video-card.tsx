@@ -1,13 +1,14 @@
 import { Video } from '@/types'
 import { ActionIcon, Anchor, Avatar, Card, Group, Image, Stack, Text } from '@mantine/core'
-import { Link } from 'react-router'
+import { Link, useParams } from 'react-router'
 import dayjs from 'dayjs'
 import { IconEye, IconThumbUp } from '@tabler/icons-react'
 
 const VideoCard = ({ video }: { video: Video }) => {
+    const { orgId } = useParams<{ orgId: string }>()
     return (
         <Card withBorder shadow='sm'>
-            <Card.Section component={Link} to={`/video/${video._id}`}>
+            <Card.Section component={Link} to={`/${orgId}/video/${video._id}`}>
                 <Image
                     src={`https://placehold.co/600x400?text=${video.title}`}
                     alt={video.title}
@@ -24,8 +25,14 @@ const VideoCard = ({ video }: { video: Video }) => {
                             {video.user.name}
                         </Text>
                     </Group>
-                    <Anchor component={Link} to={`/video/${video._id}`} lineClamp={2} underline='never' fw={600}>
-                        {video.title}
+                    <Anchor
+                        component={Link}
+                        to={`/${orgId}/video/${video._id}`}
+                        lineClamp={2}
+                        underline='never'
+                        fw={600}
+                    >
+                        {video.title} 
                     </Anchor>
                     <Text size='sm' c='dimmed'>
                         {dayjs(video.createdAt).format('DD/MM/YYYY - HH:mm')}

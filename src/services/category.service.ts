@@ -15,6 +15,18 @@ export const useOrgCategories = (orgId: string | undefined) => {
     })
 }
 
+const getCategoryById = async (categoryId: string) => {
+    const { data } = await backendInstance.get<{ data: Category }>(`/category/${categoryId}`)
+    return data
+}
+
+export const useCategoryById = (categoryId: string) => {
+    return useSuspenseQuery({
+        queryKey: ['category', categoryId],
+        queryFn: () => getCategoryById(categoryId)
+    })
+}
+
 export const createCategory = async (orgId: string | undefined, name: string) => {
     if (!orgId) return null
     const { data } = await backendInstance.post<{ data: Category }>(`/category/${orgId}`, { name })

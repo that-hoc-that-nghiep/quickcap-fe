@@ -1,5 +1,4 @@
 import { IconBell, IconCreditCard, IconHome, IconLibrary, IconSettings } from '@tabler/icons-react'
-import { SpotlightActionData } from '@mantine/spotlight'
 import { Category } from '@/types'
 
 export const service = {
@@ -195,8 +194,6 @@ export const mockNotifications = [
     'Video was liked by John Doe',
     'Video was shared by John Doe'
 ]
-
-export const actions: SpotlightActionData[] = []
 
 export const MAX_FILE_SIZE = 50 // MB
 

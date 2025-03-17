@@ -6,13 +6,15 @@ import { NotificationsPage } from '@/pages/(main)/[orgId]/notifications'
 import { SettingsPage } from '@/pages/(main)/[orgId]/settings'
 import { ErrorPage } from '@/pages/404'
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router'
-import { VideoPage } from '@/pages/(main)/video/[videoId]'
+import { VideoPage } from '@/pages/(main)/[orgId]/video/[videoId]'
 import { OrgLayout } from '@/pages/(main)/[orgId]/layout'
 import { authLoader } from '@/utils/loader'
 import AuthCallbackPage from '@/pages/auth/callback'
 import { LoginPage } from '@/pages/auth/login'
 import { BaseMantineProvider } from '@/provider/mantine'
 import VideoUploadPage from '@/pages/(main)/[orgId]/upload'
+import CategoryVideosPage from '@/pages/(main)/[orgId]/category/[categoryId]'
+
 
 // Root layout component that includes Mantine providers
 const RootLayout = () => {
@@ -61,16 +63,26 @@ const routers = createBrowserRouter([
                             {
                                 path: 'upload',
                                 element: <VideoUploadPage />
-                            }
-                        ]
-                    },
-                    {
-                        path: 'video',
-                        element: <Outlet />,
-                        children: [
+                            },
                             {
-                                path: ':videoId',
-                                element: <VideoPage />
+                                path: 'video',
+                                element: <Outlet />,
+                                children: [
+                                    {
+                                        path: ':videoId',
+                                        element: <VideoPage />
+                                    }
+                                ]
+                            },
+                            {
+                                path: 'category',
+                                element: <Outlet />,
+                                children: [
+                                    {
+                                        path: ':categoryId',
+                                        element: <CategoryVideosPage />
+                                    }
+                                ]
                             }
                         ]
                     }

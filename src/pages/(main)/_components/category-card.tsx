@@ -6,6 +6,7 @@ import { notifications } from '@mantine/notifications'
 import { IconDotsVertical, IconFolderFilled, IconTrash } from '@tabler/icons-react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import { Link, useParams } from 'react-router'
 // import { Link } from 'react-router'
 
 interface CategoryCardProps {
@@ -73,19 +74,26 @@ const CategoryActions = ({ category }: CategoryCardProps) => {
 
 const CategoryCard = ({ category }: CategoryCardProps) => {
     const theme = useMantineTheme()
+    const { orgId } = useParams<{ orgId: string }>()
     return (
         <Paper key={category._id} shadow='sm' p={'md'} withBorder className='col-span-1'>
             <Group justify='space-between' wrap='nowrap'>
                 <Group wrap='nowrap' gap={8} className='grow' style={{ minWidth: 0 }}>
-                    <IconFolderFilled size={24} color={theme.colors[theme.primaryColor][5]} style={{ flexShrink: 0 }} />
-                    <Text
-                        size='md'
-                        fw={500}
-                        c={theme.primaryColor}
-                        className='min-w-0 max-w-full truncate overflow-hidden text-ellipsis whitespace-nowrap'
-                    >
-                        {category.name}
-                    </Text>
+                    <Link to={`/${orgId}/category/${category._id}`} className='no-underline flex gap-2 grow'>
+                        <IconFolderFilled
+                            size={24}
+                            color={theme.colors[theme.primaryColor][5]}
+                            style={{ flexShrink: 0 }}
+                        />
+                        <Text
+                            size='md'
+                            fw={500}
+                            c={theme.primaryColor}
+                            className='min-w-0 max-w-full truncate overflow-hidden text-ellipsis whitespace-nowrap'
+                        >
+                            {category.name}
+                        </Text>
+                    </Link>
                 </Group>
                 <Menu shadow='md' position='bottom-start' offset={-3}>
                     <Menu.Target>
