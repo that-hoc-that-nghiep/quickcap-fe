@@ -3,9 +3,25 @@ import { ActionIcon, Anchor, Avatar, Card, Group, Image, Stack, Text } from '@ma
 import { Link, useParams } from 'react-router'
 import dayjs from 'dayjs'
 import { IconEye, IconThumbUp } from '@tabler/icons-react'
+import { toast } from 'sonner'
+import { useState } from 'react'
 
 const VideoCard = ({ video }: { video: Video }) => {
     const { orgId } = useParams<{ orgId: string }>()
+    const [isLoading, setIsLoading] = useState(false)
+    const handleReportVideo = async () => {
+        setIsLoading(true)
+        try {
+            await new Promise((resolve) => setTimeout(resolve, 2000))
+
+            toast.success('Report submitted successfully!')
+        } catch (error) {
+            console.error('Error reporting video:', error)
+            toast.error('Failed to report the video')
+        } finally {
+            setIsLoading(false)
+        }
+    }
     return (
         <Card withBorder shadow='sm'>
             <Card.Section component={Link} to={`/${orgId}/video/${video._id}`}>
@@ -32,7 +48,7 @@ const VideoCard = ({ video }: { video: Video }) => {
                         underline='never'
                         fw={600}
                     >
-                        {video.title} 
+                        {video.title}
                     </Anchor>
                     <Text size='sm' c='dimmed'>
                         {dayjs(video.createdAt).format('DD/MM/YYYY - HH:mm')}

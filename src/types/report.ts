@@ -17,3 +17,10 @@ export interface ReportVideo {
     approved: boolean
     createdAt: string
 }
+
+export enum ReportType {
+    VIOLENCE = 'Violence',
+    PORNOGRAPHY = 'Pornography',
+    SEXUAL_CONTENT = 'Sexual Content',
+    ADULT_ANIME = 'Adult Anime'
+}

@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Grid, Group, Paper, Tabs, Text, Title } from '@mantine/core'
+import { ActionIcon, Avatar, Button, Grid, Group, Paper, Tabs, Text, Title } from '@mantine/core'
 import { useMemo } from 'react'
 import { useParams } from 'react-router'
 import { useVideo } from '@/services/video.service'
@@ -6,13 +6,12 @@ import dayjs from 'dayjs'
 import { CLOUD_FRONT_URL } from '@/utils/constant'
 import AIChatbox from './_components/ai-chatbox'
 import { Comments } from './_components/comments'
-import { IconEye, IconThumbUp } from '@tabler/icons-react'
+import { IconEye, IconFlag, IconThumbUp } from '@tabler/icons-react'
 
 export const VideoPage = () => {
     const { videoId } = useParams<{ videoId: string }>()
     const { data } = useVideo(videoId!)
     const video = useMemo(() => data.data, [data])
-
     return (
         <>
             <Title order={2} mb={5}>
@@ -30,20 +29,26 @@ export const VideoPage = () => {
                         Your browser does not support the video tag.
                     </video>
 
-                    <Group gap={10} mb={15}>
-                        <Avatar size='md' src={video.user.picture} />
-                        <Grid>
-                            <Grid.Col className='py-0' span={12}>
-                                <Text size='md' fw={500}>
-                                    {video.user.name}
-                                </Text>
-                            </Grid.Col>
-                            <Grid.Col className='py-0' span={12}>
-                                <Text c='dimmed' size='sm'>
-                                    {dayjs(video?.createdAt).format('DD/MM/YYYY - HH:mm')}
-                                </Text>
-                            </Grid.Col>
-                        </Grid>
+                    <Group justify='space-between' gap={10} mb={15}>
+                        <Group>
+                            <Avatar size='md' src={video.user.picture} />
+                            <Grid>
+                                <Grid.Col className='py-0' span={12}>
+                                    <Text size='md' fw={500}>
+                                        {video.user.name}
+                                    </Text>
+                                </Grid.Col>
+                                <Grid.Col className='py-0' span={12}>
+                                    <Text c='dimmed' size='sm'>
+                                        {dayjs(video?.createdAt).format('DD/MM/YYYY - HH:mm')}
+                                    </Text>
+                                </Grid.Col>
+                            </Grid>
+                        </Group>
+
+                        <Button size='xs' leftSection={<IconFlag size={16} />} color='red' variant='outline'>
+                            Report Violations
+                        </Button>
                     </Group>
 
                     <Group gap={10} mb={15} align='center' justify='flex-start'>
