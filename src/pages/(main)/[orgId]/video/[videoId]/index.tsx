@@ -1,7 +1,7 @@
 import { ActionIcon, Avatar, Button, Grid, Group, Paper, Tabs, Text, Title, useMantineTheme } from '@mantine/core'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router'
-import { useVideo } from '@/services/video.service'
+import { updateVideo, useVideo } from '@/services/video.service'
 import dayjs from 'dayjs'
 import { CLOUD_FRONT_URL } from '@/utils/constant'
 import AIChatbox from './_components/ai-chatbox'
@@ -9,12 +9,53 @@ import { Comments } from './_components/comments'
 import { IconEdit, IconEye, IconFlag, IconThumbUp } from '@tabler/icons-react'
 import { openReportModal } from '../../library/_components/modal-report'
 import { openEditVideoModal } from '../../library/_components/modal-edit-video'
+import { useMutationData, useMutationDataState } from '@/hooks/useMutationData'
+import { useDebouncedCallback } from '@mantine/hooks'
 
 export const VideoPage = () => {
     const { videoId } = useParams<{ videoId: string }>()
     const { data } = useVideo(videoId!)
     const theme = useMantineTheme()
     const video = useMemo(() => data.data, [data])
+    // Mutation để cập nhật views
+    const { mutate: mutateViews } = useMutationData(
+        ['views', videoId],
+        (data: { videoId: string; views: number }) => updateVideo(data.videoId!, { views: data.views }),
+        'video'
+    )
+
+    const { latestVariables } = useMutationDataState(['views', videoId])
+
+    const viewCount = latestVariables?.variables?.views ?? video?.views ?? 0
+
+    useEffect(() => {
+        if (video) {
+            mutateViews({ videoId: video._id, views: video.views + 1 })
+        }
+    }, [videoId])
+
+    const { mutate: mutateLike } = useMutationData(
+        ['like'],
+        (data: { videoId: string; like: number }) => updateVideo(data.videoId!, { like: data.like }),
+        'video'
+    )
+
+    const [localLike, setLocalLike] = useState(video?.like ?? 0)
+
+    useEffect(() => {
+        setLocalLike(video?.like ?? 0)
+    }, [video?.like])
+
+    const debouncedMutate = useDebouncedCallback((newLike) => {
+        mutateLike({ videoId: video._id, like: newLike })
+    }, 1000)
+
+    const handleLike = () => {
+        const newLike = localLike + 1
+        setLocalLike(newLike)
+        debouncedMutate(newLike)
+    }
+
     return (
         <>
             <Group justify='space-between' className='w-[66%]'>
@@ -82,16 +123,16 @@ export const VideoPage = () => {
                                 <IconEye size={20} />
                             </ActionIcon>
                             <Text size='sm' c='dimmed'>
-                                {video.views}
+                                {viewCount}
                             </Text>
                         </Group>
 
                         <Group gap={1}>
-                            <ActionIcon variant='transparent' color='red' size='md'>
+                            <ActionIcon onClick={handleLike} variant='transparent' color='red' size='md'>
                                 <IconThumbUp size={20} />
                             </ActionIcon>
                             <Text size='sm' c='dimmed'>
-                                {video.like}
+                                {localLike}
                             </Text>
                         </Group>
                     </Group>

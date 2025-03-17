@@ -69,7 +69,7 @@ export const useVideo = (videoId: string) => {
 
 export const updateVideo = async (
     videoId: string,
-    body: { title: string; description: string; transcript: string }
+    body: { title?: string; description?: string; transcript?: string; like?: number; views?: number }
 ) => {
     const { data } = await backendInstance.patch<BackendResponse<Video>>(`/video/${videoId}`, body)
     return data
