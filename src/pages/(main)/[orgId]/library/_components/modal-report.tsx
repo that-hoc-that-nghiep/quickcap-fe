@@ -1,6 +1,6 @@
 import { createReport } from '@/services/report.service'
 import { ReportType } from '@/types/report'
-import { Button, Checkbox, Group, Select, Textarea } from '@mantine/core'
+import { Button, Checkbox, Group, Select, Textarea, useMantineTheme } from '@mantine/core'
 import { closeAllModals, closeModal, openModal } from '@mantine/modals'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -10,7 +10,7 @@ const ReportVideoModal = ({ videoId }: { videoId: string }) => {
     const [content, setContent] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [isConfirmed, setIsConfirmed] = useState(false)
-
+    const theme = useMantineTheme()
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!isConfirmed) return
@@ -62,7 +62,12 @@ const ReportVideoModal = ({ videoId }: { videoId: string }) => {
                 <Button variant='outline' onClick={() => closeModal('report-video')} disabled={isLoading}>
                     Cancel
                 </Button>
-                <Button type='submit' color='red' loading={isLoading} disabled={!isConfirmed}>
+                <Button
+                    type='submit'
+                    color={theme.colors[theme.primaryColor][5]}
+                    loading={isLoading}
+                    disabled={!isConfirmed}
+                >
                     Submit Report
                 </Button>
             </Group>

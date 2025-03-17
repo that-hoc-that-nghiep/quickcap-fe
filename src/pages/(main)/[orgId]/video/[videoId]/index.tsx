@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Button, Grid, Group, Paper, Tabs, Text, Title } from '@mantine/core'
+import { ActionIcon, Avatar, Button, Grid, Group, Paper, Tabs, Text, Title, useMantineTheme } from '@mantine/core'
 import { useMemo } from 'react'
 import { useParams } from 'react-router'
 import { useVideo } from '@/services/video.service'
@@ -6,18 +6,36 @@ import dayjs from 'dayjs'
 import { CLOUD_FRONT_URL } from '@/utils/constant'
 import AIChatbox from './_components/ai-chatbox'
 import { Comments } from './_components/comments'
-import { IconEye, IconFlag, IconThumbUp } from '@tabler/icons-react'
+import { IconEdit, IconEye, IconFlag, IconThumbUp } from '@tabler/icons-react'
 import { openReportModal } from '../../library/_components/modal-report'
+import { openEditVideoModal } from '../../library/_components/modal-edit-video'
 
 export const VideoPage = () => {
     const { videoId } = useParams<{ videoId: string }>()
     const { data } = useVideo(videoId!)
+    const theme = useMantineTheme()
     const video = useMemo(() => data.data, [data])
     return (
         <>
-            <Title order={2} mb={5}>
-                {video?.title}
-            </Title>
+            <Group justify='space-between' className='w-[66%]'>
+                <Title order={2}>{video?.title}</Title>
+                <Button
+                    size='xs'
+                    leftSection={<IconEdit size={16} />}
+                    color={theme.colors[theme.primaryColor][5]}
+                    variant='filled'
+                    onClick={() =>
+                        openEditVideoModal({
+                            id: video._id,
+                            title: video.title,
+                            description: video.description || '',
+                            transcript: video.transcript
+                        })
+                    }
+                >
+                    Edit video
+                </Button>
+            </Group>
             <Grid mt={24}>
                 <Grid.Col span={8}>
                     <video
@@ -52,7 +70,7 @@ export const VideoPage = () => {
                             leftSection={<IconFlag size={16} />}
                             color='red'
                             variant='outline'
-                            onClick={() => openReportModal(videoId!)} // Mở modal khi nhấn nút
+                            onClick={() => openReportModal(videoId!)}
                         >
                             Report Violations
                         </Button>
@@ -83,6 +101,7 @@ export const VideoPage = () => {
                     </Title>
                     <Text>{video?.description}</Text>
                 </Grid.Col>
+
                 <Grid.Col span={4}>
                     <Tabs defaultValue='ai-tools' variant='pills'>
                         <Tabs.List grow>

@@ -66,3 +66,11 @@ export const useVideo = (videoId: string) => {
         queryFn: () => getVideoById(videoId)
     })
 }
+
+export const updateVideo = async (
+    videoId: string,
+    body: { title: string; description: string; transcript: string }
+) => {
+    const { data } = await backendInstance.put<BackendResponse<Video>>(`/video/${videoId}`, body)
+    return data
+}
