@@ -1,7 +1,7 @@
 import { ActionIcon, Avatar, Button, Grid, Group, Paper, Tabs, Text, Title, useMantineTheme } from '@mantine/core'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router'
-import { useVideo } from '@/services/video.service'
+import { updateVideo, useVideo } from '@/services/video.service'
 import dayjs from 'dayjs'
 import { CLOUD_FRONT_URL } from '@/utils/constant'
 import AIChatbox from './_components/ai-chatbox'
@@ -9,12 +9,20 @@ import { Comments } from './_components/comments'
 import { IconEdit, IconEye, IconFlag, IconThumbUp } from '@tabler/icons-react'
 import { openReportModal } from '../../library/_components/modal-report'
 import { openEditVideoModal } from '../../library/_components/modal-edit-video'
+import { toast } from 'sonner'
 
 export const VideoPage = () => {
     const { videoId } = useParams<{ videoId: string }>()
     const { data } = useVideo(videoId!)
     const theme = useMantineTheme()
     const video = useMemo(() => data.data, [data])
+    useEffect(() => {
+        if (video) {
+            updateVideo(video._id, { views: video.views + 1 }).catch((err) => {
+                toast.error('Failed to update views'), console.error('Error updating views:', err)
+            })
+        }
+    }, [videoId])
     return (
         <>
             <Group justify='space-between' className='w-[66%]'>
