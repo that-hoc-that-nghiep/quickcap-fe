@@ -1,24 +1,35 @@
 import { createReport } from '@/services/report.service'
 import { ReportType } from '@/types/report'
 import { Button, Checkbox, Group, Select, Textarea, useMantineTheme } from '@mantine/core'
+import { useForm } from '@mantine/form'
 import { closeAllModals, openModal } from '@mantine/modals'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
 const ReportVideoModal = ({ videoId }: { videoId: string }) => {
-    const [type, setType] = useState('')
-    const [content, setContent] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [isConfirmed, setIsConfirmed] = useState(false)
     const theme = useMantineTheme()
+
+    const form = useForm({
+        initialValues: {
+            type: '',
+            content: ''
+        },
+
+        validate: {
+            type: (value) => (value ? null : 'Please select a report type'),
+            content: (value) => (value.trim().length >= 5 ? null : 'Content must be at least 5 characters')
+        }
+    })
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!isConfirmed) return
-
+        if (form.validate().hasErrors) return
         setIsLoading(true)
         try {
             await new Promise((resolve) => setTimeout(resolve, 2000))
-            await createReport(videoId, content, type)
+            await createReport(videoId, form.values.content, form.values.type)
             toast.success('Report submitted successfully!')
             closeAllModals()
         } catch (error) {
@@ -36,8 +47,8 @@ const ReportVideoModal = ({ videoId }: { videoId: string }) => {
                 label='Report Type'
                 placeholder='Select a reason'
                 data={Object.values(ReportType)}
-                value={type}
-                onChange={(value) => setType(value || '')}
+                {...form.getInputProps('type')}
+                error={form.errors.type}
             />
 
             <Textarea
@@ -46,8 +57,8 @@ const ReportVideoModal = ({ videoId }: { videoId: string }) => {
                 label='Details'
                 placeholder='Describe the issue...'
                 mt='md'
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
+                {...form.getInputProps('content')}
+                error={form.errors.content}
             />
 
             <Checkbox
