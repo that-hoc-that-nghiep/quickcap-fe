@@ -2,9 +2,9 @@ import { updateVideo } from '@/services/video.service'
 import { Button, Group, TextInput, Textarea, useMantineTheme } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { closeAllModals, openModal } from '@mantine/modals'
+import { notifications } from '@mantine/notifications'
 import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { toast } from 'sonner'
 
 const EditVideoModal = ({
     video
@@ -37,12 +37,20 @@ const EditVideoModal = ({
         try {
             await new Promise((resolve) => setTimeout(resolve, 2000))
             await updateVideo(video.id, form.values)
-            toast.success('Video updated successfully!')
+            notifications.show({
+                title: 'Video updated',
+                message: 'Video has been updated successfully',
+                color: 'green'
+            })
             queryClient.invalidateQueries({ queryKey: ['video', video.id] })
             closeAllModals()
         } catch (error) {
             console.error('Error updating video:', error)
-            toast.error('Failed to update video')
+            notifications.show({
+                title: 'Error updating video',
+                message: 'An error occurred while updating video',
+                color: 'red'
+            })
         } finally {
             setIsLoading(false)
         }

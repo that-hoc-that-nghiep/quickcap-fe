@@ -74,3 +74,10 @@ export const updateVideo = async (
     const { data } = await backendInstance.patch<BackendResponse<Video>>(`/video/${videoId}`, body)
     return data
 }
+
+export const addVideoToOrgs = async (payload: { videoId: string; orgId: string; categoryId: string }[]) => {
+    const { data } = await backendInstance.patch(`/video/addToOrg`, {
+        videoAdds: payload
+    })
+    return data
+}

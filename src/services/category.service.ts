@@ -1,10 +1,11 @@
 import { Category } from '@/types'
+import { BackendResponse } from '@/types/common'
 import { backendInstance } from '@/utils/api'
 import { useSuspenseQuery } from '@tanstack/react-query'
 
 const getOrgsCategories = async (orgId: string | undefined) => {
     if (!orgId) return null
-    const { data } = await backendInstance.get<{ data: Category[] }>(`/category/all/${orgId}`)
+    const { data } = await backendInstance.get<BackendResponse<Category[]>>(`/category/all/${orgId}`)
     return data
 }
 
@@ -16,7 +17,7 @@ export const useOrgCategories = (orgId: string | undefined) => {
 }
 
 const getCategoryById = async (categoryId: string) => {
-    const { data } = await backendInstance.get<{ data: Category }>(`/category/${categoryId}`)
+    const { data } = await backendInstance.get<BackendResponse<Category>>(`/category/${categoryId}`)
     return data
 }
 
@@ -29,10 +30,19 @@ export const useCategoryById = (categoryId: string) => {
 
 export const createCategory = async (orgId: string | undefined, name: string) => {
     if (!orgId) return null
-    const { data } = await backendInstance.post<{ data: Category }>(`/category/${orgId}`, { name })
+    const { data } = await backendInstance.post<BackendResponse<Category>>(`/category/${orgId}`, { name })
     return data
 }
 
 export const deleteCategoryById = async (categoryId: string) => {
     await backendInstance.delete(`/category/${categoryId}`)
+}
+
+export const categorySuggest = async (orgId: string | undefined, transcript: string | undefined) => {
+    if (!orgId || !transcript) return null
+    const { data } = await backendInstance.post<BackendResponse<{ category: string; isNewCategory: boolean }>>(
+        `/category/suggest/${orgId}`,
+        { transcript }
+    )
+    return data
 }

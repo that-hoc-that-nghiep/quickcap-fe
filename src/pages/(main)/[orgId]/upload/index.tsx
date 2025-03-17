@@ -1,4 +1,4 @@
-import { Button, Container, Stepper } from '@mantine/core'
+import { Button, Container, Group, Stack, Stepper, Title } from '@mantine/core'
 import VideoDropzone from './_components/video-dropzone'
 import { FileWithPath } from '@mantine/dropzone'
 import { useCallback, useState } from 'react'
@@ -8,6 +8,7 @@ import { Video } from '@/types'
 import VideoInfo from './_components/video-info'
 import { useUploadStep } from '@/stores/uploadStep'
 import { Link, useParams } from 'react-router'
+import SelectOrgs from './_components/select-orgs'
 
 const StepContainer = ({ children }: { children: React.ReactNode }) => (
     <Container size={'lg'} className='w-full mt-6'>
@@ -17,8 +18,7 @@ const StepContainer = ({ children }: { children: React.ReactNode }) => (
 
 const VideoUploadPage = () => {
     const { orgId } = useParams()
-    const [active, handlers] = useUploadStep(0, { min: 0, max: 3 })
-    console.log(active)
+    const [active, handlers] = useUploadStep(3, { min: 0, max: 3 })
 
     const [loading, setLoading] = useState(false)
     const [videoInfo, setVideoInfo] = useState<Video | null>(null)
@@ -61,18 +61,27 @@ const VideoUploadPage = () => {
                 </Stepper.Step>
                 <Stepper.Step label='Video information' description='Review uploaded video'>
                     <StepContainer>
-                        <VideoInfo video={videoInfo!} />
+                        <VideoInfo video={videoInfo} />
                     </StepContainer>
                 </Stepper.Step>
                 <Stepper.Step label='Select org' description='Select organization to upload video'>
                     <StepContainer>
-                        <Button onClick={handlers.increment}>Next</Button>
+                        <SelectOrgs video={videoInfo} />
                     </StepContainer>
                 </Stepper.Step>
                 <Stepper.Completed>
-                    <Button component={Link} to={`/${orgId}/library`}>
-                        Go to library
-                    </Button>
+                    <StepContainer>
+                        <Stack>
+                            <Title ta={'center'} mb={16}>
+                                Video uploaded successfully 🎉
+                            </Title>
+                            <Group justify='center'>
+                                <Button component={Link} to={`/${orgId}/library`}>
+                                    Go to library
+                                </Button>
+                            </Group>
+                        </Stack>
+                    </StepContainer>
                 </Stepper.Completed>
             </Stepper>
         </Container>

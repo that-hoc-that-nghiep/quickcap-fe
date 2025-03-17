@@ -3,8 +3,8 @@ import { ReportType } from '@/types/report'
 import { Button, Checkbox, Group, Select, Textarea, useMantineTheme } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { closeAllModals, openModal } from '@mantine/modals'
+import { notifications } from '@mantine/notifications'
 import { useState } from 'react'
-import { toast } from 'sonner'
 
 const ReportVideoModal = ({ videoId }: { videoId: string }) => {
     const [isLoading, setIsLoading] = useState(false)
@@ -30,10 +30,19 @@ const ReportVideoModal = ({ videoId }: { videoId: string }) => {
         try {
             await new Promise((resolve) => setTimeout(resolve, 2000))
             await createReport(videoId, form.values.content, form.values.type)
-            toast.success('Report submitted successfully!')
+            notifications.show({
+                title: 'Report submitted',
+                message: 'Your report has been submitted successfully',
+                color: 'green'
+            })
             closeAllModals()
         } catch (error) {
-            toast.error('Failed to submit report')
+            console.error('Error submitting report:', error)
+            notifications.show({
+                title: 'Error submitting report',
+                message: 'An error occurred while submitting report',
+                color: 'red'
+            })
         } finally {
             setIsLoading(false)
         }

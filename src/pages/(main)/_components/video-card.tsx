@@ -19,7 +19,7 @@ const VideoCard = ({ video }: { video: Video }) => {
                     className='aspect-video'
                 />
             </Card.Section>
-            <Group wrap='nowrap' align='start' mt={16}>
+            <Group wrap='nowrap' grow align='start' mt={16}>
                 <Stack gap={7}>
                     <Group justify='space-between'>
                         <Group>

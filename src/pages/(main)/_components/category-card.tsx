@@ -79,7 +79,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
         <Paper key={category._id} shadow='sm' p={'md'} withBorder className='col-span-1'>
             <Group justify='space-between' wrap='nowrap'>
                 <Group wrap='nowrap' gap={8} className='grow' style={{ minWidth: 0 }}>
-                    <Link to={`/${orgId}/category/${category._id}`} className='no-underline flex gap-2 grow'>
+                    <Link to={`/${orgId}/category/${category._id}`} className='no-underline flex gap-2 grow w-full'>
                         <IconFolderFilled
                             size={24}
                             color={theme.colors[theme.primaryColor][5]}
@@ -90,6 +90,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
                             fw={500}
                             c={theme.primaryColor}
                             className='min-w-0 max-w-full truncate overflow-hidden text-ellipsis whitespace-nowrap'
+                            title={category.name}
                         >
                             {category.name}
                         </Text>

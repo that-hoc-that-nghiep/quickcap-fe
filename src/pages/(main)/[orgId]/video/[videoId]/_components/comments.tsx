@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import { createComment, useComments } from '@/services/comment'
 import { Comment } from '@/types/comment'
 import dayjs from 'dayjs'
-import { toast } from 'sonner'
+import { notifications } from '@mantine/notifications'
 
 export const Comments = () => {
     const { videoId } = useParams<{ videoId: string }>()
@@ -27,12 +27,20 @@ export const Comments = () => {
             const response = await createComment(videoId!, newComment)
             if (response?.data) {
                 setComments([response.data, ...comments])
-                toast.success('Comment successfully')
+                notifications.show({
+                    title: 'Comment added',
+                    message: 'Your comment has been added successfully',
+                    color: 'green'
+                })
                 setNewComment('')
             }
         } catch (error) {
             console.error(error)
-            toast.error('Error adding comment')
+            notifications.show({
+                title: 'Error',
+                message: 'Failed to add comment',
+                color: 'red'
+            })
         } finally {
             setIsSubmitting(false)
         }

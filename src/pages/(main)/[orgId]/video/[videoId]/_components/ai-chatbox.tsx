@@ -4,10 +4,10 @@ import { VideoMessage } from '@/types/conversation'
 import { Button, Input, ScrollArea } from '@mantine/core'
 import { useListState } from '@mantine/hooks'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner'
 import Message from './ai-message'
 import { IconSend } from '@tabler/icons-react'
 import { BackendResponse } from '@/types/common'
+import { notifications } from '@mantine/notifications'
 
 type Props = {
     videoId: string
@@ -58,7 +58,11 @@ const AIChatbox = ({ videoId }: Props) => {
             }
         } catch (e) {
             console.log(e)
-            toast.error('Error sending message')
+            notifications.show({
+                title: 'Error',
+                message: 'Failed to send message',
+                color: 'red'
+            })
         } finally {
             setIsBotThinking(false)
             scrollBottom()

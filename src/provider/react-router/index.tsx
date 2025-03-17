@@ -15,21 +15,24 @@ import { BaseMantineProvider } from '@/provider/mantine'
 import VideoUploadPage from '@/pages/(main)/[orgId]/upload'
 import CategoryVideosPage from '@/pages/(main)/[orgId]/category/[categoryId]'
 
-
 // Root layout component that includes Mantine providers
-const RootLayout = () => {
-    return (
-        <BaseMantineProvider>
-            <Outlet />
-        </BaseMantineProvider>
-    )
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
+    return <BaseMantineProvider>{children}</BaseMantineProvider>
 }
 
 const routers = createBrowserRouter([
     {
         path: '/',
-        element: <RootLayout />,
-        errorElement: <ErrorPage />,
+        element: (
+            <RootLayout>
+                <Outlet />
+            </RootLayout>
+        ),
+        errorElement: (
+            <RootLayout>
+                <ErrorPage />
+            </RootLayout>
+        ),
         children: [
             {
                 path: '/',
