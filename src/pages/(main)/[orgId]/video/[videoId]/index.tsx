@@ -7,6 +7,7 @@ import { CLOUD_FRONT_URL } from '@/utils/constant'
 import AIChatbox from './_components/ai-chatbox'
 import { Comments } from './_components/comments'
 import { IconEye, IconFlag, IconThumbUp } from '@tabler/icons-react'
+import { openReportModal } from '../../library/_components/modal-report'
 
 export const VideoPage = () => {
     const { videoId } = useParams<{ videoId: string }>()
@@ -46,7 +47,13 @@ export const VideoPage = () => {
                             </Grid>
                         </Group>
 
-                        <Button size='xs' leftSection={<IconFlag size={16} />} color='red' variant='outline'>
+                        <Button
+                            size='xs'
+                            leftSection={<IconFlag size={16} />}
+                            color='red'
+                            variant='outline'
+                            onClick={() => openReportModal(videoId!)} // Mở modal khi nhấn nút
+                        >
                             Report Violations
                         </Button>
                     </Group>
