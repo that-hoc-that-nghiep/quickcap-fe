@@ -5,7 +5,6 @@ import { createComment, useComments } from '@/services/comment'
 import { Comment } from '@/types/comment'
 import dayjs from 'dayjs'
 import { toast } from 'sonner'
-import { getHotkeyHandler } from '@mantine/hooks'
 
 export const Comments = () => {
     const { videoId } = useParams<{ videoId: string }>()
@@ -53,8 +52,6 @@ export const Comments = () => {
                     Comments ({totalComments})
                 </Text>
             </Group>
-
-            {/* Comment Input */}
             <Paper p='md' withBorder shadow='md'>
                 <Textarea
                     placeholder='Add a comment...'
@@ -77,7 +74,6 @@ export const Comments = () => {
                 </Flex>
             </Paper>
 
-            {/* Comments Display */}
             <ScrollArea h={500}>
                 <Suspense
                     fallback={Array.from({ length: 4 }).map((_, index) => (
