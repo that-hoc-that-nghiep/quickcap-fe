@@ -67,7 +67,7 @@ const AIChatbox = ({ videoId }: Props) => {
     }
     return (
         <div>
-            <ScrollArea className='flex-grow h-[26rem]'>
+            <ScrollArea className='flex-grow h-[22rem]'>
                 <div className='flex flex-col gap-4 p-4' ref={chatSectionViewport}>
                     {conversation.length === 0 && (
                         <Message role='ai' content='Hi there! I am an AI chatbot. How can I help you today?' />
