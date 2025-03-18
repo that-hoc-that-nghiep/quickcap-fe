@@ -286,7 +286,9 @@ const SelectOrgs = ({ video }: SelectOrgsProps) => {
             <Paper p={16} shadow='xs' withBorder>
                 <MultiSelect
                     hidePickedOptions
-                    data={orgs?.map((org) => ({ value: org.id, label: org.name }))}
+                    data={orgs
+                        ?.filter((org) => org.is_permission !== 'READ')
+                        .map((org) => ({ value: org.id, label: org.name }))}
                     value={selectedOrgs}
                     onChange={handleSelect}
                     label='Select organizations'
