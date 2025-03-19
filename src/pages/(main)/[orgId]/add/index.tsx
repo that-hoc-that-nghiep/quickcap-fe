@@ -1,5 +1,5 @@
 import { addVideoToOrgs, uploadVideo, useVideoByOrgIdUnique } from '@/services/video.service'
-import { Button, Group, MultiSelect, Paper, Skeleton, Stack } from '@mantine/core'
+import { Button, Group, MultiSelect, MultiSelectProps, Paper, Skeleton, Stack, Text } from '@mantine/core'
 import { Suspense, useCallback, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import VideoDropzone from '../upload/_components/video-dropzone'
@@ -16,6 +16,8 @@ const AddVideoToOrgPage = () => {
 
     const [selectedVideos, setSelectedVideos] = useState<string[]>(filteredVideos[0] ? [filteredVideos[0]._id] : [])
     const [loading, setLoading] = useState(false)
+    const [loadingAdd, setLoadingAdd] = useState(false)
+
     const [selectedCategories, setSelectedCategories] = useState<Record<string, string>>({})
     const queryClient = useQueryClient()
     const handleSeclectVideos = (value: string[]) => {
@@ -57,7 +59,7 @@ const AddVideoToOrgPage = () => {
         }
     }
     const handleAddVideoToOrgs = async () => {
-        setLoading(true)
+        setLoadingAdd(true)
         try {
             if (!orgId) {
                 notifications.show({
@@ -91,10 +93,21 @@ const AddVideoToOrgPage = () => {
                 color: 'red'
             })
         } finally {
-            setLoading(false)
+            setLoadingAdd(false)
             navigate(`/${orgId}/library`)
         }
     }
+    const VideoDatas: Record<string, { title: string; source: string }> = filteredVideos.reduce(
+        (acc, video) => ({ ...acc, [video._id]: { title: video.title, source: video.source } }),
+        {}
+    )
+    const renderMultiSelectOption: MultiSelectProps['renderOption'] = ({ option }) => (
+        <div className=' flex flex-col border-b border-gray-200 py-2'>
+            <Text>{VideoDatas[option.value]?.title}</Text>
+            <Text c={'dimmed'}>{VideoDatas[option.value]?.source.replace(/^[0-9a-fA-F-]+-/, '')}</Text>
+        </div>
+    )
+
     return (
         <Stack w='85%' className='mx-auto'>
             <Paper p={16}>
@@ -105,7 +118,13 @@ const AddVideoToOrgPage = () => {
                 <MultiSelect
                     disabled={loading}
                     hidePickedOptions
-                    data={filteredVideos.map((video) => ({ value: video._id, label: video.title })) || []}
+                    data={
+                        filteredVideos.map((video) => ({
+                            value: video._id,
+                            label: video.title
+                        })) || []
+                    }
+                    renderOption={renderMultiSelectOption}
                     value={selectedVideos}
                     onChange={handleSeclectVideos}
                     label="Personal org's videos"
@@ -144,13 +163,14 @@ const AddVideoToOrgPage = () => {
                     </Paper>
                 )
             })}
-            <Group justify='end'>
+            <Group justify='center'>
                 <Button
-                    disabled={Object.keys(selectedCategories).length !== selectedVideos.length}
+                    size='lg'
+                    disabled={Object.keys(selectedCategories).length !== selectedVideos.length || loading}
                     onClick={async () => {
                         await handleAddVideoToOrgs()
                     }}
-                    loading={loading}
+                    loading={loadingAdd}
                 >
                     Add
                 </Button>
