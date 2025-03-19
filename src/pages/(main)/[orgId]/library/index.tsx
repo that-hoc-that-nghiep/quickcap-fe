@@ -9,17 +9,13 @@ export const LibraryPage = () => {
     return (
         <Stack gap='xl'>
             <Stack>
-                <Group justify='space-between' align='center'>
-                    <Group>
-                        <IconFolderFilled size={24} color={theme.colors[theme.primaryColor][5]} />
-                        <Text size='lg' fw={500}>
-                            Categories
-                        </Text>
-                    </Group>
-                    <Button variant='subtle' rightSection={<IconArrowRight size={18} />}>
-                        See all
-                    </Button>
+                <Group>
+                    <IconFolderFilled size={24} color={theme.colors[theme.primaryColor][5]} />
+                    <Text size='lg' fw={500}>
+                        Categories
+                    </Text>
                 </Group>
+
                 <div className='grid grid-cols-5 gap-4'>
                     <Suspense
                         fallback={Array.from({ length: 5 }).map((_, index) => (
@@ -31,17 +27,13 @@ export const LibraryPage = () => {
                 </div>
             </Stack>
             <Stack>
-                <Group justify='space-between' align='center'>
-                    <Group>
-                        <IconVideoFilled size={24} color={theme.colors[theme.primaryColor][5]} />
-                        <Text size='lg' fw={500}>
-                            Videos
-                        </Text>
-                    </Group>
-                    <Button variant='subtle' rightSection={<IconArrowRight size={18} />}>
-                        See all
-                    </Button>
+                <Group>
+                    <IconVideoFilled size={24} color={theme.colors[theme.primaryColor][5]} />
+                    <Text size='lg' fw={500}>
+                        Videos
+                    </Text>
                 </Group>
+
                 <div className='grid grid-cols-4 gap-4'>
                     <Suspense
                         fallback={Array.from({ length: 4 }).map((_, index) => (

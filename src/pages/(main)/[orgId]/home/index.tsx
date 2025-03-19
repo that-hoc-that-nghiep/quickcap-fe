@@ -53,9 +53,6 @@ export function HomePage() {
                             Recent Videos
                         </Text>
                     </Group>
-                    <Button variant='subtle' rightSection={<IconArrowRight size={18} />}>
-                        See all
-                    </Button>
                 </Group>
                 <Group align='stretch'>
                     {/* {mockVideos.slice(0, 4).map((video) => (
