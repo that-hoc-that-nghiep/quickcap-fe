@@ -158,29 +158,46 @@ const OrgCategory = ({ org, video, selectedCategory, onCategorySelect }: OrgCate
                     >
                         Create Category
                     </Button>
-                    <Popover width={320} position='bottom' withArrow shadow='md' opened={open} onChange={setOpen}>
-                        <Popover.Target>
-                            <Button
-                                leftSection={<IconSparkles size={14} />}
-                                onClick={() => {
-                                    setOpen((prev) => !prev)
-                                    if (!open) {
-                                        handleSuggest()
-                                    }
-                                }}
-                            >
-                                AI Category Suggest
-                            </Button>
-                        </Popover.Target>
-                        <Popover.Dropdown>
-                            {suggesting ? (
-                                <div className='flex items-center justify-center'>
-                                    <Loader size={'sm'} />
-                                </div>
-                            ) : isNewCategory ? (
-                                <Stack>
+                    {video?.transcript && (
+                        <Popover width={320} position='bottom' withArrow shadow='md' opened={open} onChange={setOpen}>
+                            <Popover.Target>
+                                <Button
+                                    leftSection={<IconSparkles size={14} />}
+                                    onClick={() => {
+                                        setOpen((prev) => !prev)
+                                        if (!open) {
+                                            handleSuggest()
+                                        }
+                                    }}
+                                >
+                                    AI Category Suggest
+                                </Button>
+                            </Popover.Target>
+                            <Popover.Dropdown>
+                                {suggesting ? (
+                                    <div className='flex items-center justify-center'>
+                                        <Loader size={'sm'} />
+                                    </div>
+                                ) : isNewCategory ? (
+                                    <Stack>
+                                        <p className='flex items-center gap-1 my-0 flex-wrap'>
+                                            Suggested category:{' '}
+                                            <span
+                                                className='font-semibold rounded-sm px-2 py-1 flex items-center gap-2 w-fit flex-nowrap'
+                                                style={{
+                                                    backgroundColor: theme.colors[theme.primaryColor][0],
+                                                    color: theme.colors[theme.primaryColor][9]
+                                                }}
+                                            >
+                                                <IconFolderFilled size={14} />
+                                                {newCategory}
+                                            </span>
+                                        </p>
+                                        <Button onClick={handleAddCategory}>Add Category</Button>
+                                    </Stack>
+                                ) : (
                                     <p className='flex items-center gap-1 my-0 flex-wrap'>
-                                        Suggested category:{' '}
+                                        Suitable category:{' '}
                                         <span
                                             className='font-semibold rounded-sm px-2 py-1 flex items-center gap-2 w-fit flex-nowrap'
                                             style={{
@@ -192,25 +209,10 @@ const OrgCategory = ({ org, video, selectedCategory, onCategorySelect }: OrgCate
                                             {newCategory}
                                         </span>
                                     </p>
-                                    <Button onClick={handleAddCategory}>Add Category</Button>
-                                </Stack>
-                            ) : (
-                                <p className='flex items-center gap-1 my-0 flex-wrap'>
-                                    Suitable category:{' '}
-                                    <span
-                                        className='font-semibold rounded-sm px-2 py-1 flex items-center gap-2 w-fit flex-nowrap'
-                                        style={{
-                                            backgroundColor: theme.colors[theme.primaryColor][0],
-                                            color: theme.colors[theme.primaryColor][9]
-                                        }}
-                                    >
-                                        <IconFolderFilled size={14} />
-                                        {newCategory}
-                                    </span>
-                                </p>
-                            )}
-                        </Popover.Dropdown>
-                    </Popover>
+                                )}
+                            </Popover.Dropdown>
+                        </Popover>
+                    )}
                 </Group>
             </Group>
             <div className='grid grid-cols-3 gap-4'>
