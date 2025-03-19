@@ -57,7 +57,7 @@ const VideoDropzone = ({ onUpload, loading }: VideoDropzoneProps) => {
                     size='lg'
                     onClick={() => openRef.current?.()}
                     leftSection={<IconUpload size={18} />}
-                    loading={loading}
+                    disabled={loading}
                 >
                     Select file
                 </Button>
