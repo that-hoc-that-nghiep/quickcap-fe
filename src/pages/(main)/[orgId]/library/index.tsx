@@ -1,5 +1,5 @@
-import { Button, Group, Skeleton, Stack, Text, useMantineTheme } from '@mantine/core'
-import { IconArrowRight, IconFolderFilled, IconVideoFilled } from '@tabler/icons-react'
+import { Group, Skeleton, Stack, Text, useMantineTheme } from '@mantine/core'
+import { IconFolderFilled, IconVideoFilled } from '@tabler/icons-react'
 import Categories from './_components/categories'
 import { Suspense } from 'react'
 import Videos from './_components/videos'
