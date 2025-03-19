@@ -18,7 +18,7 @@ const StepContainer = ({ children }: { children: React.ReactNode }) => (
 
 const VideoUploadPage = () => {
     const { orgId } = useParams()
-    const [active, handlers] = useUploadStep(2 , { min: 0, max: 3 })
+    const [active, handlers] = useUploadStep(0, { min: 0, max: 3 })
 
     const [loading, setLoading] = useState(false)
     const [videoInfo, setVideoInfo] = useState<Video | null>(null)

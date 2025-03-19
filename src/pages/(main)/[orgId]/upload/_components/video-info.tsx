@@ -1,7 +1,7 @@
 import { useUploadStep } from '@/stores/uploadStep'
 import { Video } from '@/types'
 import { CLOUD_FRONT_URL } from '@/utils/constant'
-import { Alert, Button, Grid, Group, Paper, Stack, Textarea, TextInput, Title } from '@mantine/core'
+import { Alert, Button, Grid, Group, Paper, Stack, Text, Textarea, TextInput, Title } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { openModal } from '@mantine/modals'
 import { IconAlertCircle, IconBubbleText } from '@tabler/icons-react'
@@ -50,15 +50,20 @@ const VideoInfo = ({ video }: VideoInfoProps) => {
                     <Title order={2} pb={8}>
                         Video information
                     </Title>
-                    <TextInput withAsterisk label='Title' key={form.key('title')} {...form.getInputProps('title')} />
-                    <Textarea
-                        label='Description'
-                        autosize
-                        minRows={6}
-                        maxRows={8}
-                        key={form.key('description')}
-                        {...form.getInputProps('description')}
-                    />
+
+                    <div className='flex flex-col space-y-1'>
+                        <Text fw={700}>Title</Text>
+                        <Paper withBorder p={8}>
+                            {video?.title}
+                        </Paper>
+                    </div>
+
+                    <div className='flex flex-col space-y-1'>
+                        <Text fw={700}>Description</Text>
+                        <Paper withBorder p={8}>
+                            {video?.description}
+                        </Paper>
+                    </div>
                 </form>
             </Grid.Col>
             <Grid.Col span={5}>
