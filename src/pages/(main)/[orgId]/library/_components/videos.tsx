@@ -5,7 +5,12 @@ import { useParams } from 'react-router'
 const Videos = () => {
     const { orgId } = useParams()
     const { data } = useVideos(orgId!)
-    return <>{data?.data?.videos.map((video) => <VideoCard key={video._id} video={video} />)}</>
+    return (
+        <>
+            {data?.data?.videos.map((video) => <VideoCard key={video._id} video={video} />)}
+            {data?.data.videos.length === 0 && 'No videos'}{' '}
+        </>
+    )
 }
 
 export default Videos
