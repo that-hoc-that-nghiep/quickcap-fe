@@ -12,7 +12,8 @@ const AddVideoToOrgPage = () => {
     const { orgId } = useParams<{ orgId: string }>()
     const navigate = useNavigate()
     const { data } = useVideoByOrgIdUnique(orgId!)
-    const filteredVideos = data?.data.filter((video) => !video.isNSFW || !video.isDeleted) || []
+    const filteredVideos = data?.data.filter((video) => !video.isNSFW && !video.isDeleted) || []
+
     const [selectedVideos, setSelectedVideos] = useState<string[]>(filteredVideos[0] ? [filteredVideos[0]._id] : [])
     const [loading, setLoading] = useState(false)
     const [selectedCategories, setSelectedCategories] = useState<Record<string, string>>({})
@@ -107,7 +108,7 @@ const AddVideoToOrgPage = () => {
                     data={filteredVideos.map((video) => ({ value: video._id, label: video.title })) || []}
                     value={selectedVideos}
                     onChange={handleSeclectVideos}
-                    label='Select Videos'
+                    label="Personal org's videos"
                 />
             </Paper>
             {selectedVideos.map((video) => {

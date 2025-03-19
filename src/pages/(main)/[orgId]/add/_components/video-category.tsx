@@ -17,7 +17,8 @@ interface VideoCategoryProps {
 }
 
 export const VideoCategory = ({ orgId, video, selectedCategory, onCategorySelect, loading }: VideoCategoryProps) => {
-    const { data: categories } = useOrgCategories(orgId)
+    const { data } = useOrgCategories(orgId)
+    const filteredCategories = data?.data.filter((category) => !video?.categoryId?.includes(category._id)) || []
     const [suggesting, setSuggesting] = useState(false)
     const [isNewCategory, setIsNewCategory] = useState(false)
     const [newCategory, setNewCategory] = useState('')
@@ -145,7 +146,7 @@ export const VideoCategory = ({ orgId, video, selectedCategory, onCategorySelect
                 </Group>
             </Group>
             <div className='grid grid-cols-3 gap-4'>
-                {categories?.data?.map((category) => (
+                {filteredCategories.map((category) => (
                     <CategoryCardSelect
                         key={category._id}
                         category={category}
