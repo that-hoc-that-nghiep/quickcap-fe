@@ -96,9 +96,9 @@ const AddVideoToOrgPage = () => {
         }
     }
     return (
-        <Stack>
+        <Stack w='85%' className='mx-auto'>
             <Paper p={16}>
-                <VideoDropzone onUpload={onUpload} loading={loading} />
+                <VideoDropzone onUpload={onUpload} loading={loading} sizeButton='sm' height={70} />
             </Paper>
 
             <Paper p={16} shadow='xs' withBorder>
