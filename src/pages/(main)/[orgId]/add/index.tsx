@@ -12,21 +12,13 @@ const AddVideoToOrgPage = () => {
     const { orgId } = useParams<{ orgId: string }>()
     const navigate = useNavigate()
     const { data } = useVideoByOrgIdUnique(orgId!)
-    const [selectedVideos, setSelectedVideos] = useState<string[]>(
-        data?.data.filter((video) => !video.isNSFW)[0] ? [data?.data.filter((video) => !video.isNSFW)[0]._id] : []
-    )
+    const filteredVideos = data?.data.filter((video) => !video.isNSFW || !video.isDeleted) || []
+    const [selectedVideos, setSelectedVideos] = useState<string[]>(filteredVideos[0] ? [filteredVideos[0]._id] : [])
     const [loading, setLoading] = useState(false)
     const [selectedCategories, setSelectedCategories] = useState<Record<string, string>>({})
     const queryClient = useQueryClient()
     const handleSeclectVideos = (value: string[]) => {
-        const validValue = Array.from(
-            new Set([
-                data?.data.filter((video) => !video.isNSFW)[0]._id
-                    ? data?.data.filter((video) => !video.isNSFW)[0]._id
-                    : '',
-                ...value
-            ])
-        )
+        const validValue = Array.from(new Set([filteredVideos[0]._id ? filteredVideos[0]._id : '', ...value]))
         setSelectedVideos(validValue)
     }
 
@@ -36,10 +28,7 @@ const AddVideoToOrgPage = () => {
             [videoId]: categoryId
         }))
     }, [])
-    const getVideos = useCallback(
-        (id: string) => data?.data.filter((video) => !video.isNSFW)?.find((video) => video._id === id),
-        [data?.data]
-    )
+    const getVideos = useCallback((id: string) => filteredVideos.find((video) => video._id === id), [data?.data])
 
     const onUpload = async (files: FileWithPath[]) => {
         setLoading(true)
@@ -115,11 +104,7 @@ const AddVideoToOrgPage = () => {
                 <MultiSelect
                     disabled={loading}
                     hidePickedOptions
-                    data={
-                        data?.data
-                            ?.filter((video) => !video.isNSFW)
-                            .map((video) => ({ value: video._id, label: video.title })) || []
-                    }
+                    data={filteredVideos.map((video) => ({ value: video._id, label: video.title })) || []}
                     value={selectedVideos}
                     onChange={handleSeclectVideos}
                     label='Select Videos'
