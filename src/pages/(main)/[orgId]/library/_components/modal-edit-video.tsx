@@ -1,7 +1,7 @@
 import { useOrgCategories } from '@/services/category.service'
 import { addCategoryToVideos, removeCategoryToVideos, updateVideo } from '@/services/video.service'
 import { Category } from '@/types'
-import { Button, Group, MultiSelect, TextInput, Textarea, useMantineTheme } from '@mantine/core'
+import { Button, Group, Select, TextInput, Textarea, useMantineTheme } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { closeAllModals, openModal } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
@@ -107,8 +107,7 @@ const EditVideoModal = ({
                 {...form.getInputProps('transcript')}
                 error={form.errors.transcript}
             />
-            <MultiSelect
-                hidePickedOptions
+            <Select
                 data={
                     data?.data.map((category) => ({
                         value: category._id,
@@ -120,6 +119,7 @@ const EditVideoModal = ({
                 mt='md'
                 {...form.getInputProps('categoryId')}
                 error={form.errors.categoryId}
+                disabled={isLoading}
             />
             <Group justify='flex-end' mt='md'>
                 <Button variant='outline' onClick={() => closeAllModals()} disabled={isLoading}>

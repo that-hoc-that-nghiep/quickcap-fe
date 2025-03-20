@@ -105,7 +105,7 @@ export const useVideoByOrgIdUnique = (orgId: string) => {
 
 export const addCategoryToVideos = async (videoId: string, categoryId: string[]) => {
     const { data } = await backendInstance.patch(`/video/modify/${videoId}/add`, {
-        categoryId
+        categoryId: [categoryId]
     })
     return data
 }

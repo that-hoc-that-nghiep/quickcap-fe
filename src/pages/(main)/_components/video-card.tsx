@@ -1,5 +1,5 @@
 import { Video } from '@/types'
-import { ActionIcon, Anchor, Avatar, Card, Group, Image, Menu, Stack, Text } from '@mantine/core'
+import { ActionIcon, Anchor, Avatar, Card, Group, Menu, Stack, Text } from '@mantine/core'
 import { Link, useParams } from 'react-router'
 import dayjs from 'dayjs'
 import { IconBan, IconEdit, IconEye, IconFlag, IconSettings, IconThumbUp, IconTrash } from '@tabler/icons-react'
