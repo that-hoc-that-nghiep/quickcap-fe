@@ -147,14 +147,16 @@ export const VideoCategory = ({ orgId, video, selectedCategory, onCategorySelect
                 </Group>
             </Group>
             <div className='grid grid-cols-3 gap-4'>
-                {filteredCategories.map((category) => (
-                    <CategoryCardSelect
-                        key={category._id}
-                        category={category}
-                        selected={selectedCategory}
-                        onSelect={onSelect}
-                    />
-                ))}
+                {filteredCategories
+                    .filter((c) => !c.isDeleted)
+                    .map((category) => (
+                        <CategoryCardSelect
+                            key={category._id}
+                            category={category}
+                            selected={selectedCategory}
+                            onSelect={onSelect}
+                        />
+                    ))}
             </div>
         </Stack>
     )
