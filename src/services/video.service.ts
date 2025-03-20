@@ -116,3 +116,17 @@ export const removeCategoryToVideos = async (videoId: string, categoryId: string
     })
     return data
 }
+
+export const analyticsVideosByOrgId = async (orgId: string) => {
+    const { data } = await backendInstance.get<
+        BackendResponse<{ totalVideo: number; totalLike: number; totalView: number }>
+    >(`video/analytics/${orgId}`)
+    return data
+}
+
+export const useAnalyticsVideosByOrgId = (orgId: string) => {
+    return useSuspenseQuery({
+        queryKey: ['analytics-videos', orgId],
+        queryFn: () => analyticsVideosByOrgId(orgId)
+    })
+}
