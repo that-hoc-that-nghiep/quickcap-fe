@@ -246,7 +246,7 @@ const OrgMemberSettings = () => {
                             </Text>
                         </Stack>
                     </Group>
-                    {user?.is_owner ? null : (
+                    {currentOrg?.is_owner ? (
                         <Group>
                             <Tooltip label='Update permission' withArrow>
                                 <ActionIcon
@@ -262,7 +262,7 @@ const OrgMemberSettings = () => {
                                 </ActionIcon>
                             </Tooltip>
                         </Group>
-                    )}
+                    ) : null}
                 </Group>
             ))}
         </Card>
