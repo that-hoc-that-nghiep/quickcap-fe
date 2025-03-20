@@ -1,5 +1,5 @@
 import { useUser } from '@/hooks/useUser'
-import { categorySuggest, createCategory, useOrgCategories } from '@/services/category.service'
+import { categorySuggest, createCategory, useOrgCategories, getOrgsCategories } from '@/services/category.service'
 import { addVideoToOrgs } from '@/services/video.service'
 import { useUploadStep } from '@/stores/uploadStep'
 import { Category, Org, Video } from '@/types'
@@ -36,6 +36,12 @@ interface OrgCategoryProps {
     video: Video | null
     selectedCategory: string
     onCategorySelect: (orgId: string, categoryId: string) => void
+}
+
+// Helper function to find default category
+const findDefaultCategory = (categories?: Category[]) => {
+    if (!categories) return null
+    return categories.find((c) => c.name.toLowerCase() === 'default' && !c.isDeleted)
 }
 
 const CategoryCardSelect = ({
@@ -97,6 +103,17 @@ const OrgCategory = ({ org, video, selectedCategory, onCategorySelect }: OrgCate
     const [open, setOpen] = useState(false)
     const theme = useMantineTheme()
     const queryClient = useQueryClient()
+
+    // Auto-select default category if none is selected
+    useEffect(() => {
+        if (org?.id && !selectedCategory && categories?.data) {
+            const defaultCategory = findDefaultCategory(categories.data)
+            if (defaultCategory) {
+                onCategorySelect(org.id, defaultCategory._id)
+            }
+        }
+    }, [org?.id, categories?.data, selectedCategory, onCategorySelect])
+
     const handleSuggest = async () => {
         setSuggesting(true)
         try {
@@ -239,22 +256,66 @@ const SelectOrgs = ({ video }: SelectOrgsProps) => {
     const [selectedOrgs, setSelectedOrgs] = useState<string[]>(personalOrg?.id ? [personalOrg.id] : [])
     const [selectedCategories, setSelectedCategories] = useState<Record<string, string>>({})
     const queryClient = useQueryClient()
+
+    // Cache for org categories to avoid multiple fetches
+    const [orgCategoriesCache, setOrgCategoriesCache] = useState<Record<string, Category[]>>({})
+
+    // Fetch categories for selected orgs
+    useEffect(() => {
+        const fetchCategoriesForOrgs = async () => {
+            for (const orgId of selectedOrgs) {
+                if (!orgCategoriesCache[orgId]) {
+                    try {
+                        const response = await queryClient.fetchQuery({
+                            queryKey: ['org-categories', orgId],
+                            queryFn: () => getOrgsCategories(orgId)
+                        })
+                        if (response?.data) {
+                            setOrgCategoriesCache((prev) => ({
+                                ...prev,
+                                [orgId]: response.data
+                            }))
+
+                            // Auto-select default category if not already selected
+                            if (!selectedCategories[orgId]) {
+                                const defaultCategory = findDefaultCategory(response.data)
+                                if (defaultCategory) {
+                                    setSelectedCategories((prev) => ({
+                                        ...prev,
+                                        [orgId]: defaultCategory._id
+                                    }))
+                                }
+                            }
+                        }
+                    } catch (error) {
+                        console.error(`Failed to fetch categories for org ${orgId}:`, error)
+                    }
+                }
+            }
+        }
+
+        fetchCategoriesForOrgs()
+    }, [selectedOrgs, queryClient, selectedCategories, orgCategoriesCache])
+
     useEffect(() => {
         // Ensure that the personal org is selected by default
         if (personalOrg?.id) {
             setSelectedOrgs((prev) => Array.from(new Set([personalOrg.id, ...prev])))
         }
     }, [personalOrg?.id])
+
     const handleSelect = (value: string[]) => {
         const validValue = Array.from(new Set([personalOrg?.id ? personalOrg.id : '', ...value]))
         setSelectedOrgs(validValue)
     }
+
     const handleCategorySelect = useCallback((orgId: string, categoryId: string) => {
         setSelectedCategories((prev) => ({
             ...prev,
             [orgId]: categoryId
         }))
     }, [])
+
     const getOrg = useCallback((id: string) => orgs?.find((org) => org.id === id), [orgs])
 
     const handleAddVideoToOrgs = async () => {

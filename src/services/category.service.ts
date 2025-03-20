@@ -3,7 +3,7 @@ import { BackendResponse } from '@/types/common'
 import { backendInstance } from '@/utils/api'
 import { useSuspenseQuery } from '@tanstack/react-query'
 
-const getOrgsCategories = async (orgId: string | undefined) => {
+export const getOrgsCategories = async (orgId: string | undefined) => {
     if (!orgId) return null
     const { data } = await backendInstance.get<BackendResponse<Category[]>>(`/category/all/${orgId}`)
     return data
