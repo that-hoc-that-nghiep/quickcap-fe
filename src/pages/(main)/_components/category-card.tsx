@@ -11,9 +11,10 @@ import { Link, useParams } from 'react-router'
 
 interface CategoryCardProps {
     category: Category
+    orgId: string
 }
 
-const ConfirmDeleteCategoryModal = ({ category }: CategoryCardProps) => {
+const ConfirmDeleteCategoryModal = ({ category, orgId }: CategoryCardProps) => {
     const queryClient = useQueryClient()
     const [isLoading, setIsLoading] = useState(false)
     const handleDeleteCategory = async () => {
@@ -21,7 +22,7 @@ const ConfirmDeleteCategoryModal = ({ category }: CategoryCardProps) => {
         try {
             await deleteCategoryById(category._id)
             queryClient.invalidateQueries({
-                queryKey: ['org-categories']
+                queryKey: ['org-categories', orgId]
             })
             notifications.show({
                 color: 'green',
@@ -60,7 +61,7 @@ const CategoryActions = ({ category }: CategoryCardProps) => {
     const handleOpenDeleteCategoryModal = () => {
         openModal({
             title: 'Delete category',
-            children: <ConfirmDeleteCategoryModal category={category} />
+            children: <ConfirmDeleteCategoryModal category={category} orgId={category.orgId} />
         })
     }
     return (
@@ -106,7 +107,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
                             <IconDotsVertical size={20} />
                         </ActionIcon>
                     </Menu.Target>
-                    <CategoryActions category={category} />
+                    <CategoryActions category={category} orgId={orgId!} />
                 </Menu>
             </Group>
         </Paper>
