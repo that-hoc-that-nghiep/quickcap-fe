@@ -65,6 +65,7 @@ export const updatePermission = async (orgId: string | undefined, email: string,
     const { data } = await authInstance.put<OrgInfo>(`/org/${orgId}/permission`, { email, permission })
     return data
 }
+
 export const deleteOrg = async (orgId: string | undefined) => {
     if (!orgId) {
         return null
