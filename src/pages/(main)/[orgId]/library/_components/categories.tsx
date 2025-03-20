@@ -28,7 +28,7 @@ const CreateCategoryModal = () => {
         try {
             await createCategory(orgId, values.name)
             queryClient.invalidateQueries({
-                queryKey: ['org-categories']
+                queryKey: ['org-categories', orgId]
             })
             notifications.show({
                 color: 'green',
@@ -69,7 +69,6 @@ const CreateCategoryModal = () => {
     )
 }
 
-
 const Categories = () => {
     const { orgId } = useParams()
     const { data } = useOrgCategories(orgId)
@@ -81,7 +80,9 @@ const Categories = () => {
     }
     return (
         <>
-            {data?.data.map((category) => <CategoryCard key={category._id} category={category} />)}
+            {data?.data
+                .filter((c) => !c.isDeleted)
+                .map((category) => <CategoryCard key={category._id} category={category} />)}
             <UnstyledButton
                 onClick={handleOpenCreateCategoryModal}
                 p={'md'}
