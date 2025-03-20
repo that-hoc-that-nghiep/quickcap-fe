@@ -154,7 +154,7 @@ const OrgCategory = ({ org, video, selectedCategory, onCategorySelect }: OrgCate
                     <Button
                         leftSection={<IconPlus size={16} />}
                         color={theme.colors[theme.primaryColor][5]}
-                        onClick={() => openCreateCategoryModal(org?.id!)}
+                        onClick={() => openCreateCategoryModal(org?.id || '')}
                     >
                         Create Category
                     </Button>

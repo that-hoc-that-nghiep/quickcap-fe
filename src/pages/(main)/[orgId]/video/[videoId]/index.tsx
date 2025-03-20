@@ -85,7 +85,7 @@ export const VideoPage = () => {
                     <video
                         width='100%'
                         controls
-                        poster={`https://placehold.co/1920x1080?text=${video.title}`}
+                        // poster={`https://placehold.co/1920x1080?text=${video.title}`}
                         className='rounded-lg mb-6 aspect-video'
                     >
                         <source src={CLOUD_FRONT_URL + '/' + video.source} type='video/mp4' />
