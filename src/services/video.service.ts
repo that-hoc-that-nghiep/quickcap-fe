@@ -76,12 +76,10 @@ export const updateVideo = async (
         like?: number
         views?: number
         categoryId?: string[]
-    },
-    orgId?: string
+    }
 ) => {
     const { data } = await backendInstance.patch<BackendResponse<Video>>(`/video/${videoId}`, {
-        ...body,
-        orgId
+        ...body
     })
     return data
 }
@@ -103,4 +101,18 @@ export const useVideoByOrgIdUnique = (orgId: string) => {
         queryKey: ['videos-unique', orgId],
         queryFn: () => getVideoByOrgIdUnique(orgId)
     })
+}
+
+export const addCategoryToVideos = async (videoId: string, categoryId: string[]) => {
+    const { data } = await backendInstance.patch(`/video/modify/${videoId}/add`, {
+        categoryId
+    })
+    return data
+}
+
+export const removeCategoryToVideos = async (videoId: string, categoryId: string[]) => {
+    const { data } = await backendInstance.patch(`/video/modify/${videoId}/remove`, {
+        categoryId
+    })
+    return data
 }
