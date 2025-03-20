@@ -18,7 +18,8 @@ interface VideoCategoryProps {
 
 export const VideoCategory = ({ orgId, video, selectedCategory, onCategorySelect, loading }: VideoCategoryProps) => {
     const { data } = useOrgCategories(orgId)
-    const filteredCategories = data?.data.filter((category) => !video?.categoryId?.includes(category._id)) || []
+    const videoCategoryIds = video?.categoryId.map((category) => category._id)
+    const filteredCategories = data?.data.filter((category) => !videoCategoryIds?.includes(category._id)) || []
     const [suggesting, setSuggesting] = useState(false)
     const [isNewCategory, setIsNewCategory] = useState(false)
     const [newCategory, setNewCategory] = useState('')
