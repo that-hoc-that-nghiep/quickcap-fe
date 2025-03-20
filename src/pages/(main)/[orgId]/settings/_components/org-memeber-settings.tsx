@@ -1,6 +1,6 @@
 import { useUser } from '@/hooks/useUser'
-import { addMemberToOrg, useOrgInfo, removeMemberFromOrg } from '@/services/auth.service'
-import { ActionIcon, Avatar, Badge, Button, Card, Group, Stack, Text, TextInput, Tooltip } from '@mantine/core'
+import { addMemberToOrg, useOrgInfo, removeMemberFromOrg, updatePermission } from '@/services/auth.service'
+import { ActionIcon, Avatar, Badge, Button, Card, Group, Select, Stack, Text, TextInput, Tooltip } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { closeAllModals, openModal } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
@@ -120,6 +120,69 @@ const ConfirmRemoveMemberModal = ({ userEmail }: { userEmail: string }) => {
     )
 }
 
+const UpdatePermissionMemberModal = ({
+    userEmail,
+    currentPermission
+}: {
+    userEmail: string
+    currentPermission: string
+}) => {
+    const { orgId } = useParams()
+    const queryClient = useQueryClient()
+    const [isUpdating, setIsUpdating] = useState(false)
+
+    const form = useForm({
+        initialValues: {
+            permission: currentPermission
+        }
+    })
+
+    const handleUpdatePermission = async (values: typeof form.values) => {
+        setIsUpdating(true)
+        try {
+            await updatePermission(orgId, userEmail, values.permission)
+            queryClient.invalidateQueries({
+                queryKey: ['user']
+            })
+            queryClient.invalidateQueries({
+                queryKey: ['org']
+            })
+            notifications.show({
+                color: 'green',
+                title: 'Success',
+                message: 'Member permission updated successfully'
+            })
+            closeAllModals()
+        } catch (error) {
+            console.error(error)
+            notifications.show({
+                color: 'red',
+                title: 'Error',
+                message: 'Failed to update permission'
+            })
+        } finally {
+            setIsUpdating(false)
+        }
+    }
+
+    return (
+        <form onSubmit={form.onSubmit(handleUpdatePermission)}>
+            <Text size='sm' mb='sm'>
+                Select new permission for this member:
+            </Text>
+            <Select label='Permission' data={['READ', 'UPLOAD']} {...form.getInputProps('permission')} />
+            <Group justify='flex-end' mt='md'>
+                <Button variant='outline' onClick={() => closeAllModals()} disabled={isUpdating}>
+                    Cancel
+                </Button>
+                <Button type='submit' color={'red'} loading={isUpdating}>
+                    Update Permission
+                </Button>
+            </Group>
+        </form>
+    )
+}
+
 const OrgMemberSettings = () => {
     const { currentOrg } = useUser()
     const { data } = useOrgInfo(currentOrg?.id)
@@ -135,6 +198,13 @@ const OrgMemberSettings = () => {
         openModal({
             title: `Remove member from ${currentOrg?.name}`,
             children: <ConfirmRemoveMemberModal userEmail={userEmail} />
+        })
+    }
+
+    const handleShowUpdatePermissionModal = (userEmail: string, currentPermission: string) => {
+        openModal({
+            title: `Memeber: ${userEmail}`,
+            children: <UpdatePermissionMemberModal userEmail={userEmail} currentPermission={currentPermission} />
         })
     }
     return (
@@ -178,9 +248,14 @@ const OrgMemberSettings = () => {
                     </Group>
                     {user?.is_owner ? null : (
                         <Group>
-                            <ActionIcon variant='subtle'>
-                                <IconPencil size={16} />
-                            </ActionIcon>
+                            <Tooltip label='Update permission' withArrow>
+                                <ActionIcon
+                                    variant='subtle'
+                                    onClick={() => handleShowUpdatePermissionModal(user.email, user.is_permission)}
+                                >
+                                    <IconPencil size={16} />
+                                </ActionIcon>
+                            </Tooltip>
                             <Tooltip label='Remove member' withArrow>
                                 <ActionIcon variant='subtle' onClick={() => handleShowRemoveMemberModal(user.email)}>
                                     <IconUserMinus size={16} />

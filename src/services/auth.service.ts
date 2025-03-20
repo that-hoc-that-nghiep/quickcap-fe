@@ -47,7 +47,7 @@ export const removeMemberFromOrg = async (orgId: string | undefined, email: stri
     if (!orgId) {
         return null
     }
-    const { data } = await authInstance.put<OrgInfo>(`/org/${orgId}/remove`, { usersEmail: [email] })
+    const { data } = await authInstance.put<OrgInfo>(`/org/${orgId}/remove`, { email })
     return data
 }
 
@@ -56,6 +56,14 @@ export const leaveOrg = async (orgId: string | undefined) => {
         return null
     }
     await authInstance.put(`/org/${orgId}/leave`)
+}
+
+export const updatePermission = async (orgId: string | undefined, email: string, permission: string) => {
+    if (!orgId) {
+        return null
+    }
+    const { data } = await authInstance.put<OrgInfo>(`/org/${orgId}/permission`, { email, permission })
+    return data
 }
 
 export const deleteOrg = async (orgId: string | undefined) => {
