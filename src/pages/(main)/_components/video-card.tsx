@@ -9,6 +9,7 @@ import { openAlertNsfwModal } from '../[orgId]/library/_components/modal-nsfw'
 
 const VideoCard = ({ video }: { video: Video }) => {
     const { orgId } = useParams<{ orgId: string }>()
+
     return (
         <Card withBorder shadow='sm'>
             <Card.Section
@@ -53,7 +54,9 @@ const VideoCard = ({ video }: { video: Video }) => {
                                                 id: video._id,
                                                 title: video.title,
                                                 description: video.description || '',
-                                                transcript: video.transcript
+                                                transcript: video.transcript,
+                                                categoryId: video.categoryId,
+                                                orgId: orgId!
                                             })
                                         }
                                     >

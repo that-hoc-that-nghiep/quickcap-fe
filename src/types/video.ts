@@ -1,3 +1,5 @@
+import { Category } from "./category"
+
 export interface Video {
     _id: string
     title: string
@@ -16,7 +18,7 @@ export interface Video {
     views: number
     like: number
     transcript: string
-    categoryId: string[]
+    categoryId: Category[]
     createdAt: string
     isNSFW: boolean
     nsfwType: 'Drawing' | 'Hentai' | 'Neutral' | 'Porn' | 'Sexy' | 'Violence'
