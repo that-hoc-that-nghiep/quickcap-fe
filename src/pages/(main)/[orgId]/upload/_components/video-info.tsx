@@ -1,7 +1,7 @@
 import { useUploadStep } from '@/stores/uploadStep'
 import { Video } from '@/types'
 import { CLOUD_FRONT_URL } from '@/utils/constant'
-import { Alert, Button, Grid, Group, Paper, Stack, Text, Textarea, TextInput, Title } from '@mantine/core'
+import { Alert, Button, Grid, Group, Paper, Stack, Text, Title } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { openModal } from '@mantine/modals'
 import { IconAlertCircle, IconBubbleText } from '@tabler/icons-react'

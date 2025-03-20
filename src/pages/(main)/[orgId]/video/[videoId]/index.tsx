@@ -14,6 +14,7 @@ import { useDebouncedCallback } from '@mantine/hooks'
 
 export const VideoPage = () => {
     const { videoId } = useParams<{ videoId: string }>()
+    const { orgId } = useParams<{ orgId: string }>()
     const { data } = useVideo(videoId!)
     const theme = useMantineTheme()
     const video = useMemo(() => data.data, [data])
@@ -70,7 +71,9 @@ export const VideoPage = () => {
                             id: video._id,
                             title: video.title,
                             description: video.description || '',
-                            transcript: video.transcript
+                            transcript: video.transcript,
+                            categoryId: video.categoryId,
+                            orgId: orgId!
                         })
                     }
                 >

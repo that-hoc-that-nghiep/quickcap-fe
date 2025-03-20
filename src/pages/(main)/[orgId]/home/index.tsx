@@ -1,6 +1,5 @@
 import { Button, Group, Paper, Progress, Stack, Text, useMantineTheme } from '@mantine/core'
 import {
-    IconArrowRight,
     IconDatabase,
     IconEye,
     IconHandFinger,
