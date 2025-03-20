@@ -21,7 +21,7 @@ const AddVideoToOrgPage = () => {
     const [selectedCategories, setSelectedCategories] = useState<Record<string, string>>({})
     const queryClient = useQueryClient()
     const handleSeclectVideos = (value: string[]) => {
-        const validValue = Array.from(new Set([filteredVideos[0]._id ? filteredVideos[0]._id : '', ...value]))
+        const validValue = Array.from(new Set([...value]))
         setSelectedVideos(validValue)
     }
 
@@ -166,7 +166,11 @@ const AddVideoToOrgPage = () => {
             <Group justify='center'>
                 <Button
                     size='lg'
-                    disabled={Object.keys(selectedCategories).length !== selectedVideos.length || loading}
+                    disabled={
+                        Object.keys(selectedCategories).length !== selectedVideos.length ||
+                        loading ||
+                        selectedVideos.length === 0
+                    }
                     onClick={async () => {
                         await handleAddVideoToOrgs()
                     }}

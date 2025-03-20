@@ -36,7 +36,9 @@ export function HomePage() {
                                 <Skeleton key={index} height={180} />
                             ))}
                         >
-                            {data?.data?.videos.map((video) => <VideoCard key={video._id} video={video} />)}
+                            {data?.data?.videos
+                                .filter((c) => !c.isDeleted)
+                                .map((video) => <VideoCard key={video._id} video={video} />)}
                             {data?.data.videos.length === 0 && 'No videos'}{' '}
                         </Suspense>
                     </div>

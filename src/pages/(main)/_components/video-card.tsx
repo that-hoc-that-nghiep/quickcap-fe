@@ -2,10 +2,11 @@ import { Video } from '@/types'
 import { ActionIcon, Anchor, Avatar, Card, Group, Image, Menu, Stack, Text } from '@mantine/core'
 import { Link, useParams } from 'react-router'
 import dayjs from 'dayjs'
-import { IconBan, IconEdit, IconEye, IconFlag, IconSettings, IconThumbUp } from '@tabler/icons-react'
+import { IconBan, IconEdit, IconEye, IconFlag, IconSettings, IconThumbUp, IconTrash } from '@tabler/icons-react'
 import { openEditVideoModal } from '../[orgId]/library/_components/modal-edit-video'
 import { openReportModal } from '../[orgId]/library/_components/modal-report'
 import { openAlertNsfwModal } from '../[orgId]/library/_components/modal-nsfw'
+import { openModalDeleteVideo } from '../[orgId]/library/_components/modal-delete-video'
 
 const VideoCard = ({ video }: { video: Video }) => {
     const { orgId } = useParams<{ orgId: string }>()
@@ -68,6 +69,16 @@ const VideoCard = ({ video }: { video: Video }) => {
                                         onClick={() => openReportModal(video._id)}
                                     >
                                         Report Video
+                                    </Menu.Item>
+
+                                    <Menu.Item
+                                        leftSection={<IconTrash size={16} />}
+                                        color='red'
+                                        onClick={() => {
+                                            openModalDeleteVideo(video._id, orgId!)
+                                        }}
+                                    >
+                                        Delete Video
                                     </Menu.Item>
                                 </Menu.Dropdown>
                             </Menu>

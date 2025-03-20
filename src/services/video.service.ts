@@ -13,7 +13,7 @@ export const uploadVideo = async (file: FileWithPath) => {
 
 export const getVideosByOrgId = async ({
     orgId,
-    limit = 10,
+    limit = 100,
     page = 1,
     keyword,
     categoryId,
@@ -129,4 +129,9 @@ export const useAnalyticsVideosByOrgId = (orgId: string) => {
         queryKey: ['analytics-videos', orgId],
         queryFn: () => analyticsVideosByOrgId(orgId)
     })
+}
+
+export const deleteVideoById = async (videoId: string, orgId: string) => {
+    const { data } = await backendInstance.delete<BackendResponse<Video>>(`/video/${videoId}/${orgId}`)
+    return data
 }
