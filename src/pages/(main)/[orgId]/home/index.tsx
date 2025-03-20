@@ -1,5 +1,6 @@
-import { Button, Group, Paper, Progress, Stack, Text, useMantineTheme } from '@mantine/core'
+import { Button, Group, Paper, Progress, Skeleton, Stack, Text, useMantineTheme } from '@mantine/core'
 import {
+    IconArrowRight,
     IconDatabase,
     IconEye,
     IconHandFinger,
@@ -9,41 +10,18 @@ import {
     IconVideo,
     IconVideoFilled
 } from '@tabler/icons-react'
+import { Suspense } from 'react'
+import Videos from '../library/_components/videos'
+import { Link, useParams } from 'react-router'
+import { useVideos } from '@/services/video.service'
+import VideoCard from '../../_components/video-card'
 
 export function HomePage() {
     const theme = useMantineTheme()
+    const { orgId } = useParams<{ orgId: string }>()
+    const { data } = useVideos(orgId!, { limit: 4, page: 1 })
     return (
         <Stack gap='xl'>
-            <Stack>
-                <Group justify='space-between' align='center'>
-                    <Group>
-                        <IconHandFinger size={24} color={theme.colors[theme.primaryColor][5]} />
-                        <Text size='lg' fw={500}>
-                            Quick Actions
-                        </Text>
-                    </Group>
-                </Group>
-                <Group>
-                    <Button className='grow h-32 text-xl'>
-                        <span className='flex flex-col items-center justify-center gap-2'>
-                            <IconVideoFilled size={40} color={theme.colors[theme.primaryColor][0]} />
-                            Record Screen
-                        </span>
-                    </Button>
-                    <Button variant='default' className='grow h-32 text-xl'>
-                        <span className='flex flex-col items-center justify-center gap-2'>
-                            <IconUpload size={40} color={theme.colors[theme.primaryColor][5]} />
-                            Upload Video
-                        </span>
-                    </Button>
-                    <Button variant='default' className='grow h-32 text-xl'>
-                        <span className='flex flex-col items-center justify-center gap-2'>
-                            <IconPlus size={40} color={theme.colors[theme.primaryColor][5]} />
-                            Create Category
-                        </span>
-                    </Button>
-                </Group>
-            </Stack>
             <Stack>
                 <Group justify='space-between' align='center'>
                     <Group>
@@ -52,11 +30,26 @@ export function HomePage() {
                             Recent Videos
                         </Text>
                     </Group>
+                    <Button
+                        component={Link}
+                        to={`/${orgId}/library`}
+                        variant='subtle'
+                        rightSection={<IconArrowRight size={18} />}
+                    >
+                        See all
+                    </Button>
                 </Group>
                 <Group align='stretch'>
-                    {/* {mockVideos.slice(0, 4).map((video) => (
-                        <VideoCard key={video.id} video={video} />
-                    ))} */}
+                    <div className='grid grid-cols-4 gap-4'>
+                        <Suspense
+                            fallback={Array.from({ length: 4 }).map((_, index) => (
+                                <Skeleton key={index} height={180} />
+                            ))}
+                        >
+                            {data?.data?.videos.map((video) => <VideoCard key={video._id} video={video} />)}
+                            {data?.data.videos.length === 0 && 'No videos'}{' '}
+                        </Suspense>
+                    </div>
                 </Group>
             </Stack>
             <Stack>
