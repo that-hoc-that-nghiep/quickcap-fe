@@ -55,7 +55,7 @@ export const useVideos = (
     })
 }
 
-const getVideoById = async (videoId: string) => {
+export const getVideoById = async (videoId: string) => {
     const { data } = await backendInstance.get<BackendResponse<Video>>(`video/${videoId}`)
     return data
 }
@@ -69,9 +69,20 @@ export const useVideo = (videoId: string) => {
 
 export const updateVideo = async (
     videoId: string,
-    body: { title?: string; description?: string; transcript?: string; like?: number; views?: number }
+    body: {
+        title?: string
+        description?: string
+        transcript?: string
+        like?: number
+        views?: number
+        categoryId?: string[]
+    },
+    orgId?: string
 ) => {
-    const { data } = await backendInstance.patch<BackendResponse<Video>>(`/video/${videoId}`, body)
+    const { data } = await backendInstance.patch<BackendResponse<Video>>(`/video/${videoId}`, {
+        ...body,
+        orgId
+    })
     return data
 }
 
@@ -80,4 +91,16 @@ export const addVideoToOrgs = async (payload: { videoId: string; orgId: string; 
         videoAdds: payload
     })
     return data
+}
+
+export const getVideoByOrgIdUnique = async (orgId: string) => {
+    const { data } = await backendInstance.get<BackendResponse<Video[]>>(`video/unique/${orgId}`)
+    return data
+}
+
+export const useVideoByOrgIdUnique = (orgId: string) => {
+    return useSuspenseQuery({
+        queryKey: ['videos-unique', orgId],
+        queryFn: () => getVideoByOrgIdUnique(orgId)
+    })
 }

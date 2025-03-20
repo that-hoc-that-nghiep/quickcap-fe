@@ -69,6 +69,7 @@ const CreateCategoryModal = () => {
     )
 }
 
+
 const Categories = () => {
     const { orgId } = useParams()
     const { data } = useOrgCategories(orgId)

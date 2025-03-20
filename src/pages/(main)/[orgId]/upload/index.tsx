@@ -19,7 +19,6 @@ const StepContainer = ({ children }: { children: React.ReactNode }) => (
 const VideoUploadPage = () => {
     const { orgId } = useParams()
     const [active, handlers] = useUploadStep(0, { min: 0, max: 3 })
-
     const [loading, setLoading] = useState(false)
     const [videoInfo, setVideoInfo] = useState<Video | null>(null)
 
@@ -56,7 +55,7 @@ const VideoUploadPage = () => {
             <Stepper active={active} className='w-full mt-4'>
                 <Stepper.Step label='Upload video' description='Upload your video' loading={loading}>
                     <StepContainer>
-                        <VideoDropzone onUpload={onUpload} loading={loading} />
+                        <VideoDropzone sizeButton='lg' height={220} onUpload={onUpload} loading={loading} />
                     </StepContainer>
                 </Stepper.Step>
                 <Stepper.Step label='Video information' description='Review uploaded video'>

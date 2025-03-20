@@ -1,3 +1,5 @@
+import { Category } from "./category"
+
 export interface Video {
     _id: string
     title: string
@@ -16,9 +18,16 @@ export interface Video {
     views: number
     like: number
     transcript: string
-    categoryId: string[]
+    categoryId: Category[]
     createdAt: string
     isNSFW: boolean
-    nsfwType: 'Drawing' | 'Hentai' | 'Neutral' | 'Porn' | 'Sexy'
+    nsfwType: 'Drawing' | 'Hentai' | 'Neutral' | 'Porn' | 'Sexy' | 'Violence'
     isDeleted: boolean
+}
+
+export const nsfwMessages: Record<string, string> = {
+    Hentai: 'This video contains explicit anime content.',
+    Porn: 'This video contains explicit adult content.',
+    Sexy: 'This video contains suggestive or revealing content.',
+    Violence: 'This video contains violent content.'
 }

@@ -1,4 +1,6 @@
+// import { useOrgCategories } from '@/services/category.service'
 import { updateVideo } from '@/services/video.service'
+import { Category } from '@/types'
 import { Button, Group, TextInput, Textarea, useMantineTheme } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { closeAllModals, openModal } from '@mantine/modals'
@@ -9,8 +11,13 @@ import { useState } from 'react'
 const EditVideoModal = ({
     video
 }: {
-    video: { id: string; title: string; description: string; transcript: string }
+    video: { id: string; title: string; description: string; transcript: string; categoryId: Category[]; orgId: string }
 }) => {
+    // const { data } = useOrgCategories(video.orgId!)
+    // const categoryIds = video.categoryId.map((category) => category._id)
+    // const filtercategoryIds =
+    //     data?.data.filter((category) => categoryIds.includes(category._id)).map((category) => category._id) || []
+
     const theme = useMantineTheme()
     const queryClient = useQueryClient()
     const form = useForm({
@@ -18,6 +25,7 @@ const EditVideoModal = ({
             title: video.title,
             description: video.description,
             transcript: video.transcript
+            // categoryId: filtercategoryIds
         },
 
         validate: {
@@ -26,6 +34,7 @@ const EditVideoModal = ({
                 value.trim().length > 5 ? null : 'Description must be at least 5 characters',
             transcript: (value: string) =>
                 value.trim().length > 10 ? null : 'Transcript must be at least 10 characters'
+            // categoryId: (value: string[]) => (value.length > 0 ? null : 'You must select at least one category')
         }
     })
 
@@ -36,7 +45,7 @@ const EditVideoModal = ({
         setIsLoading(true)
         try {
             await new Promise((resolve) => setTimeout(resolve, 2000))
-            await updateVideo(video.id, form.values)
+            await updateVideo(video.id, form.values, video.orgId)
             notifications.show({
                 title: 'Video updated',
                 message: 'Video has been updated successfully',
@@ -89,7 +98,20 @@ const EditVideoModal = ({
                 {...form.getInputProps('transcript')}
                 error={form.errors.transcript}
             />
-
+            {/* <MultiSelect
+                hidePickedOptions
+                data={
+                    data?.data.map((category) => ({
+                        value: category._id,
+                        label: category.name
+                    })) || []
+                }
+                label='Categories'
+                placeholder='Select categories'
+                mt='md'
+                {...form.getInputProps('categoryId')}
+                error={form.errors.categoryId}
+            /> */}
             <Group justify='flex-end' mt='md'>
                 <Button variant='outline' onClick={() => closeAllModals()} disabled={isLoading}>
                     Cancel
@@ -102,7 +124,14 @@ const EditVideoModal = ({
     )
 }
 
-export const openEditVideoModal = (video: { id: string; title: string; description: string; transcript: string }) => {
+export const openEditVideoModal = (video: {
+    id: string
+    title: string
+    description: string
+    transcript: string
+    categoryId: Category[]
+    orgId: string
+}) => {
     openModal({
         title: 'Edit Video',
         children: <EditVideoModal video={video} />

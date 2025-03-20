@@ -14,6 +14,7 @@ import { LoginPage } from '@/pages/auth/login'
 import { BaseMantineProvider } from '@/provider/mantine'
 import VideoUploadPage from '@/pages/(main)/[orgId]/upload'
 import CategoryVideosPage from '@/pages/(main)/[orgId]/category/[categoryId]'
+import AddVideoToOrgPage from '@/pages/(main)/[orgId]/add'
 
 // Root layout component that includes Mantine providers
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
@@ -86,6 +87,10 @@ const routers = createBrowserRouter([
                                         element: <CategoryVideosPage />
                                     }
                                 ]
+                            },
+                            {
+                                path: 'add',
+                                element: <AddVideoToOrgPage />
                             }
                         ]
                     }

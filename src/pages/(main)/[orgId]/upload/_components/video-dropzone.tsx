@@ -8,9 +8,11 @@ import { useRef } from 'react'
 interface VideoDropzoneProps {
     onUpload: (file: FileWithPath[]) => void
     loading: boolean
+    height: number
+    sizeButton: 'sm' | 'md' | 'lg'
 }
 
-const VideoDropzone = ({ onUpload, loading }: VideoDropzoneProps) => {
+const VideoDropzone = ({ onUpload, loading, height, sizeButton }: VideoDropzoneProps) => {
     const openRef = useRef<() => void>(null)
 
     return (
@@ -31,7 +33,7 @@ const VideoDropzone = ({ onUpload, loading }: VideoDropzoneProps) => {
                 multiple={false}
                 openRef={openRef}
             >
-                <Group justify='center' gap='xl' mih={220} style={{ pointerEvents: 'none' }}>
+                <Group justify='center' gap='xl' mih={height} style={{ pointerEvents: 'none' }}>
                     <Dropzone.Accept>
                         <IconUpload size={52} color='var(--mantine-color-blue-6)' stroke={1.5} />
                     </Dropzone.Accept>
@@ -54,10 +56,10 @@ const VideoDropzone = ({ onUpload, loading }: VideoDropzoneProps) => {
             </Dropzone>
             <Group justify='center' mt='md'>
                 <Button
-                    size='lg'
+                    size={sizeButton}
                     onClick={() => openRef.current?.()}
                     leftSection={<IconUpload size={18} />}
-                    loading={loading}
+                    disabled={loading}
                 >
                     Select file
                 </Button>

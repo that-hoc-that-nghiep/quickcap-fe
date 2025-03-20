@@ -1,6 +1,5 @@
 import { Button, Group, Paper, Progress, Stack, Text, useMantineTheme } from '@mantine/core'
 import {
-    IconArrowRight,
     IconDatabase,
     IconEye,
     IconHandFinger,
@@ -53,9 +52,6 @@ export function HomePage() {
                             Recent Videos
                         </Text>
                     </Group>
-                    <Button variant='subtle' rightSection={<IconArrowRight size={18} />}>
-                        See all
-                    </Button>
                 </Group>
                 <Group align='stretch'>
                     {/* {mockVideos.slice(0, 4).map((video) => (
