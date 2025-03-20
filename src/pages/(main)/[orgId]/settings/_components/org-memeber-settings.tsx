@@ -213,7 +213,7 @@ const OrgMemberSettings = () => {
                 <Text size='xl' fw={700}>
                     Members
                 </Text>
-                {currentOrg?.is_owner ? (
+                {currentOrg?.type !== 'Personal' && currentOrg?.is_owner ? (
                     <Button
                         color='green'
                         leftSection={<IconPlus size={16} />}
