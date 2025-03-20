@@ -216,14 +216,16 @@ const OrgCategory = ({ org, video, selectedCategory, onCategorySelect }: OrgCate
                 </Group>
             </Group>
             <div className='grid grid-cols-3 gap-4'>
-                {categories?.data?.map((category) => (
-                    <CategoryCardSelect
-                        key={category._id}
-                        category={category}
-                        selected={selectedCategory}
-                        onSelect={onSelect}
-                    />
-                ))}
+                {categories?.data
+                    ?.filter((c) => !c.isDeleted)
+                    .map((category) => (
+                        <CategoryCardSelect
+                            key={category._id}
+                            category={category}
+                            selected={selectedCategory}
+                            onSelect={onSelect}
+                        />
+                    ))}
             </div>
         </Stack>
     )

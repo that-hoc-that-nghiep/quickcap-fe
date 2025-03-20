@@ -7,7 +7,6 @@ import { IconDotsVertical, IconFolderFilled, IconTrash } from '@tabler/icons-rea
 import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Link, useParams } from 'react-router'
-// import { Link } from 'react-router'
 
 interface CategoryCardProps {
     category: Category
@@ -16,12 +15,13 @@ interface CategoryCardProps {
 const ConfirmDeleteCategoryModal = ({ category }: CategoryCardProps) => {
     const queryClient = useQueryClient()
     const [isLoading, setIsLoading] = useState(false)
+    const { orgId } = useParams<{ orgId: string }>()
     const handleDeleteCategory = async () => {
         setIsLoading(true)
         try {
             await deleteCategoryById(category._id)
             queryClient.invalidateQueries({
-                queryKey: ['org-categories']
+                queryKey: ['org-categories', orgId]
             })
             notifications.show({
                 color: 'green',
