@@ -11,6 +11,11 @@ const AuthCallbackPage = () => {
 
     useEffect(() => {
         const token = searchParams.get('token')
+        const error = searchParams.get('error')
+        if (error) {
+            navigate('/login')
+            return
+        }
         if (token) {
             setAccessToken(token)
             navigate('/')
