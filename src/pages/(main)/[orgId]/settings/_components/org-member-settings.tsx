@@ -189,8 +189,6 @@ const OrgMemberSettings = () => {
     const { currentOrg, user: curentUser } = useUser()
     const { data } = useOrgInfo(currentOrg?.id)
 
-    console.log(currentOrg)
-    console.log(curentUser)
 
     const handleShowAddMemberModal = () => {
         openModal({
