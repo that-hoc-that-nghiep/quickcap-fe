@@ -1,5 +1,7 @@
 import { useUser } from '@/hooks/useUser'
 import { addMemberToOrg, useOrgInfo, removeMemberFromOrg, updatePermission } from '@/services/auth.service'
+import { PermissionData, PermissionTypeUI } from '@/types'
+
 import { ActionIcon, Avatar, Badge, Button, Card, Group, Select, Stack, Text, TextInput, Tooltip } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { closeAllModals, openModal } from '@mantine/modals'
@@ -133,14 +135,14 @@ const UpdatePermissionMemberModal = ({
 
     const form = useForm({
         initialValues: {
-            permission: currentPermission
+            permission: PermissionTypeUI[currentPermission]
         }
     })
 
     const handleUpdatePermission = async (values: typeof form.values) => {
         setIsUpdating(true)
         try {
-            await updatePermission(orgId, userEmail, values.permission)
+            await updatePermission(orgId, userEmail, PermissionData[values.permission])
             queryClient.invalidateQueries({
                 queryKey: ['user']
             })
@@ -170,7 +172,7 @@ const UpdatePermissionMemberModal = ({
             <Text size='sm' mb='sm'>
                 Select new permission for this member:
             </Text>
-            <Select label='Permission' data={['READ', 'UPLOAD']} {...form.getInputProps('permission')} />
+            <Select label='Permission' data={['View Only', 'Can Edit']} {...form.getInputProps('permission')} />
             <Group justify='flex-end' mt='md'>
                 <Button variant='outline' onClick={() => closeAllModals()} disabled={isUpdating}>
                     Cancel
@@ -186,7 +188,6 @@ const UpdatePermissionMemberModal = ({
 const OrgMemberSettings = () => {
     const { currentOrg, user: curentUser } = useUser()
     const { data } = useOrgInfo(currentOrg?.id)
-
 
     console.log(currentOrg)
     console.log(curentUser)
@@ -250,7 +251,7 @@ const OrgMemberSettings = () => {
                             </Text>
                         </Stack>
                     </Group>
-                    
+
                     {currentOrg?.is_owner && currentOrg?.type !== 'Personal' && curentUser?.email !== user.email ? (
                         <Group>
                             <Tooltip label='Update permission' withArrow>
