@@ -11,6 +11,7 @@ import { openReportModal } from '../../library/_components/modal-report'
 import { openEditVideoModal } from '../../library/_components/modal-edit-video'
 import { useMutationData, useMutationDataState } from '@/hooks/useMutationData'
 import { useDebouncedCallback } from '@mantine/hooks'
+import { cn } from '@/utils/common'
 
 export const VideoPage = () => {
     const { videoId } = useParams<{ videoId: string }>()
@@ -18,6 +19,7 @@ export const VideoPage = () => {
     const { data } = useVideo(videoId!)
     const theme = useMantineTheme()
     const video = useMemo(() => data.data, [data])
+    const [loading, setLoading] = useState(false)
     // Mutation để cập nhật views
     const { mutate: mutateViews } = useMutationData(
         ['views', videoId],
@@ -35,26 +37,24 @@ export const VideoPage = () => {
         }
     }, [videoId])
 
+    // Mutation để cập nhật like
     const { mutate: mutateLike } = useMutationData(
-        ['like'],
+        ['like', videoId],
         (data: { videoId: string; like: number }) => updateVideo(data.videoId!, { like: data.like }),
-        'video'
+        'video',
+        () => setLoading(false)
     )
 
-    const [localLike, setLocalLike] = useState(video?.like ?? 0)
-
-    useEffect(() => {
-        setLocalLike(video?.like ?? 0)
-    }, [video?.like])
+    const { latestVariables: latestLike } = useMutationDataState(['like', videoId])
+    const localLike = latestLike?.variables?.like ?? video?.like ?? 0
 
     const debouncedMutate = useDebouncedCallback((newLike) => {
         mutateLike({ videoId: video._id, like: newLike })
-    }, 1000)
+    }, 5000)
 
     const handleLike = () => {
-        const newLike = localLike + 1
-        setLocalLike(newLike)
-        debouncedMutate(newLike)
+        setLoading(true)
+        debouncedMutate(localLike + 1)
     }
 
     return (
@@ -131,7 +131,14 @@ export const VideoPage = () => {
                         </Group>
 
                         <Group gap={1}>
-                            <ActionIcon onClick={handleLike} variant='transparent' color='red' size='md'>
+                            <ActionIcon
+                                className={cn(loading ? 'cursor-not-allowed' : 'cursor-pointer')}
+                                disabled={loading}
+                                onClick={handleLike}
+                                variant='transparent'
+                                color='red'
+                                size='md'
+                            >
                                 <IconThumbUp size={20} />
                             </ActionIcon>
                             <Text size='sm' c='dimmed'>

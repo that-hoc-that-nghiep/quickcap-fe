@@ -8,13 +8,13 @@ export const service = {
 
 export const menuItems = [
     {
-        label: 'Home',
+        label: 'Org Dashboard',
         icon: IconHome,
         path: '/home',
         show: true
     },
     {
-        label: 'My library',
+        label: `Organization's Video`,
         icon: IconLibrary,
         path: '/library',
         show: true
@@ -44,7 +44,6 @@ export const menuItems = [
         show: false
     }
 ]
-
 
 export const mockNotifications = [
     'You have a new message from John Doe',
