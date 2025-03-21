@@ -184,7 +184,7 @@ const UpdatePermissionMemberModal = ({
 }
 
 const OrgMemberSettings = () => {
-    const { currentOrg } = useUser()
+    const { currentOrg, user: curentUser } = useUser()
     const { data } = useOrgInfo(currentOrg?.id)
 
     const handleShowAddMemberModal = () => {
@@ -246,7 +246,7 @@ const OrgMemberSettings = () => {
                             </Text>
                         </Stack>
                     </Group>
-                    {currentOrg?.is_owner ? (
+                    {currentOrg?.is_owner || currentOrg?.type !== 'Personal' || user.email !== curentUser?.email ? (
                         <Group>
                             <Tooltip label='Update permission' withArrow>
                                 <ActionIcon
