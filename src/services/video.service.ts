@@ -112,7 +112,7 @@ export const addCategoryToVideos = async (videoId: string, categoryId: string[])
 
 export const removeCategoryToVideos = async (videoId: string, categoryId: string[]) => {
     const { data } = await backendInstance.patch(`/video/modify/${videoId}/remove`, {
-        categoryId
+        categoryId: categoryId
     })
     return data
 }
@@ -133,5 +133,12 @@ export const useAnalyticsVideosByOrgId = (orgId: string) => {
 
 export const deleteVideoById = async (videoId: string, orgId: string) => {
     const { data } = await backendInstance.delete<BackendResponse<Video>>(`/video/${videoId}/${orgId}`)
+    return data
+}
+
+export const removeVideoFromOrg = async (videoId: string, orgId: string, categoryId: string[]) => {
+    const { data } = await backendInstance.patch<BackendResponse<Video>>(`/video/remove/${videoId}/${orgId}`, {
+        categoryId
+    })
     return data
 }

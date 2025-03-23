@@ -12,10 +12,11 @@ import { openEditVideoModal } from '../../library/_components/modal-edit-video'
 import { useMutationData, useMutationDataState } from '@/hooks/useMutationData'
 import { useDebouncedCallback } from '@mantine/hooks'
 import { cn } from '@/utils/common'
+import { useUser } from '@/hooks/useUser'
 
 export const VideoPage = () => {
     const { videoId } = useParams<{ videoId: string }>()
-    const { orgId } = useParams<{ orgId: string }>()
+    const { user } = useUser()
     const { data } = useVideo(videoId!)
     const theme = useMantineTheme()
     const video = useMemo(() => data.data, [data])
@@ -33,11 +34,14 @@ export const VideoPage = () => {
 
     useEffect(() => {
         if (video) {
-            mutateViews({ videoId: video._id, views: video.views + 1 })
-        }
-    }, [videoId])
+            const timer = setTimeout(() => {
+                mutateViews({ videoId: video._id, views: video.views + 1 })
+            }, 30000)
 
-    // Mutation để cập nhật like
+            return () => clearTimeout(timer)
+        }
+    }, [videoId, video])
+
     const { mutate: mutateLike } = useMutationData(
         ['like', videoId],
         (data: { videoId: string; like: number }) => updateVideo(data.videoId!, { like: data.like }),
@@ -61,24 +65,24 @@ export const VideoPage = () => {
         <>
             <Group justify='space-between' className='w-[66%]'>
                 <Title order={2}>{video?.title}</Title>
-                <Button
-                    size='xs'
-                    leftSection={<IconEdit size={16} />}
-                    color={theme.colors[theme.primaryColor][5]}
-                    variant='filled'
-                    onClick={() =>
-                        openEditVideoModal({
-                            id: video._id,
-                            title: video.title,
-                            description: video.description || '',
-                            transcript: video.transcript,
-                            categoryId: video.categoryId,
-                            orgId: orgId!
-                        })
-                    }
-                >
-                    Edit video
-                </Button>
+                {user?.id === video?.user.id && (
+                    <Button
+                        size='xs'
+                        leftSection={<IconEdit size={16} />}
+                        color={theme.colors[theme.primaryColor][5]}
+                        variant='filled'
+                        onClick={() =>
+                            openEditVideoModal({
+                                id: video._id,
+                                title: video.title,
+                                description: video.description || '',
+                                transcript: video.transcript
+                            })
+                        }
+                    >
+                        Edit video
+                    </Button>
+                )}
             </Group>
             <Grid mt={24}>
                 <Grid.Col span={8}>

@@ -134,7 +134,7 @@ const AddVideoToOrgPage = () => {
                 const videoInfo = getVideos(video)
 
                 return (
-                    <Paper key={video} p={16} shadow='xs' withBorder>
+                    <Paper  key={video} p={16} shadow='xs' withBorder>
                         <Stack>
                             <Suspense
                                 fallback={

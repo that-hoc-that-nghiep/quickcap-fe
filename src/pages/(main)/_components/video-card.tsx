@@ -2,16 +2,28 @@ import { Video } from '@/types'
 import { ActionIcon, Anchor, Avatar, Card, Group, Menu, Stack, Text } from '@mantine/core'
 import { Link, useParams } from 'react-router'
 import dayjs from 'dayjs'
-import { IconBan, IconEdit, IconEye, IconFlag, IconSettings, IconThumbUp, IconTrash } from '@tabler/icons-react'
+import {
+    IconBan,
+    IconEdit,
+    IconEye,
+    IconFlag,
+    IconFolder,
+    IconSettings,
+    IconThumbUp,
+    IconTrash
+} from '@tabler/icons-react'
 import { openEditVideoModal } from '../[orgId]/library/_components/modal-edit-video'
 import { openReportModal } from '../[orgId]/library/_components/modal-report'
 import { openAlertNsfwModal } from '../[orgId]/library/_components/modal-nsfw'
 import { openModalDeleteVideo } from '../[orgId]/library/_components/modal-delete-video'
 import { CLOUD_FRONT_URL } from '@/utils/constant'
+import { useUser } from '@/hooks/useUser'
+import { openModalRemoveVideo } from '../[orgId]/library/_components/model-remove-video'
+import { openMoveVideoToCategoryModal } from '../[orgId]/library/_components/model-move-category'
 
 const VideoCard = ({ video }: { video: Video }) => {
     const { orgId } = useParams<{ orgId: string }>()
-
+    const { user, currentOrg } = useUser()
     return (
         <Card withBorder shadow='sm'>
             <Card.Section
@@ -23,18 +35,7 @@ const VideoCard = ({ video }: { video: Video }) => {
                         <IconBan size={50} className='text-red-700' />
                     </div>
                 ) : (
-                    // <Image
-                    //     src={`https://placehold.co/600x400?text=${video.title}`}
-                    //     alt={video.title}
-                    //     height={160}
-                    //     fit='cover'
-                    //     className='aspect-video'
-                    // />
-                    <video
-                        width='100%'
-                        // poster={`https://placehold.co/1920x1080?text=${video.title}`}
-                        className='rounded-t-lg mb-6 aspect-video'
-                    >
+                    <video width='100%' className='rounded-t-lg mb-6 aspect-video'>
                         <source src={CLOUD_FRONT_URL + '/' + video.source} type='video/mp4' />
                         Your browser does not support the video tag.
                     </video>
@@ -57,37 +58,69 @@ const VideoCard = ({ video }: { video: Video }) => {
                                     </ActionIcon>
                                 </Menu.Target>
                                 <Menu.Dropdown>
-                                    <Menu.Item
-                                        leftSection={<IconEdit size={16} />}
-                                        onClick={() =>
-                                            openEditVideoModal({
-                                                id: video._id,
-                                                title: video.title,
-                                                description: video.description || '',
-                                                transcript: video.transcript,
-                                                categoryId: video.categoryId,
-                                                orgId: orgId!
-                                            })
-                                        }
-                                    >
-                                        Edit Video
-                                    </Menu.Item>
+                                    {user?.id === video.user.id && (
+                                        <Menu.Item
+                                            leftSection={<IconEdit size={16} />}
+                                            onClick={() =>
+                                                openEditVideoModal({
+                                                    id: video._id,
+                                                    title: video.title,
+                                                    description: video.description || '',
+                                                    transcript: video.transcript
+                                                })
+                                            }
+                                        >
+                                            Edit Video
+                                        </Menu.Item>
+                                    )}
+
+                                    {(currentOrg?.is_permission === 'ALL' ||
+                                        currentOrg?.is_permission === 'UPLOAD') && (
+                                        <Menu.Item
+                                            leftSection={<IconFolder size={16} />}
+                                            onClick={() =>
+                                                openMoveVideoToCategoryModal({
+                                                    id: video._id,
+                                                    categoryId: video.categoryId,
+                                                    orgId: orgId!
+                                                })
+                                            }
+                                        >
+                                            Update category
+                                        </Menu.Item>
+                                    )}
+
+                                    {currentOrg?.type === 'Personal' ? (
+                                        <Menu.Item
+                                            leftSection={<IconTrash size={16} />}
+                                            color='red'
+                                            onClick={() => {
+                                                openModalDeleteVideo(video._id, orgId!)
+                                            }}
+                                        >
+                                            Delete Video
+                                        </Menu.Item>
+                                    ) : (
+                                        <>
+                                            {currentOrg?.is_owner && (
+                                                <Menu.Item
+                                                    leftSection={<IconTrash size={16} />}
+                                                    color='red'
+                                                    onClick={() => {
+                                                        openModalRemoveVideo(video._id, orgId!, video.categoryId)
+                                                    }}
+                                                >
+                                                    Remove Video
+                                                </Menu.Item>
+                                            )}
+                                        </>
+                                    )}
                                     <Menu.Item
                                         leftSection={<IconFlag size={16} />}
                                         color='red'
                                         onClick={() => openReportModal(video._id)}
                                     >
                                         Report Video
-                                    </Menu.Item>
-
-                                    <Menu.Item
-                                        leftSection={<IconTrash size={16} />}
-                                        color='red'
-                                        onClick={() => {
-                                            openModalDeleteVideo(video._id, orgId!)
-                                        }}
-                                    >
-                                        Delete Video
                                     </Menu.Item>
                                 </Menu.Dropdown>
                             </Menu>

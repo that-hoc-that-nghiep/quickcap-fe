@@ -1,6 +1,6 @@
-import { AppShell, Avatar, Button, Group, Menu, NavLink, Title, Tooltip, useMantineTheme } from '@mantine/core'
+import { AppShell, Avatar, Button, Group, Menu, NavLink, Title, useMantineTheme } from '@mantine/core'
 import { Link, Outlet, useLocation, useNavigate, useParams } from 'react-router'
-import { IconLogout2, IconPlus, IconSearch, IconUpload, IconVideo, IconVideoFilled } from '@tabler/icons-react'
+import { IconLogout2, IconPlus, IconSearch, IconUpload, IconVideo } from '@tabler/icons-react'
 import { menuItems } from '@/utils/constant'
 import { Spotlight, spotlight, SpotlightActionData } from '@mantine/spotlight'
 import { useUser } from '@/hooks/useUser'
@@ -72,15 +72,14 @@ export const MainLayout = () => {
                                 Upload
                             </Button>
                         ) : (
-                            <Button leftSection={<IconPlus size={18} />} component={Link} to={`/${orgId}/add`}>
-                                Add video
-                            </Button>
+                            <>
+                                {(currentOrg?.is_permission === 'ALL' || currentOrg?.is_permission === 'UPLOAD') && (
+                                    <Button leftSection={<IconPlus size={18} />} component={Link} to={`/${orgId}/add`}>
+                                        Add video
+                                    </Button>
+                                )}
+                            </>
                         )}
-                        <Tooltip label='Record is disabled for now' withArrow>
-                            <Button leftSection={<IconVideoFilled size={18} />} disabled>
-                                Record
-                            </Button>
-                        </Tooltip>
                         <Menu shadow='md' width={200}>
                             <Menu.Target>
                                 <Avatar src={user?.picture} className='cursor-pointer'></Avatar>
