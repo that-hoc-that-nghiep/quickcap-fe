@@ -12,7 +12,7 @@ import { useUser } from '@/hooks/useUser'
 
 const VideoCard = ({ video }: { video: Video }) => {
     const { orgId } = useParams<{ orgId: string }>()
-    const { user } = useUser()
+    const { user, currentOrg } = useUser()
     return (
         <Card withBorder shadow='sm'>
             <Card.Section
@@ -68,16 +68,27 @@ const VideoCard = ({ video }: { video: Video }) => {
                                     >
                                         Report Video
                                     </Menu.Item>
-
-                                    <Menu.Item
-                                        leftSection={<IconTrash size={16} />}
-                                        color='red'
-                                        onClick={() => {
-                                            openModalDeleteVideo(video._id, orgId!)
-                                        }}
-                                    >
-                                        Delete Video
-                                    </Menu.Item>
+                                    {currentOrg?.type === 'Personal' ? (
+                                        <Menu.Item
+                                            leftSection={<IconTrash size={16} />}
+                                            color='red'
+                                            onClick={() => {
+                                                openModalDeleteVideo(video._id, orgId!)
+                                            }}
+                                        >
+                                            Delete Video
+                                        </Menu.Item>
+                                    ) : (
+                                        <Menu.Item
+                                            leftSection={<IconTrash size={16} />}
+                                            color='red'
+                                            onClick={() => {
+                                                openModalDeleteVideo(video._id, orgId!)
+                                            }}
+                                        >
+                                            Remove Video
+                                        </Menu.Item>
+                                    )}
                                 </Menu.Dropdown>
                             </Menu>
                         )}

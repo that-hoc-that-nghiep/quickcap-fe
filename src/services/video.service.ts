@@ -135,3 +135,10 @@ export const deleteVideoById = async (videoId: string, orgId: string) => {
     const { data } = await backendInstance.delete<BackendResponse<Video>>(`/video/${videoId}/${orgId}`)
     return data
 }
+
+export const removeVideoFromOrg = async (videoId: string, orgId: string, categoryId: string[]) => {
+    const { data } = await backendInstance.patch<BackendResponse<Video>>(`/video/remove/${videoId}/${orgId}`, {
+        categoryId
+    })
+    return data
+}
