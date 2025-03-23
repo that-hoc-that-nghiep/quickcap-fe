@@ -24,13 +24,14 @@ const ConfirmRemoveVideoModal = ({ videoId, orgId, categoryId }: VideoProps) => 
         setIsLoading(true)
         try {
             await removeVideoFromOrg(videoId, orgId, filtercategoryIds)
+            await new Promise((resolve) => setTimeout(resolve, 2500))
             queryClient.invalidateQueries({
                 queryKey: ['videos', orgId]
             })
             notifications.show({
                 color: 'green',
                 title: 'Success',
-                message: 'Video deleted successfully'
+                message: 'Remove video from org successfully'
             })
             closeAllModals()
         } catch (error: any) {
@@ -45,7 +46,7 @@ const ConfirmRemoveVideoModal = ({ videoId, orgId, categoryId }: VideoProps) => 
                 notifications.show({
                     color: 'red',
                     title: 'Error',
-                    message: 'Failed to delete video'
+                    message: 'Failed to remove video from org'
                 })
             }
         } finally {
@@ -71,7 +72,7 @@ const ConfirmRemoveVideoModal = ({ videoId, orgId, categoryId }: VideoProps) => 
 
 export const openModalRemoveVideo = (videoId: string, orgId: string, categoryId: Category[]) => {
     openModal({
-        title: 'Delete Video',
+        title: 'Remove video from organization',
         children: <ConfirmRemoveVideoModal videoId={videoId} orgId={orgId} categoryId={categoryId} />
     })
 }

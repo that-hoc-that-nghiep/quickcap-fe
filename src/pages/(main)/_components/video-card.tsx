@@ -9,6 +9,7 @@ import { openAlertNsfwModal } from '../[orgId]/library/_components/modal-nsfw'
 import { openModalDeleteVideo } from '../[orgId]/library/_components/modal-delete-video'
 import { CLOUD_FRONT_URL } from '@/utils/constant'
 import { useUser } from '@/hooks/useUser'
+import { openModalRemoveVideo } from '../[orgId]/library/_components/model-remove-video'
 
 const VideoCard = ({ video }: { video: Video }) => {
     const { orgId } = useParams<{ orgId: string }>()
@@ -61,13 +62,7 @@ const VideoCard = ({ video }: { video: Video }) => {
                                     >
                                         Edit Video
                                     </Menu.Item>
-                                    <Menu.Item
-                                        leftSection={<IconFlag size={16} />}
-                                        color='red'
-                                        onClick={() => openReportModal(video._id)}
-                                    >
-                                        Report Video
-                                    </Menu.Item>
+
                                     {currentOrg?.type === 'Personal' ? (
                                         <Menu.Item
                                             leftSection={<IconTrash size={16} />}
@@ -80,15 +75,23 @@ const VideoCard = ({ video }: { video: Video }) => {
                                         </Menu.Item>
                                     ) : (
                                         <Menu.Item
+                                            disabled={currentOrg?.is_owner === false ? true : false}
                                             leftSection={<IconTrash size={16} />}
                                             color='red'
                                             onClick={() => {
-                                                openModalDeleteVideo(video._id, orgId!)
+                                                openModalRemoveVideo(video._id, orgId!, video.categoryId)
                                             }}
                                         >
                                             Remove Video
                                         </Menu.Item>
                                     )}
+                                    <Menu.Item
+                                        leftSection={<IconFlag size={16} />}
+                                        color='red'
+                                        onClick={() => openReportModal(video._id)}
+                                    >
+                                        Report Video
+                                    </Menu.Item>
                                 </Menu.Dropdown>
                             </Menu>
                         )}

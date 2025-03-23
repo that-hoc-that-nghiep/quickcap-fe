@@ -1,5 +1,7 @@
+import { useUser } from '@/hooks/useUser'
 import CategoryCard from '@/pages/(main)/_components/category-card'
 import { createCategory, useOrgCategories } from '@/services/category.service'
+import { cn } from '@/utils/common'
 import { Button, Group, TextInput, UnstyledButton } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { closeAllModals, openModal } from '@mantine/modals'
@@ -11,6 +13,7 @@ import { useParams } from 'react-router'
 
 const CreateCategoryModal = () => {
     const { orgId } = useParams()
+
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
@@ -78,6 +81,7 @@ const Categories = () => {
             children: <CreateCategoryModal />
         })
     }
+    const { currentOrg } = useUser()
     return (
         <>
             {data?.data
@@ -86,7 +90,10 @@ const Categories = () => {
             <UnstyledButton
                 onClick={handleOpenCreateCategoryModal}
                 p={'md'}
-                className='border-dashed border-2 border-gray-200 flex items-center justify-center rounded hover:shadow transition-all duration-300'
+                className={cn(
+                    'border-dashed border-2 border-gray-200 flex items-center justify-center rounded hover:shadow transition-all duration-300',
+                    !(currentOrg?.is_permission === 'ALL' || currentOrg?.is_permission === 'UPLOAD') && 'hidden'
+                )}
             >
                 <IconPlus size={24} className='text-gray-600/50' />
             </UnstyledButton>

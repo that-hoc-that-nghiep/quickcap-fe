@@ -1,5 +1,7 @@
+import { useUser } from '@/hooks/useUser'
 import { deleteCategoryById } from '@/services/category.service'
 import { Category } from '@/types'
+import { cn } from '@/utils/common'
 import { ActionIcon, Button, Group, Menu, Paper, Text, useMantineTheme } from '@mantine/core'
 import { closeAllModals, openModal } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
@@ -16,6 +18,7 @@ const ConfirmDeleteCategoryModal = ({ category }: CategoryCardProps) => {
     const queryClient = useQueryClient()
     const [isLoading, setIsLoading] = useState(false)
     const { orgId } = useParams<{ orgId: string }>()
+
     const handleDeleteCategory = async () => {
         setIsLoading(true)
         try {
@@ -75,6 +78,7 @@ const CategoryActions = ({ category }: CategoryCardProps) => {
 const CategoryCard = ({ category }: CategoryCardProps) => {
     const theme = useMantineTheme()
     const { orgId } = useParams<{ orgId: string }>()
+    const { currentOrg } = useUser()
     return (
         <Paper key={category._id} shadow='sm' p={'md'} withBorder className='col-span-1'>
             <Group justify='space-between' wrap='nowrap'>
@@ -96,18 +100,21 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
                         </Text>
                     </Link>
                 </Group>
-                <Menu shadow='md' position='bottom-start' offset={-3}>
-                    <Menu.Target>
-                        <ActionIcon
-                            variant='transparent'
-                            onClick={(e) => e.stopPropagation()}
-                            style={{ flexShrink: 0 }}
-                        >
-                            <IconDotsVertical size={20} />
-                        </ActionIcon>
-                    </Menu.Target>
-                    <CategoryActions category={category} />
-                </Menu>
+                {(currentOrg?.is_permission === 'ALL' ||
+                    currentOrg?.is_permission === 'UPLOAD') && (
+                        <Menu shadow='md' position='bottom-start' offset={-3}>
+                            <Menu.Target>
+                                <ActionIcon
+                                    variant='transparent'
+                                    onClick={(e) => e.stopPropagation()}
+                                    style={{ flexShrink: 0 }}
+                                >
+                                    <IconDotsVertical size={20} />
+                                </ActionIcon>
+                            </Menu.Target>
+                            <CategoryActions category={category} />
+                        </Menu>
+                    )}
             </Group>
         </Paper>
     )
