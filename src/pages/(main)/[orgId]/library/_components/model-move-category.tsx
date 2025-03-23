@@ -1,7 +1,7 @@
 import { useOrgCategories } from '@/services/category.service'
 import { addCategoryToVideos, removeCategoryToVideos } from '@/services/video.service'
 import { Category } from '@/types'
-import { Button, Group, Select, TextInput, Textarea, useMantineTheme } from '@mantine/core'
+import { Button, Group, Select, useMantineTheme } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { closeAllModals, openModal } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'

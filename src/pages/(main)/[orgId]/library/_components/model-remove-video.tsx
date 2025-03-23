@@ -1,5 +1,5 @@
 import { useOrgCategories } from '@/services/category.service'
-import { deleteVideoById, removeVideoFromOrg } from '@/services/video.service'
+import { removeVideoFromOrg } from '@/services/video.service'
 import { Category } from '@/types'
 import { Button, Group, Text } from '@mantine/core'
 import { closeAllModals, openModal } from '@mantine/modals'

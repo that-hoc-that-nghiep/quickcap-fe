@@ -1,6 +1,6 @@
-import { AppShell, Avatar, Button, Group, Menu, NavLink, Title, Tooltip, useMantineTheme } from '@mantine/core'
+import { AppShell, Avatar, Button, Group, Menu, NavLink, Title, useMantineTheme } from '@mantine/core'
 import { Link, Outlet, useLocation, useNavigate, useParams } from 'react-router'
-import { IconLogout2, IconPlus, IconSearch, IconUpload, IconVideo, IconVideoFilled } from '@tabler/icons-react'
+import { IconLogout2, IconPlus, IconSearch, IconUpload, IconVideo } from '@tabler/icons-react'
 import { menuItems } from '@/utils/constant'
 import { Spotlight, spotlight, SpotlightActionData } from '@mantine/spotlight'
 import { useUser } from '@/hooks/useUser'

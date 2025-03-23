@@ -1,7 +1,6 @@
 import { useUser } from '@/hooks/useUser'
 import { deleteCategoryById } from '@/services/category.service'
 import { Category } from '@/types'
-import { cn } from '@/utils/common'
 import { ActionIcon, Button, Group, Menu, Paper, Text, useMantineTheme } from '@mantine/core'
 import { closeAllModals, openModal } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
