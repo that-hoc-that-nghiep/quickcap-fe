@@ -12,10 +12,11 @@ import { openEditVideoModal } from '../../library/_components/modal-edit-video'
 import { useMutationData, useMutationDataState } from '@/hooks/useMutationData'
 import { useDebouncedCallback } from '@mantine/hooks'
 import { cn } from '@/utils/common'
+import { useUser } from '@/hooks/useUser'
 
 export const VideoPage = () => {
     const { videoId } = useParams<{ videoId: string }>()
-    const { orgId } = useParams<{ orgId: string }>()
+    const { user } = useUser()
     const { data } = useVideo(videoId!)
     const theme = useMantineTheme()
     const video = useMemo(() => data.data, [data])
@@ -62,6 +63,7 @@ export const VideoPage = () => {
             <Group justify='space-between' className='w-[66%]'>
                 <Title order={2}>{video?.title}</Title>
                 <Button
+                    disabled={user?.id !== video?.user.id}
                     size='xs'
                     leftSection={<IconEdit size={16} />}
                     color={theme.colors[theme.primaryColor][5]}
@@ -71,9 +73,7 @@ export const VideoPage = () => {
                             id: video._id,
                             title: video.title,
                             description: video.description || '',
-                            transcript: video.transcript,
-                            categoryId: video.categoryId,
-                            orgId: orgId!
+                            transcript: video.transcript
                         })
                     }
                 >

@@ -50,6 +50,7 @@ export const MainLayout = () => {
         navigate('/auth/login')
     }
 
+    console.log('currentOrg', currentOrg)
     return (
         <AppShell header={{ height: 60 }} navbar={{ width: 280, breakpoint: 'sm' }} layout='alt' padding='md'>
             <AppShell.Header withBorder={false} p='md'>
@@ -72,15 +73,14 @@ export const MainLayout = () => {
                                 Upload
                             </Button>
                         ) : (
-                            <Button leftSection={<IconPlus size={18} />} component={Link} to={`/${orgId}/add`}>
-                                Add video
-                            </Button>
+                            <>
+                                {(currentOrg?.is_permission === 'ALL' || currentOrg?.is_permission === 'UPLOAD') && (
+                                    <Button leftSection={<IconPlus size={18} />} component={Link} to={`/${orgId}/add`}>
+                                        Add video
+                                    </Button>
+                                )}
+                            </>
                         )}
-                        <Tooltip label='Record is disabled for now' withArrow>
-                            <Button leftSection={<IconVideoFilled size={18} />} disabled>
-                                Record
-                            </Button>
-                        </Tooltip>
                         <Menu shadow='md' width={200}>
                             <Menu.Target>
                                 <Avatar src={user?.picture} className='cursor-pointer'></Avatar>

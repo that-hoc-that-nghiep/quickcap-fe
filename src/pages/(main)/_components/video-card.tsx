@@ -8,10 +8,11 @@ import { openReportModal } from '../[orgId]/library/_components/modal-report'
 import { openAlertNsfwModal } from '../[orgId]/library/_components/modal-nsfw'
 import { openModalDeleteVideo } from '../[orgId]/library/_components/modal-delete-video'
 import { CLOUD_FRONT_URL } from '@/utils/constant'
+import { useUser } from '@/hooks/useUser'
 
 const VideoCard = ({ video }: { video: Video }) => {
     const { orgId } = useParams<{ orgId: string }>()
-
+    const { user } = useUser()
     return (
         <Card withBorder shadow='sm'>
             <Card.Section
@@ -23,18 +24,7 @@ const VideoCard = ({ video }: { video: Video }) => {
                         <IconBan size={50} className='text-red-700' />
                     </div>
                 ) : (
-                    // <Image
-                    //     src={`https://placehold.co/600x400?text=${video.title}`}
-                    //     alt={video.title}
-                    //     height={160}
-                    //     fit='cover'
-                    //     className='aspect-video'
-                    // />
-                    <video
-                        width='100%'
-                        // poster={`https://placehold.co/1920x1080?text=${video.title}`}
-                        className='rounded-t-lg mb-6 aspect-video'
-                    >
+                    <video width='100%' className='rounded-t-lg mb-6 aspect-video'>
                         <source src={CLOUD_FRONT_URL + '/' + video.source} type='video/mp4' />
                         Your browser does not support the video tag.
                     </video>
@@ -58,15 +48,14 @@ const VideoCard = ({ video }: { video: Video }) => {
                                 </Menu.Target>
                                 <Menu.Dropdown>
                                     <Menu.Item
+                                        disabled={user?.id !== video.user.id}
                                         leftSection={<IconEdit size={16} />}
                                         onClick={() =>
                                             openEditVideoModal({
                                                 id: video._id,
                                                 title: video.title,
                                                 description: video.description || '',
-                                                transcript: video.transcript,
-                                                categoryId: video.categoryId,
-                                                orgId: orgId!
+                                                transcript: video.transcript
                                             })
                                         }
                                     >
