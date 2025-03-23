@@ -34,11 +34,14 @@ export const VideoPage = () => {
 
     useEffect(() => {
         if (video) {
-            mutateViews({ videoId: video._id, views: video.views + 1 })
-        }
-    }, [videoId])
+            const timer = setTimeout(() => {
+                mutateViews({ videoId: video._id, views: video.views + 1 })
+            }, 30000)
 
-    // Mutation để cập nhật like
+            return () => clearTimeout(timer)
+        }
+    }, [videoId, video])
+
     const { mutate: mutateLike } = useMutationData(
         ['like', videoId],
         (data: { videoId: string; like: number }) => updateVideo(data.videoId!, { like: data.like }),
