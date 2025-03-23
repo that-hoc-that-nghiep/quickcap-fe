@@ -50,7 +50,6 @@ export const MainLayout = () => {
         navigate('/auth/login')
     }
 
-    console.log('currentOrg', currentOrg)
     return (
         <AppShell header={{ height: 60 }} navbar={{ width: 280, breakpoint: 'sm' }} layout='alt' padding='md'>
             <AppShell.Header withBorder={false} p='md'>

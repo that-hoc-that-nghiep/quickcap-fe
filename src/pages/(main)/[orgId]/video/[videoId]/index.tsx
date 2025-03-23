@@ -65,23 +65,24 @@ export const VideoPage = () => {
         <>
             <Group justify='space-between' className='w-[66%]'>
                 <Title order={2}>{video?.title}</Title>
-                <Button
-                    disabled={user?.id !== video?.user.id}
-                    size='xs'
-                    leftSection={<IconEdit size={16} />}
-                    color={theme.colors[theme.primaryColor][5]}
-                    variant='filled'
-                    onClick={() =>
-                        openEditVideoModal({
-                            id: video._id,
-                            title: video.title,
-                            description: video.description || '',
-                            transcript: video.transcript
-                        })
-                    }
-                >
-                    Edit video
-                </Button>
+                {user?.id === video?.user.id && (
+                    <Button
+                        size='xs'
+                        leftSection={<IconEdit size={16} />}
+                        color={theme.colors[theme.primaryColor][5]}
+                        variant='filled'
+                        onClick={() =>
+                            openEditVideoModal({
+                                id: video._id,
+                                title: video.title,
+                                description: video.description || '',
+                                transcript: video.transcript
+                            })
+                        }
+                    >
+                        Edit video
+                    </Button>
+                )}
             </Group>
             <Grid mt={24}>
                 <Grid.Col span={8}>

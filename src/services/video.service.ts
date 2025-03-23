@@ -112,7 +112,7 @@ export const addCategoryToVideos = async (videoId: string, categoryId: string[])
 
 export const removeCategoryToVideos = async (videoId: string, categoryId: string[]) => {
     const { data } = await backendInstance.patch(`/video/modify/${videoId}/remove`, {
-        categoryId
+        categoryId: categoryId
     })
     return data
 }
