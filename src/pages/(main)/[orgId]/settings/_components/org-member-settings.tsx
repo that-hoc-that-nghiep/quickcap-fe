@@ -28,7 +28,9 @@ import { useParams } from 'react-router'
 const AddMemberModal = () => {
     const { orgId } = useParams<{ orgId: string }>()
     const { data } = useAllUser()
-    console.log('data from auth get all user', data)
+    const { data: orgInfo } = useOrgInfo(orgId)
+    const userIds = orgInfo?.users.map((user) => user.id)
+    console.log('data from auth get all user', orgInfo)
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
@@ -78,7 +80,11 @@ const AddMemberModal = () => {
                 withAsterisk
                 label='Select member'
                 placeholder='Search user...'
-                data={data?.map((user) => ({ value: user.id, label: user.name, email: user.email })) || []}
+                data={
+                    data
+                        ?.filter((o) => !userIds?.includes(o.id))
+                        .map((user) => ({ value: user.id, label: user.name, email: user.email })) || []
+                }
                 {...form.getInputProps('receiverId')}
                 renderOption={({ option }) => {
                     const user = option as UserOption
