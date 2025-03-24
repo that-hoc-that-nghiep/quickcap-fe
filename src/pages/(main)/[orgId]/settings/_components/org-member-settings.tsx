@@ -38,7 +38,7 @@ const AddMemberModal = () => {
         },
 
         validate: {
-            receiver: (value) => (value ? null : 'Please select a user')
+            receiver: (value: string) => (value ? null : 'Please select a user')
         }
     })
     const queryClient = useQueryClient()
