@@ -6,7 +6,7 @@ import { closeAllModals, openModal } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
 import { IconLogout2, IconTrash } from '@tabler/icons-react'
 import { useQueryClient } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 
 const ConfirmActionOrgModal = ({ type }: { type: 'delete' | 'leave' }) => {
@@ -75,9 +75,6 @@ const OrgCommonSettings = () => {
         }
     })
 
-    useEffect(() => {
-        form.setFieldValue('name', currentOrg?.name || '')
-    }, [currentOrg, form])
     const queryClient = useQueryClient()
     const handleSave = async (values: typeof form.values) => {
         setIsSaving(true)
