@@ -1,6 +1,6 @@
 import { useUser } from '@/hooks/useUser'
 import { acceptInvite, useInvites } from '@/services/invite.service'
-import { ActionIcon, Button, Group, Paper, Stack, Text } from '@mantine/core'
+import { Button, Group, Paper, Stack, Text } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { IconCheck } from '@tabler/icons-react'
 import { useQueryClient } from '@tanstack/react-query'
@@ -10,8 +10,8 @@ function getFirstSentence(text: string) {
     const sentences = text
         .split('.')
         .map((s: string) => s.trim())
-        .filter((s: string) => s) // Tách và loại bỏ khoảng trắng thừa
-    return sentences.length > 0 ? sentences[0] : '' // Lấy phần tử đầu tiên nếu có
+        .filter((s: string) => s)
+    return sentences.length > 0 ? sentences[0] : ''
 }
 export const InvitesPage = () => {
     const navigate = useNavigate()
@@ -60,7 +60,7 @@ export const InvitesPage = () => {
                                     Accept invite
                                 </Button>
                             ) : (
-                                <Text color='gray'>Accepted</Text>
+                                <Text c='gray'>Accepted</Text>
                             )}
                         </Group>
                     </Paper>
