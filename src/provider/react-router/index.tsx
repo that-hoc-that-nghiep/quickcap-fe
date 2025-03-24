@@ -2,7 +2,7 @@ import { HomePage } from '@/pages/(main)/[orgId]/home'
 import { BillingPage } from '@/pages/(main)/[orgId]/billing'
 import { MainLayout } from '@/pages/(main)/layout'
 import { LibraryPage } from '@/pages/(main)/[orgId]/library'
-import { NotificationsPage } from '@/pages/(main)/[orgId]/notifications'
+import { InvitesPage } from '@/pages/(main)/[orgId]/invites'
 import { SettingsPage } from '@/pages/(main)/[orgId]/settings'
 import { ErrorPage } from '@/pages/404'
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router'
@@ -53,8 +53,8 @@ const routers = createBrowserRouter([
                                 element: <LibraryPage />
                             },
                             {
-                                path: 'notifications',
-                                element: <NotificationsPage />
+                                path: 'invites',
+                                element: <InvitesPage />
                             },
                             {
                                 path: 'billing',

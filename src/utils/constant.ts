@@ -20,9 +20,9 @@ export const menuItems = [
         show: true
     },
     {
-        label: 'Notifications',
+        label: 'Invites',
         icon: IconBell,
-        path: '/notifications',
+        path: '/invites',
         show: true
     },
     {

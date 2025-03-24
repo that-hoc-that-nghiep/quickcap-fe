@@ -1,7 +1,7 @@
 import { mockNotifications } from '@/utils/constant'
 import { Avatar, Group, Paper, Stack, Text } from '@mantine/core'
 
-export const NotificationsPage = () => {
+export const InvitesPage = () => {
     return (
         <Stack>
             {mockNotifications.map((notification, index) => (
