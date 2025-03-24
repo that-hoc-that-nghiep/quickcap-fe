@@ -55,7 +55,7 @@ export const leaveOrg = async (orgId: string | undefined) => {
     if (!orgId) {
         return null
     }
-    await authInstance.put(`/org/${orgId}/leave`)
+    await authInstance.delete(`/org/${orgId}/leave`)
 }
 
 export const updatePermission = async (orgId: string | undefined, email: string, permission: string) => {
