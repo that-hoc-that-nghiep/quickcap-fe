@@ -1,5 +1,4 @@
 import { HomePage } from '@/pages/(main)/[orgId]/home'
-import { BillingPage } from '@/pages/(main)/[orgId]/billing'
 import { MainLayout } from '@/pages/(main)/layout'
 import { LibraryPage } from '@/pages/(main)/[orgId]/library'
 import { InvitesPage } from '@/pages/(main)/[orgId]/invites'
@@ -55,10 +54,6 @@ const routers = createBrowserRouter([
                             {
                                 path: 'invites',
                                 element: <InvitesPage />
-                            },
-                            {
-                                path: 'billing',
-                                element: <BillingPage />
                             },
                             {
                                 path: 'settings',

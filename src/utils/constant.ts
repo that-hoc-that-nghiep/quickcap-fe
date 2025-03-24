@@ -26,12 +26,6 @@ export const menuItems = [
         show: true
     },
     {
-        label: 'Billing',
-        icon: IconCreditCard,
-        path: '/billing',
-        show: true
-    },
-    {
         label: 'Settings',
         icon: IconSettings,
         path: '/settings',
