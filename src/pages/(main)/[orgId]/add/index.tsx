@@ -1,5 +1,5 @@
 import { addVideoToOrgs, uploadVideo, useVideoByOrgIdUnique } from '@/services/video.service'
-import { Button, Group, MultiSelect, MultiSelectProps, Paper, Skeleton, Stack, Text } from '@mantine/core'
+import { Button, Divider, Group, MultiSelect, MultiSelectProps, Paper, Skeleton, Stack, Text } from '@mantine/core'
 import { Suspense, useCallback, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import VideoDropzone from '../upload/_components/video-dropzone'
@@ -17,6 +17,7 @@ const AddVideoToOrgPage = () => {
     const [selectedVideos, setSelectedVideos] = useState<string[]>(filteredVideos[0] ? [filteredVideos[0]._id] : [])
     const [loading, setLoading] = useState(false)
     const [loadingAdd, setLoadingAdd] = useState(false)
+    const [text, setText] = useState('')
 
     const [selectedCategories, setSelectedCategories] = useState<Record<string, string>>({})
     const queryClient = useQueryClient()
@@ -38,16 +39,15 @@ const AddVideoToOrgPage = () => {
         try {
             const res = await uploadVideo(files[0])
             if (res) {
-                notifications.show({
-                    color: 'green',
-                    title: 'Upload successful',
-                    message: 'Video uploaded successfully'
-                })
+                setText(
+                    'New video has been added to personal organization, select in the bar below to add to this organization'
+                )
             }
             queryClient.invalidateQueries({
                 queryKey: ['videos-unique', orgId]
             })
         } catch (error) {
+            setText('')
             console.error(error)
             notifications.show({
                 color: 'red',
@@ -113,7 +113,12 @@ const AddVideoToOrgPage = () => {
             <Paper p={16}>
                 <VideoDropzone onUpload={onUpload} loading={loading} sizeButton='sm' height={70} />
             </Paper>
-
+            {text && (
+                <Text c='green' mt='md' className='text-center'>
+                    {text}
+                </Text>
+            )}
+            <Divider m='lg' />
             <Paper p={16} shadow='xs' withBorder>
                 <MultiSelect
                     disabled={loading}
@@ -127,14 +132,14 @@ const AddVideoToOrgPage = () => {
                     renderOption={renderMultiSelectOption}
                     value={selectedVideos}
                     onChange={handleSeclectVideos}
-                    label="Personal org's videos"
+                    label='Select videos to add to your organization'
                 />
             </Paper>
             {selectedVideos.map((video) => {
                 const videoInfo = getVideos(video)
 
                 return (
-                    <Paper  key={video} p={16} shadow='xs' withBorder>
+                    <Paper key={video} p={16} shadow='xs' withBorder>
                         <Stack>
                             <Suspense
                                 fallback={

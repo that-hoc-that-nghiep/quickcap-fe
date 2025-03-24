@@ -1,4 +1,16 @@
-import { ActionIcon, Avatar, Button, Grid, Group, Paper, Tabs, Text, Title, useMantineTheme } from '@mantine/core'
+import {
+    ActionIcon,
+    Avatar,
+    Button,
+    Grid,
+    Group,
+    Paper,
+    ScrollArea,
+    Tabs,
+    Text,
+    Title,
+    useMantineTheme
+} from '@mantine/core'
 import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router'
 import { updateVideo, useVideo } from '@/services/video.service'
@@ -170,9 +182,11 @@ export const VideoPage = () => {
                         </Tabs.Panel>
 
                         <Tabs.Panel value='transcript' mt='md'>
-                            <Paper withBorder p={16}>
-                                {video?.transcript}
-                            </Paper>
+                            <ScrollArea h={450}>
+                                <Paper withBorder p={16}>
+                                    {video?.transcript}
+                                </Paper>
+                            </ScrollArea>
                         </Tabs.Panel>
 
                         <Tabs.Panel value='comments' mt='md'>

@@ -8,7 +8,7 @@ export const service = {
 
 export const menuItems = [
     {
-        label: 'Org Dashboard',
+        label: 'Organization Dashboard',
         icon: IconHome,
         path: '/home',
         show: true
