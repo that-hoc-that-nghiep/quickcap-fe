@@ -1,4 +1,4 @@
-import { Org, OrgInfo, VerifyUser } from '@/types'
+import { Org, OrgInfo, User, VerifyUser } from '@/types'
 import { authInstance } from '@/utils/api'
 import { useQuery } from '@tanstack/react-query'
 
@@ -71,4 +71,16 @@ export const deleteOrg = async (orgId: string | undefined) => {
         return null
     }
     await authInstance.delete(`/org/${orgId}`)
+}
+
+const getAllUser = async () => {
+    const { data } = await authInstance.get<User[]>('/auth/user/all')
+    return data
+}
+
+export const useAllUser = () => {
+    return useQuery({
+        queryKey: ['users'],
+        queryFn: () => getAllUser()
+    })
 }

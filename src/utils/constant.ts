@@ -20,9 +20,9 @@ export const menuItems = [
         show: true
     },
     {
-        label: 'Notifications',
+        label: 'Invites',
         icon: IconBell,
-        path: '/notifications',
+        path: '/invites',
         show: true
     },
     {
@@ -43,15 +43,6 @@ export const menuItems = [
         path: '/upload',
         show: false
     }
-]
-
-export const mockNotifications = [
-    'You have a new message from John Doe',
-    'Your subscription is about to expire',
-    'New video uploaded by John Doe',
-    'Invitation to join a group',
-    'Video was liked by John Doe',
-    'Video was shared by John Doe'
 ]
 
 export const MAX_FILE_SIZE = 50 // MB
