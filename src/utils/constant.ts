@@ -1,4 +1,4 @@
-import { IconBell, IconCreditCard, IconHome, IconLibrary, IconSettings } from '@tabler/icons-react'
+import { IconBell, IconHome, IconLibrary, IconSettings } from '@tabler/icons-react'
 
 export const service = {
     auth: 'https://auth.quickcap.live',
