@@ -50,6 +50,7 @@ export const VideoCategory = ({ orgId, video, selectedCategory, onCategorySelect
         try {
             setOpen(false)
             await createCategory(orgId, newCategory)
+            await new Promise((resolve) => setTimeout(resolve, 2000))
             notifications.show({
                 title: 'Success',
                 message: 'Category added successfully',

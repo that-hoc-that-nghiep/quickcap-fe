@@ -47,6 +47,7 @@ const MoveVideoToOrgModal = ({ video }: { video: { id: string; categoryId: Categ
             closeAllModals()
         } catch (error) {
             console.error('Error move video to org:', error)
+
             notifications.show({
                 title: 'Error move video',
                 message: 'An error occurred while updating video',
@@ -61,10 +62,12 @@ const MoveVideoToOrgModal = ({ video }: { video: { id: string; categoryId: Categ
         <form onSubmit={form.onSubmit(handleSubmit)}>
             <Select
                 data={
-                    data?.data.map((category) => ({
-                        value: category._id,
-                        label: category.name
-                    })) || []
+                    data?.data
+                        .filter((c) => !c.isDeleted)
+                        .map((category) => ({
+                            value: category._id,
+                            label: category.name
+                        })) || []
                 }
                 label='Categories'
                 placeholder='Select categories'
