@@ -74,7 +74,7 @@ export const deleteOrg = async (orgId: string | undefined) => {
 }
 
 const getAllUser = async () => {
-    const { data } = await authInstance.get<User[]>('/auth/all')
+    const { data } = await authInstance.get<User[]>('/auth/user/all')
     return data
 }
 

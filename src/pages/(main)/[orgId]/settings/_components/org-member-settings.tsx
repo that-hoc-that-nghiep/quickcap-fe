@@ -1,8 +1,22 @@
 import { useUser } from '@/hooks/useUser'
-import { addMemberToOrg, useOrgInfo, removeMemberFromOrg, updatePermission } from '@/services/auth.service'
+import { useOrgInfo, removeMemberFromOrg, updatePermission, useAllUser } from '@/services/auth.service'
+import { sendInvite } from '@/services/invite.service'
 import { PermissionData, PermissionTypeUI } from '@/types'
 
-import { ActionIcon, Avatar, Badge, Button, Card, Group, Select, Stack, Text, TextInput, Tooltip } from '@mantine/core'
+import {
+    ActionIcon,
+    Autocomplete,
+    Avatar,
+    Badge,
+    Button,
+    Card,
+    ComboboxItem,
+    Group,
+    Select,
+    Stack,
+    Text,
+    Tooltip
+} from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { closeAllModals, openModal } from '@mantine/modals'
 import { notifications } from '@mantine/notifications'
@@ -12,16 +26,17 @@ import { useState } from 'react'
 import { useParams } from 'react-router'
 
 const AddMemberModal = () => {
-    const { orgId } = useParams()
+    const { orgId } = useParams<{ orgId: string }>()
+    const { data } = useAllUser()
+    console.log('data from auth get all user', data)
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
-            email: ''
+            receiverId: ''
         },
 
         validate: {
-            email: (value: string) =>
-                /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(value) ? null : 'Invalid email address'
+            receiverId: (value) => (value ? null : 'Please select a user')
         }
     })
     const queryClient = useQueryClient()
@@ -29,7 +44,7 @@ const AddMemberModal = () => {
     const handleCreateNewOrg = async (values: typeof form.values) => {
         setIsAdding(true)
         try {
-            await addMemberToOrg(orgId, values.email)
+            await sendInvite(orgId!, values.receiverId)
             queryClient.invalidateQueries({
                 queryKey: ['user']
             })
@@ -53,16 +68,28 @@ const AddMemberModal = () => {
             setIsAdding(false)
         }
     }
+    interface UserOption extends ComboboxItem {
+        email: string
+    }
 
     return (
         <form onSubmit={form.onSubmit(handleCreateNewOrg)}>
-            <TextInput
+            <Autocomplete
                 withAsterisk
-                label='New member email'
-                placeholder='example@gmail.com'
-                key={form.key('email')}
-                {...form.getInputProps('email')}
-                error={form.errors.email}
+                label='Select member'
+                placeholder='Search user...'
+                data={data?.map((user) => ({ value: user.id, label: user.name, email: user.email })) || []}
+                {...form.getInputProps('receiverId')}
+                renderOption={({ option }) => {
+                    const user = option as UserOption
+                    return (
+                        <div className='flex flex-col border-b border-gray-200 py-2'>
+                            <Text>{user.label}</Text>
+                            <Text c={'dimmed'}>{user.email}</Text>
+                        </div>
+                    )
+                }}
+                error={form.errors.receiverId}
             />
             <Group justify='flex-end' mt='md'>
                 <Button variant='outline' onClick={() => closeAllModals()} disabled={isAdding}>
@@ -223,7 +250,7 @@ const OrgMemberSettings = () => {
                         size='sm'
                         onClick={handleShowAddMemberModal}
                     >
-                        Add member
+                        Invite member
                     </Button>
                 ) : null}
             </Group>
