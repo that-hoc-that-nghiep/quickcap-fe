@@ -121,7 +121,6 @@ const OrgCommonSettings = () => {
                     <TextInput
                         label='Organization name'
                         placeholder='Super Organization'
-                        key={form.key('name')}
                         {...form.getInputProps('name')}
                         disabled={isSaving || !currentOrg?.is_owner}
                     />
@@ -162,7 +161,7 @@ const OrgCommonSettings = () => {
                     {currentOrg?.is_owner ? (
                         <Group justify='flex-end'>
                             <Button type='submit' color='green' loading={isSaving}>
-                                Lưu
+                                Save
                             </Button>
                         </Group>
                     ) : null}

@@ -22,7 +22,12 @@ const EditVideoModal = ({
         },
 
         validate: {
-            title: (value: string) => (value.trim().length > 0 ? null : 'Title is required'),
+            title: (value: string) =>
+                value.trim().length > 0
+                    ? value.trim().length <= 50
+                        ? null
+                        : 'Title must be at most 50 characters'
+                    : 'Title is required',
             description: (value: string) =>
                 value.trim().length > 5 ? null : 'Description must be at least 5 characters',
             transcript: (value: string) =>
