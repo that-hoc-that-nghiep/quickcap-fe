@@ -1,4 +1,4 @@
-import { IconBell, IconCreditCard, IconHome, IconLibrary, IconSettings } from '@tabler/icons-react'
+import { IconBell, IconHome, IconLibrary, IconSettings } from '@tabler/icons-react'
 
 export const service = {
     auth: 'https://auth.quickcap.live',
@@ -23,12 +23,6 @@ export const menuItems = [
         label: 'Invites',
         icon: IconBell,
         path: '/invites',
-        show: true
-    },
-    {
-        label: 'Billing',
-        icon: IconCreditCard,
-        path: '/billing',
         show: true
     },
     {
