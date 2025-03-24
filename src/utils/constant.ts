@@ -45,15 +45,6 @@ export const menuItems = [
     }
 ]
 
-export const mockNotifications = [
-    'You have a new message from John Doe',
-    'Your subscription is about to expire',
-    'New video uploaded by John Doe',
-    'Invitation to join a group',
-    'Video was liked by John Doe',
-    'Video was shared by John Doe'
-]
-
 export const MAX_FILE_SIZE = 50 // MB
 
 export const CLOUD_FRONT_URL = 'https://d13e9bff825cyt.cloudfront.net'

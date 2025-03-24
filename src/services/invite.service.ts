@@ -19,3 +19,10 @@ export const acceptInvite = async (inviteId: string) => {
     const { data } = await backendInstance.patch<BackendResponse<Invite>>(`/invite/${inviteId}`)
     return data
 }
+
+export const sendInvite = async (orgId: string, receiverId: string) => {
+    const { data } = await backendInstance.post<BackendResponse<Invite>>(`/invite/${orgId}`, {
+        receiverId
+    })
+    return data
+}

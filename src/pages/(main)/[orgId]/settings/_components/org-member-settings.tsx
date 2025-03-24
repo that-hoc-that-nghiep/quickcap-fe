@@ -39,7 +39,7 @@ const AddMemberModal = () => {
             notifications.show({
                 color: 'green',
                 title: 'Success',
-                message: 'Member added successfully'
+                message: 'Invited member successfully'
             })
             closeAllModals()
         } catch (error) {
@@ -47,7 +47,7 @@ const AddMemberModal = () => {
             notifications.show({
                 color: 'red',
                 title: 'Error',
-                message: 'Failed to add member'
+                message: 'Failed to invite member'
             })
         } finally {
             setIsAdding(false)
@@ -62,13 +62,14 @@ const AddMemberModal = () => {
                 placeholder='example@gmail.com'
                 key={form.key('email')}
                 {...form.getInputProps('email')}
+                error={form.errors.email}
             />
             <Group justify='flex-end' mt='md'>
                 <Button variant='outline' onClick={() => closeAllModals()} disabled={isAdding}>
                     Cancel
                 </Button>
                 <Button type='submit' color='green' loading={isAdding}>
-                    Add member
+                    Invite member
                 </Button>
             </Group>
         </form>
@@ -189,10 +190,9 @@ const OrgMemberSettings = () => {
     const { currentOrg, user: curentUser } = useUser()
     const { data } = useOrgInfo(currentOrg?.id)
 
-
     const handleShowAddMemberModal = () => {
         openModal({
-            title: `Add member to ${currentOrg?.name}`,
+            title: `Invite member to ${currentOrg?.name}`,
             children: <AddMemberModal />
         })
     }
