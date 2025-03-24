@@ -1,25 +1,70 @@
 import { useUser } from '@/hooks/useUser'
-import { useInvites } from '@/services/invite.service'
-import { Avatar, Group, Paper, Stack, Text } from '@mantine/core'
-import { useParams } from 'react-router'
-
+import { acceptInvite, useInvites } from '@/services/invite.service'
+import { ActionIcon, Button, Group, Paper, Stack, Text } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
+import { IconCheck } from '@tabler/icons-react'
+import { useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
+import { useNavigate } from 'react-router'
+function getFirstSentence(text: string) {
+    const sentences = text
+        .split('.')
+        .map((s: string) => s.trim())
+        .filter((s: string) => s) // Tách và loại bỏ khoảng trắng thừa
+    return sentences.length > 0 ? sentences[0] : '' // Lấy phần tử đầu tiên nếu có
+}
 export const InvitesPage = () => {
-    const { orgId } = useParams<{ orgId: string }>()
+    const navigate = useNavigate()
     const { user } = useUser()
-    const { data } = useInvites(orgId as string, user?.id as string)
+    const { data } = useInvites(user?.id as string)
+    const [loading, setLoading] = useState(false)
+    const queryClient = useQueryClient()
+    const handleAccept = async (inviteId: string, orgId: string) => {
+        try {
+            setLoading(true)
+            await acceptInvite(inviteId)
+            queryClient.invalidateQueries({
+                queryKey: ['invites', user?.id]
+            })
+            notifications.show({
+                title: 'Success',
+                message: 'Invite accepted successfully!',
+                color: 'green'
+            })
+            navigate(`/${orgId}/home`)
+        } catch (error) {
+            notifications.show({
+                title: 'Error',
+                message: 'Failed to accept invite',
+                color: 'red'
+            })
+        } finally {
+            setLoading(false)
+        }
+    }
     return (
         <Stack>
             {data.data.length > 0 ? (
-                data.data
-                    .filter((i) => !i.accepted)
-                    .map((invite, index) => (
-                        <Paper key={index} p={'md'} shadow='sm'>
-                            <Group>
-                                <Avatar></Avatar>
-                                <Text>{invite.content}</Text>
-                            </Group>
-                        </Paper>
-                    ))
+                data.data.map((invite, index) => (
+                    <Paper key={index} p={'md'} shadow='sm'>
+                        <Group>
+                            <Text>{getFirstSentence(invite.content)}</Text>
+                            {!invite.accepted ? (
+                                <Button
+                                    leftSection={<IconCheck size={18} />}
+                                    loading={loading}
+                                    color='green'
+                                    variant='filled'
+                                    onClick={() => handleAccept(invite._id, invite.orgId)}
+                                >
+                                    Accept invite
+                                </Button>
+                            ) : (
+                                <Text color='gray'>Accepted</Text>
+                            )}
+                        </Group>
+                    </Paper>
+                ))
             ) : (
                 <div>No invites</div>
             )}

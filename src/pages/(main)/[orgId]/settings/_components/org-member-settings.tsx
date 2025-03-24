@@ -29,24 +29,26 @@ const AddMemberModal = () => {
     const { orgId } = useParams<{ orgId: string }>()
     const { data } = useAllUser()
     const { data: orgInfo } = useOrgInfo(orgId)
+
     const userIds = orgInfo?.users.map((user) => user.id)
-    console.log('data from auth get all user', orgInfo)
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
-            receiverId: ''
+            receiver: ''
         },
 
         validate: {
-            receiverId: (value) => (value ? null : 'Please select a user')
+            receiver: (value) => (value ? null : 'Please select a user')
         }
     })
     const queryClient = useQueryClient()
     const [isAdding, setIsAdding] = useState(false)
-    const handleCreateNewOrg = async (values: typeof form.values) => {
+    const handleInviteMember = async (values: typeof form.values) => {
         setIsAdding(true)
         try {
-            await sendInvite(orgId!, values.receiverId)
+            const receiver = data?.find((user) => user.email === values.receiver)
+
+            await sendInvite(orgId!, receiver?.id!)
             queryClient.invalidateQueries({
                 queryKey: ['user']
             })
@@ -71,11 +73,11 @@ const AddMemberModal = () => {
         }
     }
     interface UserOption extends ComboboxItem {
-        email: string
+        name: string
     }
 
     return (
-        <form onSubmit={form.onSubmit(handleCreateNewOrg)}>
+        <form onSubmit={form.onSubmit(handleInviteMember)}>
             <Autocomplete
                 withAsterisk
                 label='Select member'
@@ -83,15 +85,15 @@ const AddMemberModal = () => {
                 data={
                     data
                         ?.filter((o) => !userIds?.includes(o.id))
-                        .map((user) => ({ value: user.id, label: user.name, email: user.email })) || []
+                        .map((user) => ({ label: user.email, value: user.id, name: user.name })) || []
                 }
-                {...form.getInputProps('receiverId')}
+                {...form.getInputProps('receiver')}
                 renderOption={({ option }) => {
                     const user = option as UserOption
                     return (
                         <div className='flex flex-col border-b border-gray-200 py-2'>
-                            <Text>{user.label}</Text>
-                            <Text c={'dimmed'}>{user.email}</Text>
+                            <Text>{user.name}</Text>
+                            <Text c={'dimmed'}>{user.label}</Text>
                         </div>
                     )
                 }}
