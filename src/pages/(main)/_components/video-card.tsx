@@ -38,11 +38,14 @@ import { useForm } from '@mantine/form'
 import { useState } from 'react'
 import { addCategoryToVideos, removeCategoryToVideos } from '@/services/video.service'
 import { notifications } from '@mantine/notifications'
-const MoveVideoToOrgModal = ({ video }: { video: { id: string; categoryId: Category[]; orgId: string } }) => {
-    const { data } = useOrgCategories(video.orgId!)
+const MoveVideoToOrgModal = ({
+    video
+}: {
+    video: { id: string; categoryId: Category[]; orgId: string; dataOrgCate: Category[] }
+}) => {
     const categoryIds = video.categoryId.map((category) => category._id)
     const filtercategoryIds =
-        data?.data.filter((category) => categoryIds.includes(category._id)).map((category) => category._id) || []
+        video.dataOrgCate.filter((category) => categoryIds.includes(category._id)).map((category) => category._id) || []
 
     const theme = useMantineTheme()
     const queryClient = useQueryClient()
@@ -92,7 +95,7 @@ const MoveVideoToOrgModal = ({ video }: { video: { id: string; categoryId: Categ
         <form onSubmit={form.onSubmit(handleSubmit)}>
             <Select
                 data={
-                    data?.data
+                    video.dataOrgCate
                         .filter((c) => !c.isDeleted)
                         .map((category) => ({
                             value: category._id,
@@ -120,6 +123,7 @@ const MoveVideoToOrgModal = ({ video }: { video: { id: string; categoryId: Categ
 const VideoCard = ({ video }: { video: Video }) => {
     const { orgId } = useParams<{ orgId: string }>()
     const { user, currentOrg } = useUser()
+    const { data } = useOrgCategories(orgId!)
     return (
         <Card withBorder shadow='sm'>
             <Card.Section
@@ -182,7 +186,8 @@ const VideoCard = ({ video }: { video: Video }) => {
                                                             video={{
                                                                 id: video._id,
                                                                 categoryId: video.categoryId,
-                                                                orgId: orgId!
+                                                                orgId: orgId!,
+                                                                dataOrgCate: data?.data || []
                                                             }}
                                                         />
                                                     )
