@@ -66,7 +66,7 @@ export const VideoPage = () => {
 
     const debouncedMutate = useDebouncedCallback((newLike) => {
         mutateLike({ videoId: video._id, like: newLike })
-    }, 5000)
+    }, 2000)
 
     const handleLike = () => {
         setLoading(true)
