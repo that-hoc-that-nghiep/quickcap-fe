@@ -96,7 +96,9 @@ const OrgSwitcher = () => {
             <Group gap={8} justify='space-between'>
                 <Select
                     checkIconPosition='right'
-                    data={orgs?.map((org) => ({ label: org.name, value: org.id })) || []}
+                    data={
+                        orgs?.filter((org) => !org.isDeleted).map((org) => ({ label: org.name, value: org.id })) || []
+                    }
                     value={currentOrg?.id}
                     onChange={handleOrgChange}
                     comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
