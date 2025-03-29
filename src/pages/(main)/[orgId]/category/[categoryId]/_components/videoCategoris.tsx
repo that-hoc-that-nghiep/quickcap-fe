@@ -7,7 +7,7 @@ const VideoCategoris = () => {
     const { data } = useVideos(orgId!, { categoryId: categoryId! })
     return (
         <>
-            {data?.data?.videos.map((video) => <VideoCard key={video._id} video={video} />)}{' '}
+            {data?.data?.videos.filter((c) => !c.isDeleted).map((video) => <VideoCard key={video._id} video={video} />)}{' '}
             {data?.data?.videos.length === 0 && 'No videos'}
         </>
     )
