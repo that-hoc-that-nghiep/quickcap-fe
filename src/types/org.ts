@@ -5,6 +5,7 @@ export type Org = {
     name: string
     image: string
     type: 'Personal' | 'Organization'
+    isDeleted: boolean
 }
 
 export type OrgInfo = {
